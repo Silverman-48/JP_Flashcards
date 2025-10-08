@@ -375,7 +375,7 @@
         sourceList.forEach(word => {
         const p = document.createElement('p');
             // Usamos word.reading[0] para mostrar a leitura principal
-            p.innerHTML = `<strong>${word.word}</strong> (${word.reading[0]}) - ${word.meaning}`;
+            p.innerHTML = `<strong>${word.word}</strong> - ${word.meaning}`;
             allWordsContainer.appendChild(p);
         });
 
@@ -401,11 +401,9 @@
     });
 
 selectHiragana.addEventListener('change', () => {
-    resetGame();
     allWordsContainer.style.display = 'none'; 
 });
 selectKatakana.addEventListener('change', () => {
-    resetGame();
     allWordsContainer.style.display = 'none';
 });
 
