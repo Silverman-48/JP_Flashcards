@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese Word Study</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 30px; background-color: #f4f4f9; }
+        #wordDisplay { font-size: 70px; margin: 20px; color: #333; font-family: "MS Gothic", sans-serif; }
+        input[type="text"] { font-size: 20px; padding: 10px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
+        button { font-size: 16px; margin: 5px; padding: 10px 20px; border-radius: 5px; border: none; cursor: pointer; background-color: #5c67f2; color: white; transition: background-color 0.2s; }
+        #resetBtn { background: #f25c5c; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        button:hover { background: #5c67f2; border: none; color: white; }
+        #resetBtn:hover { background: #f25c5c; border: none; color: white; }
+        button:disabled:hover { background: #ccc; }
+
+        .stats { margin-top: 15px; font-size: 18px; color: #555; }
+        .script-choice { margin-bottom: 20px; font-size: 1.2em; }
+        .script-choice label { margin: 0 15px; cursor: pointer;}
+        #resultDisplay { margin-top: 15px; font-size: 20px; font-weight: bold; height: 25px; }
+        .neutral { color: black; }
+        .correct { color: green; }
+        .incorrect { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Estudo de Vocabulário Japonês</h1>
+    
+    <div class="script-choice">
+        <label><input type="radio" name="script" id="selectHiragana" value="hira" checked> Hiragana</label>
+        <label><input type="radio" name="script" id="selectKatakana" value="kata"> Katakana</label>
+    </div>
+
+    <h2 id="meaningDisplay">Significado</h2>
+    
+    <div id="wordDisplay">?</div>
+    
+    <input type="text" id="answerBox" placeholder="Leitura">
+    
+    <div id="resultDisplay">Aguardando Resposta...</div><br>
+    
+    <button id="checkBtn">Verificar</button>
+    <button id="nextBtn">Seguinte</button>
+    <button id="resetBtn">Reniciar</button>
+    
+    <div class="stats">
+        Restantes: <span id="remainingCount">0</span><br>
+        Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span>
+    </div>
+
+<script>
+    // Step 1: Define the word lists
+    const hiraganaWords = [
+        // Saudações e Frases
+        { word: "おはよう", reading: "o ha yo u", meaning: "Bom dia (manhã)" },
+        { word: "こんにちは", reading: "ko n ni chi wa", meaning: "Olá / Boa tarde" },
+        { word: "こんばんは", reading: "ko n ba n wa", meaning: "Boa noite" },
+        { word: "ありがとう", reading: "a ri ga to u", meaning: "Obrigado(a)" },
+        { word: "ごめんなさい", reading: "go me n na sa i", meaning: "Desculpe" },
+        { word: "さようなら", reading: "sa yo u na ra", meaning: "Adeus" },
+        { word: "おねがいします", reading: "o ne ga i shi ma su", meaning: "Por favor" },
+    
+        // Pessoas e Família
+        { word: "わたし", reading: "wa ta shi", meaning: "Eu" },
+        { word: "あなた", reading: "a na ta", meaning: "Tu / Você" },
+        { word: "ひと", reading: "hi to", meaning: "Pessoa" },
+        { word: "ともだち", reading: "to mo da chi", meaning: "Amigo(a)" },
+        { word: "がくせい", reading: "ga ku se i", meaning: "Estudante" },
+        { word: "せんせい", reading: "se n se i", meaning: "Professor(a)" },
+        { word: "かぞく", reading: "ka zo ku", meaning: "Família" },
+    
+        // Lugares
+        { word: "がっこう", reading: "ga kko u", meaning: "Escola" },
+        { word: "うち", reading: "u chi", meaning: "Casa" },
+        { word: "えき", reading: "e ki", meaning: "Estação (de comboio)" },
+        { word: "みせ", reading: "mi se", meaning: "Loja" },
+        { word: "にほん", reading: "ni ho n", meaning: "Japão" },
+    
+        // Comida e Bebida
+        { word: "ごはん", reading: "go ha n", meaning: "Arroz / Refeição" },
+        { word: "さかな", reading: "sa ka na", meaning: "Peixe" },
+        { word: "にく", reading: "ni ku", meaning: "Carne" },
+        { word: "やさい", reading: "ya sa i", meaning: "Vegetais" },
+        { word: "みず", reading: "mi zu", meaning: "Água" },
+        { word: "おちゃ", reading: "o cha", meaning: "Chá" },
+    
+        // Animais
+        { word: "いぬ", reading: "i nu", meaning: "Cão" },
+        { word: "ねこ", reading: "ne ko", meaning: "Gato" },
+        { word: "とり", reading: "to ri", meaning: "Pássaro" },
+    
+        // Objetos
+        { word: "ほん", reading: "ho n", meaning: "Livro" },
+        { word: "えんぴつ", reading: "e n pi tsu", meaning: "Lápis" },
+        { word: "かさ", reading: "ka sa", meaning: "Guarda-chuva" },
+        { word: "くつ", reading: "ku tsu", meaning: "Sapatos" },
+        { word: "でんわ", reading: "de n wa", meaning: "Telefone" },
+        { word: "くるま", reading: "ku ru ma", meaning: "Carro" },
+    
+        // Tempo e Natureza
+        { word: "てんき", reading: "te n ki", meaning: "Tempo (clima)" },
+        { word: "あめ", reading: "a me", meaning: "Chuva" },
+        { word: "ゆき", reading: "yu ki", meaning: "Neve" },
+        { word: "そら", reading: "so ra", meaning: "Céu" },
+        { word: "やま", reading: "ya ma", meaning: "Montanha" },
+        { word: "かわ", reading: "ka wa", meaning: "Rio" },
+    
+        // Datas e Tempo
+        { word: "きょう", reading: "kyo u", meaning: "Hoje" },
+        { word: "あした", reading: "a shi ta", meaning: "Amanhã" },
+        { word: "きのう", reading: "ki no u", meaning: "Ontem" },
+        { word: "いま", reading: "i ma", meaning: "Agora" },
+        { word: "じかん", reading: "ji ka n", meaning: "Tempo / Hora" },
+    
+        // Verbos (forma de dicionário)
+        { word: "たべる", reading: "ta be ru", meaning: "Comer" },
+        { word: "のむ", reading: "no mu", meaning: "Beber" },
+        { word: "みる", reading: "mi ru", meaning: "Ver" },
+        { word: "きく", reading: "ki ku", meaning: "Ouvir / Perguntar" },
+        { word: "よむ", reading: "yo mu", meaning: "Ler" },
+        { word: "かく", reading: "ka ku", meaning: "Escrever" },
+        { word: "いく", reading: "i ku", meaning: "Ir" },
+        { word: "かう", reading: "ka u", meaning: "Comprar" },
+        { word: "はなす", reading: "ha na su", meaning: "Falar" },
+        { word: "する", reading: "su ru", meaning: "Fazer" },
+    
+        // Adjetivos
+        { word: "おおきい", reading: "o o ki i", meaning: "Grande" },
+        { word: "ちいさい", reading: "chi i sa i", meaning: "Pequeno" },
+        { word: "あたらしい", reading: "a ta ra shi i", meaning: "Novo" },
+        { word: "ふるい", reading: "fu ru i", meaning: "Velho (coisas)" },
+        { word: "いい", reading: "i i", meaning: "Bom" },
+        { word: "わるい", reading: "wa ru i", meaning: "Mau" },
+        { word: "たかい", reading: "ta ka i", meaning: "Alto / Caro" },
+        { word: "やすい", reading: "ya su i", meaning: "Barato" },
+        { word: "おいしい", reading: "o i shi i", meaning: "Delicioso" },
+    
+        // Cores
+        { word: "あか", reading: "a ka", meaning: "Vermelho" },
+        { word: "あお", reading: "a o", meaning: "Azul" },
+        { word: "しろ", reading: "shi ro", meaning: "Branco" },
+        { word: "くろ", reading: "ku ro", meaning: "Preto" },
+    
+        // Números
+        { word: "いち", reading: "i chi", meaning: "Um" },
+        { word: "に", reading: "ni", meaning: "Dois" },
+        { word: "さん", reading: "sa n", meaning: "Três" },
+        { word: "よん", reading: "yo n", meaning: "Quatro" },
+        { word: "ご", reading: "go", meaning: "Cinco" },
+        { word: "ろく", reading: "ro ku", meaning: "Seis" },
+        { word: "なな", reading: "na na", meaning: "Sete" },
+        { word: "はち", reading: "ha chi", meaning: "Oito" },
+        { word: "きゅう", reading: "kyu u", meaning: "Nove" },
+        { word: "じゅう", reading: "ju u", meaning: "Dez" }
+    ];
+
+    const katakanaWords = [
+        // Comida e Bebida
+        { word: "パン", reading: "pa n", meaning: "Pão" },
+        { word: "コーヒー", reading: "ko hi", meaning: "Café" },
+        { word: "ジュース", reading: "ju su", meaning: "Sumo" },
+        { word: "ビール", reading: "bi ru", meaning: "Cerveja" },
+        { word: "ワイン", reading: "wa i n", meaning: "Vinho" },
+        { word: "チーズ", reading: "chi zu", meaning: "Queijo" },
+        { word: "ケーキ", reading: "ke ki", meaning: "Bolo" },
+        { word: "アイスクリーム", reading: "a i su ku ri mu", meaning: "Gelado" },
+        { word: "レストラン", reading: "re su to ra n", meaning: "Restaurante" },
+        { word: "メニュー", reading: "me nyu", meaning: "Menu" },
+    
+        // Tecnologia
+        { word: "テレビ", reading: "te re bi", meaning: "Televisão" },
+        { word: "ラジオ", reading: "ra ji o", meaning: "Rádio" },
+        { word: "パソコン", reading: "pa so ko n", meaning: "Computador Pessoal" },
+        { word: "カメラ", reading: "ka me ra", meaning: "Câmara" },
+        { word: "スマホ", reading: "su ma ho", meaning: "Smartphone" },
+        { word: "インターネット", reading: "i n ta ne tto", meaning: "Internet" },
+        { word: "Eメール", reading: "i me ru", meaning: "E-mail" },
+    
+        // Lugares
+        { word: "アメリカ", reading: "a me ri ka", meaning: "América / EUA" },
+        { word: "ブラジル", reading: "bu ra ji ru", meaning: "Brasil" },
+        { word: "ポルトガル", reading: "po ru to ga ru", meaning: "Portugal" },
+        { word: "ホテル", reading: "ho te ru", meaning: "Hotel" },
+        { word: "スーパー", reading: "su pa", meaning: "Supermercado" },
+        { word: "デパート", reading: "de pa to", meaning: "Centro Comercial" },
+        { word: "トイレ", reading: "to i re", meaning: "Casa de Banho" },
+    
+        // Transportes
+        { word: "バス", reading: "ba su", meaning: "Autocarro" },
+        { word: "タクシー", reading: "ta ku shi", meaning: "Táxi" },
+        { word: "バイク", reading: "ba i ku", meaning: "Mota" },
+    
+        // Roupas
+        { word: "シャツ", reading: "sha tsu", meaning: "Camisa" },
+        { word: "Tシャツ", reading: "ti sha tsu", meaning: "T-shirt" },
+        { word: "ズボン", reading: "zu bo n", meaning: "Calças" },
+        { word: "スカート", reading: "su ka to", meaning: "Saia" },
+    
+        // Desporto
+        { word: "スポーツ", reading: "su po tsu", meaning: "Desporto" },
+        { word: "サッカー", reading: "sa kka", meaning: "Futebol" },
+        { word: "テニス", reading: "te ni su", meaning: "Ténis" },
+        { word: "ゴルフ", reading: "go ru fu", meaning: "Golfe" },
+    
+        // Objetos Domésticos
+        { word: "ドア", reading: "do a", meaning: "Porta" },
+        { word: "テーブル", reading: "te bu ru", meaning: "Mesa" },
+        { word: "ベッド", reading: "be ddo", meaning: "Cama" },
+        { word: "ペン", reading: "pe n", meaning: "Caneta" },
+        { word: "ノート", reading: "no to", meaning: "Caderno" },
+    
+        // Outros
+        { word: "テスト", reading: "te su to", meaning: "Teste" },
+        { word: "パーティー", reading: "pa ti", meaning: "Festa" },
+        { word: "クラス", reading: "ku ra su", meaning: "Aula / Turma" },
+        { word: "ガラス", reading: "ga ra su", meaning: "Vidro" },
+        { word: "ゼロ", reading: "ze ro", meaning: "Zero" },
+        { word: "アレルギー", reading: "a re ru gi", meaning: "Alergia" },
+        { word: "エネルギー", reading: "e ne ru gi", meaning: "Energia" },
+        { word: "ビタミン", reading: "bi ta mi n", meaning: "Vitamina" },
+        { word: "ピアノ", reading: "pi a no", meaning: "Piano" },
+        { word: "ギター", reading: "gi ta", meaning: "Guitarra" }
+    ];
+
+    // --- Global Variables ---
+    let deck = [];
+    let currentWord = null;
+    let correctCount = 0;
+    let incorrectCount = 0;
+
+    // --- DOM Elements ---
+    const wordDisplay = document.getElementById("wordDisplay");
+    const meaningDisplay = document.getElementById("meaningDisplay");
+    const answerBox = document.getElementById("answerBox");
+    const checkBtn = document.getElementById("checkBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const remainingCount = document.getElementById("remainingCount");
+    const correctDisplay = document.getElementById("correctCount");
+    const incorrectDisplay = document.getElementById("incorrectCount");
+    const resultDisplay = document.getElementById("resultDisplay");
+    const selectHiragana = document.getElementById('selectHiragana');
+    const selectKatakana = document.getElementById('selectKatakana');
+
+    // --- Core Functions ---
+    function buildDeck() {
+        const isKatakana = selectKatakana.checked;
+        // Use the spread operator `...` to create a shallow copy of the array.
+        // This prevents the original word lists from being modified by `deck.splice()`.
+        deck = isKatakana ? [...katakanaWords] : [...hiraganaWords];
+        updateRemaining();
+    }
+
+    function nextWord() {
+        if (deck.length === 0) {
+            meaningDisplay.textContent = "Parabéns!";
+            wordDisplay.textContent = "Acabou!"; 
+            checkBtn.disabled = true;
+            nextBtn.disabled = true;
+            answerBox.disabled = true;
+            answerBox.value = "";
+            resultDisplay.textContent = 'Pressiona "Reniciar" para começar de novo!';
+            resultDisplay.className = "";
+            return;
+        }
+        
+        const idx = Math.floor(Math.random() * deck.length);
+        currentWord = deck.splice(idx, 1)[0];
+
+        // Define o texto para o significado E para a palavra
+        meaningDisplay.textContent = currentWord.meaning; // Nova linha
+        wordDisplay.textContent = currentWord.word;
+
+        answerBox.value = "";
+        answerBox.focus();
+        resultDisplay.textContent = "Aguardando Resposta...";
+        resultDisplay.className = "neutral";
+        checkBtn.disabled = false;
+        nextBtn.disabled = true;
+        answerBox.disabled = false;
+        updateRemaining();
+    }
+
+    function checkAnswer() {
+        if (checkBtn.disabled || !currentWord) return;
+        
+        const userAnswer = answerBox.value.trim().toLowerCase();
+        
+        if (userAnswer === currentWord.reading) {
+            correctCount++;
+            resultDisplay.textContent = "✅ Correto!";
+            resultDisplay.className = "correct";
+        } else {
+            incorrectCount++;
+            resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading}`;
+            resultDisplay.className = "incorrect";
+        }
+        
+        correctDisplay.textContent = correctCount;
+        incorrectDisplay.textContent = incorrectCount;
+        checkBtn.disabled = true;
+        nextBtn.disabled = false;
+        nextBtn.focus(); // Move focus to the "Next" button
+    }
+
+    function updateRemaining() {
+        remainingCount.textContent = deck.length + (currentWord ? 1 : 0);
+    }
+
+    function resetGame() {
+        correctCount = 0;
+        incorrectCount = 0;
+        correctDisplay.textContent = 0;
+        incorrectDisplay.textContent = 0;
+        currentWord = null;
+        buildDeck();
+        nextWord();
+    }
+
+    // --- Event Listeners ---
+    checkBtn.addEventListener("click", checkAnswer);
+    nextBtn.addEventListener("click", nextWord);
+    resetBtn.addEventListener("click", resetGame);
+
+    answerBox.addEventListener("keydown", e => {
+        if (e.key === "Enter") {
+            e.preventDefault(); // Prevents form submission
+            if (!checkBtn.disabled) {
+                checkAnswer();
+            } else {
+                nextWord();
+            }
+        }
+    });
+
+    // --- Initial setup ---
+    resetGame();
+</script>
+</body>
+</html>
