@@ -56,6 +56,8 @@
     <div class="script-choice">
         <label><input type="radio" name="script" id="selectHiragana" value="hira" checked> Hiragana</label>
         <label><input type="radio" name="script" id="selectKatakana" value="kata"> Katakana</label>
+        <label><input type="radio" name="script" id="selectMixed" value="mixed"> Misto</label>
+        <label><input type="radio" name="script" id="selectRandom" value="random"> Aleatório</label>
     </div>
 
     <h2 id="meaningDisplay">...</h2>
@@ -253,6 +255,115 @@
         { word: "ギター", reading: "gi ta", meaning: "Guitarra" }
     ];
 
+const romajiToKana = {
+    // --- 1. Gojūon (The Basic 50 Sounds) ---
+    'a': { hira: 'あ', kata: 'ア' }, 'i': { hira: 'い', kata: 'イ' }, 'u': { hira: 'う', kata: 'ウ' }, 'e': { hira: 'え', kata: 'エ' }, 'o': { hira: 'お', kata: 'オ' },
+    'ka': { hira: 'か', kata: 'カ' }, 'ki': { hira: 'き', kata: 'キ' }, 'ku': { hira: 'く', kata: 'ク' }, 'ke': { hira: 'け', kata: 'ケ' }, 'ko': { hira: 'こ', kata: 'コ' },
+    'sa': { hira: 'さ', kata: 'サ' }, 'shi': { hira: 'し', kata: 'シ' }, 'su': { hira: 'す', kata: 'ス' }, 'se': { hira: 'せ', kata: 'セ' }, 'so': { hira: 'そ', kata: 'ソ' },
+    'ta': { hira: 'た', kata: 'タ' }, 'chi': { hira: 'ち', kata: 'チ' }, 'tsu': { hira: 'つ', kata: 'ツ' }, 'te': { hira: 'て', kata: 'テ' }, 'to': { hira: 'と', kata: 'ト' },
+    'na': { hira: 'な', kata: 'ナ' }, 'ni': { hira: 'に', kata: 'ニ' }, 'nu': { hira: 'ぬ', kata: 'ヌ' }, 'ne': { hira: 'ね', kata: 'ネ' }, 'no': { hira: 'の', kata: 'ノ' },
+    'ha': { hira: 'は', kata: 'ハ' }, 'hi': { hira: 'ひ', kata: 'ヒ' }, 'fu': { hira: 'ふ', kata: 'フ' }, 'he': { hira: 'へ', kata: 'ヘ' }, 'ho': { hira: 'ほ', kata: 'ホ' },
+    'ma': { hira: 'ま', kata: 'マ' }, 'mi': { hira: 'み', kata: 'ミ' }, 'mu': { hira: 'む', kata: 'ム' }, 'me': { hira: 'め', kata: 'メ' }, 'mo': { hira: 'も', kata: 'モ' },
+    'ya': { hira: 'や', kata: 'ヤ' }, 'yu': { hira: 'ゆ', kata: 'ユ' }, 'yo': { hira: 'よ', kata: 'ヨ' },
+    'ra': { hira: 'ら', kata: 'ラ' }, 'ri': { hira: 'り', kata: 'リ' }, 'ru': { hira: 'る', kata: 'ル' }, 're': { hira: 'れ', kata: 'レ' }, 'ro': { hira: 'ろ', kata: 'ロ' },
+    'wa': { hira: 'わ', kata: 'ワ' }, 'wo': { hira: 'を', kata: 'ヲ' }, 'n': { hira: 'ん', kata: 'ン' },
+
+    // --- 2. Dakuten (Voiced Sounds) ---
+    'ga': { hira: 'が', kata: 'ガ' }, 'gi': { hira: 'ぎ', kata: 'ギ' }, 'gu': { hira: 'ぐ', kata: 'グ' }, 'ge': { hira: 'げ', kata: 'ゲ' }, 'go': { hira: 'ご', kata: 'ゴ' },
+    'za': { hira: 'ざ', kata: 'ザ' }, 'ji': { hira: 'じ', kata: 'ジ' }, 'zu': { hira: 'ず', kata: 'ズ' }, 'ze': { hira: 'ぜ', kata: 'ゼ' }, 'zo': { hira: 'ぞ', kata: 'ゾ' },
+    'da': { hira: 'だ', kata: 'ダ' }, 'dji': { hira: 'ぢ', kata: 'ヂ' }, 'dzu': { hira: 'づ', kata: 'ヅ' }, 'de': { hira: 'で', kata: 'デ' }, 'do': { hira: 'ど', kata: 'ド' }, // dji/dzu for distinction
+    'ba': { hira: 'ば', kata: 'バ' }, 'bi': { hira: 'び', kata: 'ビ' }, 'bu': { hira: 'ぶ', kata: 'ブ' }, 'be': { hira: 'べ', kata: 'ベ' }, 'bo': { hira: 'ぼ', kata: 'ボ' },
+
+    // --- 3. Handakuten (Plosive Sounds) ---
+    'pa': { hira: 'ぱ', kata: 'パ' }, 'pi': { hira: 'ぴ', kata: 'ピ' }, 'pu': { hira: 'ぷ', kata: 'プ' }, 'pe': { hira: 'ぺ', kata: 'ペ' }, 'po': { hira: 'ぽ', kata: 'ポ' },
+
+    // --- 4. Yōon (Contracted Sounds) ---
+    'kya': { hira: 'きゃ', kata: 'キャ' }, 'kyu': { hira: 'きゅ', kata: 'キュ' }, 'kyo': { hira: 'きょ', kata: 'キョ' },
+    'gya': { hira: 'ぎゃ', kata: 'ギャ' }, 'gyu': { hira: 'ぎゅ', kata: 'ギュ' }, 'gyo': { hira: 'ぎょ', kata: 'ギョ' },
+    'sha': { hira: 'しゃ', kata: 'シャ' }, 'shu': { hira: 'しゅ', kata: 'シュ' }, 'sho': { hira: 'しょ', kata: 'ショ' },
+    'ja': { hira: 'じゃ', kata: 'ジャ' }, 'ju': { hira: 'じゅ', kata: 'ジュ' }, 'jo': { hira: 'じょ', kata: 'ジョ' },
+    'cha': { hira: 'ちゃ', kata: 'チャ' }, 'chu': { hira: 'ちゅ', kata: 'チュ' }, 'cho': { hira: 'ちょ', kata: 'チョ' },
+    'dja': { hira: 'ぢゃ', kata: 'ヂャ' }, 'dju': { hira: 'ぢゅ', kata: 'ヂュ' }, 'djo': { hira: 'ぢょ', kata: 'ヂョ' },
+    'nya': { hira: 'にゃ', kata: 'ニャ' }, 'nyu': { hira: 'にゅ', kata: 'ニュ' }, 'nyo': { hira: 'にょ', kata: 'ニョ' },
+    'hya': { hira: 'ひゃ', kata: 'ヒャ' }, 'hyu': { hira: 'ひゅ', kata: 'ヒュ' }, 'hyo': { hira: 'ひょ', kata: 'ヒョ' },
+    'bya': { hira: 'びゃ', kata: 'ビャ' }, 'byu': { hira: 'びゅ', kata: 'ビュ' }, 'byo': { hira: 'びょ', kata: 'ビョ' },
+    'pya': { hira: 'ぴゃ', kata: 'ピャ' }, 'pyu': { hira: 'ぴゅ', kata: 'ピュ' }, 'pyo': { hira: 'ぴょ', kata: 'ピョ' },
+    'mya': { hira: 'みゃ', kata: 'ミャ' }, 'myu': { hira: 'みゅ', kata: 'ミュ' }, 'myo': { hira: 'みょ', kata: 'ミョ' },
+    'rya': { hira: 'りゃ', kata: 'リャ' }, 'ryu': { hira: 'りゅ', kata: 'リュ' }, 'ryo': { hira: 'りょ', kata: 'リョ' },
+
+    // --- 5. Sokuon (Doubled Consonants) ---
+    'kka': { hira: 'っか', kata: 'ッカ' }, 'kki': { hira: 'っき', kata: 'ッキ' }, 'kku': { hira: 'っく', kata: 'ック' }, 'kke': { hira: 'っけ', kata: 'ッケ' }, 'kko': { hira: 'っこ', kata: 'ッコ' },
+    'ssa': { hira: 'ッサ', kata: 'ッサ' }, 'sshi': { hira: 'っし', kata: 'ッシ' }, 'ssu': { hira: 'っす', kata: 'ッス' }, 'sse': { hira: 'っせ', kata: 'ッセ' }, 'sso': { hira: 'っそ', kata: 'ッソ' },
+    'tta': { hira: 'った', kata: 'ッタ' }, 'tchi': { hira: 'っち', kata: 'ッチ' }, 'ttsu': { hira: 'っつ', kata: 'ッツ' }, 'tte': { hira: 'って', kata: 'ッテ' }, 'tto': { hira: 'っと', kata: 'ット' },
+    'ppa': { hira: 'っぱ', kata: 'ッパ' }, 'ppi': { hira: 'っぴ', kata: 'ッピ' }, 'ppu': { hira: 'っぷ', kata: 'ップ' }, 'ppe': { hira: 'っぺ', kata: 'ッペ' }, 'ppo': { hira: 'っぽ', kata: 'ッポ' },
+    // Also include yōon variants
+    'kkya': { hira: 'っきゃ', kata: 'っきゃ' }, 'kkyu': { hira: 'っきゅ', kata: 'っきゅ' }, 'kkyo': { hira: 'っきょ', kata: 'っきょ' },
+    'ssha': { hira: 'っしゃ', kata: 'っしゃ' }, 'sshu': { hira: 'っしゅ', kata: 'っしゅ' }, 'ssho': { hira: 'っしょ', kata: 'っしょ' },
+    'tcha': { hira: 'っちゃ', kata: 'っちゃ' }, 'tchu': { hira: 'っちゅ', kata: 'っちゅ' }, 'tcho': { hira: 'っちょ', kata: 'っちょ' },
+    'ppya': { hira: 'っぴゃ', kata: 'っぴゃ' }, 'ppyu': { hira: 'っぴゅ', kata: 'っぴゅ' }, 'ppyo': { hira: 'っぴょ', kata: 'っぴょ' },
+
+    // --- 6. Extended Katakana (For Foreign Sounds) ---
+    // These are primarily for katakana, hiragana equivalents are for completeness.
+    //     'wi': { hira: 'うぃ', kata: 'ウィ' }, 'we': { hira: 'うぇ', kata: 'ウェ' }, 'wo': { hira: 'うぉ', kata: 'ウォ' },
+    //     'va': { hira: 'ゔぁ', kata: 'ヴァ' }, 'vi': { hira: 'ゔぃ', kata: 'ヴィ' }, 'vu': { hira: 'ゔ', kata: 'ヴ' }, 've': { hira: 'ゔぇ', kata: 'ヴェ' }, 'vo': { hira: 'ゔぉ', kata: 'ヴォ' },
+    //     'vya': { hira: 'ゔゃ', kata: 'ヴャ' }, 'vyu': { hira: 'ゔゅ', kata: 'ヴュ' }, 'vyo': { hira: 'ゔょ', kata: 'ヴョ' },
+    //     'she': { hira: 'しぇ', kata: 'シェ' }, 'je': { hira: 'じぇ', kata: 'ジェ' },
+    //     'che': { hira: 'ちぇ', kata: 'チェ' },
+    //     'tsa': { hira: 'つぁ', kata: 'ツァ' }, 'tsi': { hira: 'つぃ', kata: 'ツィ' }, 'tse': { hira: 'つぇ', kata: 'ツェ' }, 'tso': { hira: 'つぉ', kata: 'ツォ' },
+    //     'ti': { hira: 'てぃ', kata: 'ティ' }, 'tu': { hira: 'てぅ', kata: 'テュ' },
+    //     'di': { hira: 'でぃ', kata: 'ディ' }, 'du': { hira: 'でぅ', kata: 'デュ' },
+    //     'fa': { hira: 'ふぁ', kata: 'ファ' }, 'fi': { hira: 'ふぃ', kata: 'フィ' }, 'fe': { hira: 'ふぇ', kata: 'フェ' }, 'fo': { hira: 'ふぉ', kata: 'フォ' },
+    //     'fya': { hira: 'ふゃ', kata: 'フャ' }, 'fyu': { hira: 'ふゅ', kata: 'フュ' }, 'fyo': { hira: 'ふょ', kata: 'フョ' },
+};
+
+    function generateMixedWord(reading) {
+        const syllables = reading.split(' ');
+        let mixedWord = '';
+        for (const syl of syllables) {
+            if (romajiToKana[syl]) {
+                // Randomly choose between hiragana and katakana
+                const chosenKana = Math.random() < 0.5 
+                    ? romajiToKana[syl].hira 
+                    : romajiToKana[syl].kata;
+                mixedWord += chosenKana;
+            } else {
+                // If syllable not in map, just append it (fallback)
+                mixedWord += syl;
+            }
+        }
+        return mixedWord;
+    }
+
+function generateRandomSyllableWord(maxLength) {
+    const syllables = Object.keys(romajiToKana);
+    // Generate a random word length, e.g., between 2 and 5 syllables
+    const wordLength = Math.floor(Math.random() * (maxLength - 1)) + 2; 
+    
+    let generatedKana = '';
+    let generatedReading = '';
+
+    for (let i = 0; i < wordLength; i++) {
+        // Pick a random syllable (e.g., 'ka', 'mi', 'ryu')
+        const randomSyllable = syllables[Math.floor(Math.random() * syllables.length)];
+        
+        // Get its kana characters from the map
+        const kanaPair = romajiToKana[randomSyllable];
+        
+        // Randomly choose to display it as hiragana or katakana
+        const chosenKana = Math.random() < 0.5 ? kanaPair.hira : kanaPair.kata;
+        
+        generatedKana += chosenKana;
+        generatedReading += randomSyllable + ' ';
+    }
+    
+    // Return an object that looks like our other word objects
+    return {
+        word: generatedKana,
+        reading: generatedReading.trim(), // Remove trailing space
+        meaning: "Palavra Aleatória"
+    };
+}
+
     // --- Global Variables ---
     let deck = [];
     let currentWord = null;
@@ -272,22 +383,51 @@
     const resultDisplay = document.getElementById("resultDisplay");
     const selectHiragana = document.getElementById('selectHiragana');
     const selectKatakana = document.getElementById('selectKatakana');
+    const selectMixed = document.getElementById('selectMixed');
+    const selectRandom = document.getElementById('selectRandom');
     const showAllBtn = document.getElementById("showAllBtn");
     const allWordsContainer = document.getElementById("allWordsContainer");
 
     // --- Core Functions ---
     function buildDeck() {
-        const isKatakana = selectKatakana.checked;
-        // Use the spread operator `...` to create a shallow copy of the array.
-        // This prevents the original word lists from being modified by `deck.splice()`.
-        deck = isKatakana ? [...katakanaWords] : [...hiraganaWords];
+        if (selectKatakana.checked) {
+            deck = [...katakanaWords];
+        } else if (selectMixed.checked) {
+            // Combine both arrays for mixed mode
+            deck = [...hiraganaWords, ...katakanaWords];
+        } else {
+            // Default to hiragana
+            deck = [...hiraganaWords];
+        }
         updateRemaining();
     }
 
     function nextWord() {
-        if (deck.length === 0) {
-            meaningDisplay.textContent = "Parabéns!";
-            wordDisplay.textContent = "Acabou!"; 
+    // NEW: Handle Random Generator mode first
+    if (selectRandom.checked) {
+        // Generate a random word with a max length of 5 syllables
+        currentWord = generateRandomSyllableWord(5);
+        
+        meaningDisplay.textContent = currentWord.meaning;
+        wordDisplay.textContent = currentWord.word;
+
+        // Reset UI elements
+        answerBox.value = "";
+        answerBox.focus();
+        resultDisplay.textContent = "Aguardando Resposta...";
+        resultDisplay.className = "neutral";
+        checkBtn.disabled = false;
+        nextBtn.disabled = true;
+        answerBox.disabled = false;
+        // In this mode, "remaining" is infinite, so we can hide it or show a symbol
+        remainingCount.textContent = "∞"; 
+        return; // Exit the function here for this mode
+    }
+
+    // This part below only runs for Hiragana, Katakana, and Mixed modes
+    if (deck.length === 0) {
+        meaningDisplay.textContent = "Parabéns!";
+        wordDisplay.textContent = "Acabou!";
             checkBtn.disabled = true;
             nextBtn.disabled = true;
             answerBox.disabled = true;
@@ -301,7 +441,12 @@
         currentWord = deck.splice(idx, 1)[0];
 
         meaningDisplay.textContent = "...";
-        wordDisplay.textContent = currentWord.word;
+
+        if (selectMixed.checked) {
+            wordDisplay.textContent = generateMixedWord(currentWord.reading);
+        } else {
+            wordDisplay.textContent = currentWord.word;
+        }
 
         answerBox.value = "";
         answerBox.focus();
@@ -314,21 +459,22 @@
     }
 
     function checkAnswer() {
-        if (checkBtn.disabled || !currentWord) return;
+    if (checkBtn.disabled || !currentWord) return;
     
-        const userAnswer = answerBox.value.trim().toLowerCase();
-    
-        // MODIFICAÇÃO: Usar .includes() para verificar se a resposta está no array de leituras possíveis
-        if (currentWord.reading.includes(userAnswer)) {
-            correctCount++;
-            resultDisplay.textContent = "✅ Correto!";
-            resultDisplay.className = "correct";
-        } else {
-            incorrectCount++;
-            // MODIFICAÇÃO: Mostrar a primeira leitura (a principal) como resposta correta
-            resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading[0]}`;
-            resultDisplay.className = "incorrect";
-        }
+    // Get the user's answer, trim whitespace, and convert to lower case
+    const userAnswer = answerBox.value.trim().toLowerCase();
+
+    // Compare with the correct reading
+    if (userAnswer === currentWord.reading) {
+        correctCount++;
+        resultDisplay.textContent = "✅ Correto!";
+        resultDisplay.className = "correct";
+    } else {
+        incorrectCount++;
+        // Show the correct answer
+        resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading}`;
+        resultDisplay.className = "incorrect";
+    }
 
         meaningDisplay.textContent = currentWord.meaning;    
         correctDisplay.textContent = correctCount;
@@ -400,15 +546,20 @@
         }
     });
 
-selectHiragana.addEventListener('change', () => {
-    allWordsContainer.style.display = 'none'; 
-});
-selectKatakana.addEventListener('change', () => {
-    allWordsContainer.style.display = 'none';
-});
+    function handleModeChange() {
+        allWordsContainer.style.display = 'none';
+        // Disable "Show All" button if in random mode, otherwise enable it
+        showAllBtn.disabled = selectRandom.checked || selectMixed.checked;
+    }
+    
+    selectHiragana.addEventListener('change', handleModeChange);
+    selectKatakana.addEventListener('change', handleModeChange);
+    selectMixed.addEventListener('change', handleModeChange);
+    selectRandom.addEventListener('change', handleModeChange);
 
     // --- Initial setup ---
     resetGame();
+
 </script>
 </body>
 </html>
