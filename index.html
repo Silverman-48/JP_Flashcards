@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japanese Word Study</title>
+    <title>Flashcards Vocab JP</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 30px; background-color: #f4f4f9; }
         #wordDisplay { font-size: 70px; margin: 20px; color: #333; font-family: "MS Gothic", sans-serif; }
@@ -15,24 +15,50 @@
         #resetBtn:hover { background: #f25c5c; border: none; color: white; }
         button:disabled:hover { background: #ccc; }
 
-        .stats { margin-top: 15px; font-size: 18px; color: #555; }
+        .stats { margin-top: 15px; margin-bottom: 15px; font-size: 18px; color: #555; }
         .script-choice { margin-bottom: 20px; font-size: 1.2em; }
         .script-choice label { margin: 0 15px; cursor: pointer;}
         #resultDisplay { margin-top: 15px; font-size: 20px; font-weight: bold; height: 25px; }
         .neutral { color: black; }
         .correct { color: green; }
         .incorrect { color: red; }
+
+.word-list-container {
+    max-height: 400px; /* Altura máxima antes de aparecer o scroll */
+    max-width: 300px;
+    overflow-y: auto;  /* Adiciona scroll vertical quando necessário */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    margin: auto;
+    margin-top: 25px;
+    text-align: left;
+    background-color: #fff;
+    /* Começa escondido por defeito */
+    display: none; 
+}
+
+.word-list-container h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.word-list-container p {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin: 0 0 5px 0;
+}
     </style>
 </head>
 <body>
-    <h1>Estudo de Vocabulário Japonês</h1>
+    <h1>Flashcards de Vocabulário Japonês</h1>
     
     <div class="script-choice">
         <label><input type="radio" name="script" id="selectHiragana" value="hira" checked> Hiragana</label>
         <label><input type="radio" name="script" id="selectKatakana" value="kata"> Katakana</label>
     </div>
 
-    <h2 id="meaningDisplay">Significado</h2>
+    <h2 id="meaningDisplay">...</h2>
     
     <div id="wordDisplay">?</div>
     
@@ -48,6 +74,10 @@
         Restantes: <span id="remainingCount">0</span><br>
         Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span>
     </div>
+
+<button id="showAllBtn">Ver Todas as Palavras</button>
+
+<div id="allWordsContainer" class="word-list-container"></div>
 
 <script>
     // Step 1: Define the word lists
@@ -242,6 +272,8 @@
     const resultDisplay = document.getElementById("resultDisplay");
     const selectHiragana = document.getElementById('selectHiragana');
     const selectKatakana = document.getElementById('selectKatakana');
+    const showAllBtn = document.getElementById("showAllBtn");
+    const allWordsContainer = document.getElementById("allWordsContainer");
 
     // --- Core Functions ---
     function buildDeck() {
@@ -268,8 +300,7 @@
         const idx = Math.floor(Math.random() * deck.length);
         currentWord = deck.splice(idx, 1)[0];
 
-        // Define o texto para o significado E para a palavra
-        meaningDisplay.textContent = currentWord.meaning; // Nova linha
+        meaningDisplay.textContent = "...";
         wordDisplay.textContent = currentWord.word;
 
         answerBox.value = "";
@@ -284,24 +315,27 @@
 
     function checkAnswer() {
         if (checkBtn.disabled || !currentWord) return;
-        
+    
         const userAnswer = answerBox.value.trim().toLowerCase();
-        
-        if (userAnswer === currentWord.reading) {
+    
+        // MODIFICAÇÃO: Usar .includes() para verificar se a resposta está no array de leituras possíveis
+        if (currentWord.reading.includes(userAnswer)) {
             correctCount++;
             resultDisplay.textContent = "✅ Correto!";
             resultDisplay.className = "correct";
         } else {
             incorrectCount++;
-            resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading}`;
+            // MODIFICAÇÃO: Mostrar a primeira leitura (a principal) como resposta correta
+            resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading[0]}`;
             resultDisplay.className = "incorrect";
         }
-        
+
+        meaningDisplay.textContent = currentWord.meaning;    
         correctDisplay.textContent = correctCount;
         incorrectDisplay.textContent = incorrectCount;
         checkBtn.disabled = true;
         nextBtn.disabled = false;
-        nextBtn.focus(); // Move focus to the "Next" button
+        nextBtn.focus();
     }
 
     function updateRemaining() {
@@ -318,10 +352,42 @@
         nextWord();
     }
 
+    function toggleAllWords() {
+        // Se o contentor já estiver visível, esconda-o e pare a função
+        if (allWordsContainer.style.display === "block") {
+            allWordsContainer.style.display = "none";
+            return;
+        }
+
+        // Limpa a lista anterior
+        allWordsContainer.innerHTML = '';
+
+        const isKatakana = selectKatakana.checked;
+        const sourceList = isKatakana ? katakanaWords : hiraganaWords;
+        const listTitle = isKatakana ? "Lista de Palavras Katakana" : "Lista de Palavras Hiragana";
+    
+        // Cria e adiciona um título à lista
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = listTitle;
+        allWordsContainer.appendChild(titleElement);
+    
+        // Percorre a lista de palavras e cria um parágrafo para cada uma
+        sourceList.forEach(word => {
+        const p = document.createElement('p');
+            // Usamos word.reading[0] para mostrar a leitura principal
+            p.innerHTML = `<strong>${word.word}</strong> (${word.reading[0]}) - ${word.meaning}`;
+            allWordsContainer.appendChild(p);
+        });
+
+        // Mostra o contentor
+        allWordsContainer.style.display = "block";
+    }
+
     // --- Event Listeners ---
     checkBtn.addEventListener("click", checkAnswer);
     nextBtn.addEventListener("click", nextWord);
     resetBtn.addEventListener("click", resetGame);
+    showAllBtn.addEventListener("click", toggleAllWords);
 
     answerBox.addEventListener("keydown", e => {
         if (e.key === "Enter") {
@@ -333,6 +399,15 @@
             }
         }
     });
+
+selectHiragana.addEventListener('change', () => {
+    resetGame();
+    allWordsContainer.style.display = 'none'; 
+});
+selectKatakana.addEventListener('change', () => {
+    resetGame();
+    allWordsContainer.style.display = 'none';
+});
 
     // --- Initial setup ---
     resetGame();
