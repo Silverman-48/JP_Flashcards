@@ -3,69 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcards Vocab JP</title>
+    <title>JP Flashcards</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 30px; background-color: #f4f4f9; }
-        #wordDisplay { font-size: 70px; margin: 20px; color: #333; font-family: "MS Gothic", sans-serif; }
+        
+        /* --- Shared Elements --- */
+        #promptDisplay { font-size: 80px; margin: 20px; color: #333; font-family: "MS Gothic", sans-serif; min-height: 90px; }
+        #meaningDisplay { font-size: 22px; margin-bottom: 20px; color: #555; font-weight: bold; min-height: 25px; }
         input[type="text"] { font-size: 20px; padding: 10px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
         button { font-size: 16px; margin: 5px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; background-color: #5c67f2; color: white; transition: background-color 0.2s; }
         #resetBtn { background: #f25c5c; }
         button:disabled { background: #ccc; cursor: not-allowed; }
         button:hover { background: #5c67f2; border: none; color: white; }
         #resetBtn:hover { background: #f25c5c; border: none; color: white; }
-        button:disabled:hover { background: #ccc; }
-
+        
         .stats { margin-top: 15px; margin-bottom: 15px; font-size: 18px; color: #555; }
-        .script-choice { margin-bottom: 20px; font-size: 1.2em; }
-        .script-choice label { margin: 0 15px; cursor: pointer;}
         #resultDisplay { margin-top: 15px; font-size: 20px; font-weight: bold; height: 25px; }
         .neutral { color: black; }
         .correct { color: green; }
         .incorrect { color: red; }
 
-.word-list-container {
-    max-height: 400px; /* Altura máxima antes de aparecer o scroll */
-    max-width: 300px;
-    overflow-y: auto;  /* Adiciona scroll vertical quando necessário */
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 15px;
-    margin: auto;
-    margin-top: 25px;
-    text-align: left;
-    background-color: #fff;
-    /* Começa escondido por defeito */
-    display: none; 
-}
 
-.word-list-container h3 {
-    margin-top: 0;
-    text-align: center;
-}
 
-.word-list-container p {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-    margin: 0 0 5px 0;
-}
+        /* --- Mode Selection --- */
+        .mode-choice-main { margin-bottom: 20px; font-size: 1.2em; padding-bottom: 15px; border-bottom: 2px solid #ddd; }
+        .mode-choice { margin-bottom: 0px; font-size: 1.2em; padding-bottom: 15px; }
+        .mode-choice label { margin: 0 15px; cursor: pointer; }
+        .sub-options { margin-top: 20px; }
+
+        /* --- Vocabulary Mode Specific --- */
+        .word-list-container {
+            max-height: 400px;
+            max-width: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 25px auto;
+            text-align: left;
+            background-color: #fff;
+            display: none; 
+        }
+        .word-list-container h3 { margin-top: 0; text-align: center; }
+        .word-list-container p { border-bottom: 1px solid #eee; padding-bottom: 5px; margin: 0 0 5px 0; }
+        
+        /* --- Kana Mode Specific --- */
+        .groups-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .groups { text-align: left; padding: 15px; border: 1px solid #ddd; border-radius: 8px; background-color: #fff; }
+        .groups h3, .groups h4 { margin-top: 0; margin-bottom: 10px; }
+        .groups label { display: block; margin: 3px 0; cursor: pointer;}
     </style>
 </head>
 <body>
-    <h1>Flashcards de Vocabulário Japonês</h1>
+    <h1>Flashcards de Japonês</h1>
     
-    <div class="script-choice">
-        <label><input type="radio" name="script" id="selectHiragana" value="hira" checked> Hiragana</label>
-        <label><input type="radio" name="script" id="selectKatakana" value="kata"> Katakana</label>
-        <label><input type="radio" name="script" id="selectMixed" value="mixed"> Misto</label>
-        <label><input type="radio" name="script" id="selectRandom" value="random"> Aleatório</label>
+    <div class="mode-choice-main">
+        <h3>Escolha o Modo de Prática:</h3>
+        <label><input type="radio" name="appMode" value="kana" checked> Kana</label>
+        <label><input type="radio" name="appMode" value="vocab"> Vocabulário</label>
     </div>
 
-    <h2 id="meaningDisplay">...</h2>
-    
-    <div id="wordDisplay">?</div>
-    
-    <input type="text" id="answerBox" placeholder="Leitura">
-    
+    <div id="meaningDisplay">...</div>
+    <div id="promptDisplay">?</div>
+    <input type="text" id="answerBox" placeholder="Digite a leitura...">
     <div id="resultDisplay">Aguardando Resposta...</div><br>
     
     <button id="checkBtn">Verificar</button>
@@ -77,301 +83,83 @@
         Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span>
     </div>
 
-<button id="showAllBtn">Ver Todas as Palavras</button>
-
-<div id="allWordsContainer" class="word-list-container"></div>
+    <div id="vocab-controls" class="sub-options">
+        <div class="mode-choice">
+            <label><input type="radio" name="vocabScript" value="hira" checked> Hiragana</label>
+            <label><input type="radio" name="vocabScript" value="kata"> Katakana</label>
+            <label><input type="radio" name="vocabScript" value="mixed"> Misto</label>
+            <label><input type="radio" name="vocabScript" value="random"> Aleatório</label>
+        </div>
+        <button id="showAllBtn">Ver Lista de Palavras</button>
+        <div id="allWordsContainer" class="word-list-container"></div>
+    </div>
+    
+    <div id="kana-controls" class="sub-options" style="display: none;">
+        <button id="optionsBtn">Ver/Esconder Linhas de Kana</button>
+        <div class="groups-container" id="options" style="display: none">
+            <div class="groups">
+                <h3>Linhas Hiragana</h3>
+                <h4><label><input type="checkbox" id="checkAllHira" checked> Ativar/Desativar Todas</label></h4>
+                <hr>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpA" checked> Linha A</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpKA" checked> Linha KA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpGA" checked> Linha GA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpSA" checked> Linha SA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpZA" checked> Linha ZA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpTA" checked> Linha TA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpDA" checked> Linha DA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpNA" checked> Linha NA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpHA" checked> Linha HA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpBA" checked> Linha BA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpPA" checked> Linha PA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpMA" checked> Linha MA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpYA" checked> Linha YA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpRA" checked> Linha RA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpWA" checked> Linha WA/N</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpYOON" checked> Sons Complexos</label>
+            </div>
+            <div class="groups">
+                <h3>Linhas Katakana</h3>
+                <h4><label><input type="checkbox" id="checkAllKata" checked> Ativar/Desativar Todas</label></h4>
+                <hr>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpA_kata" checked> Linha A</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpKA_kata" checked> Linha KA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpGA_kata" checked> Linha GA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpSA_kata" checked> Linha SA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpZA_kata" checked> Linha ZA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpTA_kata" checked> Linha TA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpDA_kata" checked> Linha DA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpNA_kata" checked> Linha NA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpHA_kata" checked> Linha HA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpBA_kata" checked> Linha BA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpPA_kata" checked> Linha PA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpMA_kata" checked> Linha MA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpYA_kata" checked> Linha YA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpRA_kata" checked> Linha RA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpWA_kata" checked> Linha WA/N</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpYOON_kata" checked> Sons Complexos</label>
+            </div>
+        </div>
+    </div>
 
 <script>
-    // Step 1: Define the word lists
-    const hiraganaWords = [
-        // Saudações e Frases
-        { word: "おはよう", reading: "o ha yo u", meaning: "Bom dia (manhã)" },
-        { word: "こんにちは", reading: "ko n ni chi wa", meaning: "Olá / Boa tarde" },
-        { word: "こんばんは", reading: "ko n ba n wa", meaning: "Boa noite" },
-        { word: "ありがとう", reading: "a ri ga to u", meaning: "Obrigado(a)" },
-        { word: "ごめんなさい", reading: "go me n na sa i", meaning: "Desculpe" },
-        { word: "さようなら", reading: "sa yo u na ra", meaning: "Adeus" },
-        { word: "おねがいします", reading: "o ne ga i shi ma su", meaning: "Por favor" },
-    
-        // Pessoas e Família
-        { word: "わたし", reading: "wa ta shi", meaning: "Eu" },
-        { word: "あなた", reading: "a na ta", meaning: "Tu / Você" },
-        { word: "ひと", reading: "hi to", meaning: "Pessoa" },
-        { word: "ともだち", reading: "to mo da chi", meaning: "Amigo(a)" },
-        { word: "がくせい", reading: "ga ku se i", meaning: "Estudante" },
-        { word: "せんせい", reading: "se n se i", meaning: "Professor(a)" },
-        { word: "かぞく", reading: "ka zo ku", meaning: "Família" },
-    
-        // Lugares
-        { word: "がっこう", reading: "ga kko u", meaning: "Escola" },
-        { word: "うち", reading: "u chi", meaning: "Casa" },
-        { word: "えき", reading: "e ki", meaning: "Estação (de comboio)" },
-        { word: "みせ", reading: "mi se", meaning: "Loja" },
-        { word: "にほん", reading: "ni ho n", meaning: "Japão" },
-    
-        // Comida e Bebida
-        { word: "ごはん", reading: "go ha n", meaning: "Arroz / Refeição" },
-        { word: "さかな", reading: "sa ka na", meaning: "Peixe" },
-        { word: "にく", reading: "ni ku", meaning: "Carne" },
-        { word: "やさい", reading: "ya sa i", meaning: "Vegetais" },
-        { word: "みず", reading: "mi zu", meaning: "Água" },
-        { word: "おちゃ", reading: "o cha", meaning: "Chá" },
-    
-        // Animais
-        { word: "いぬ", reading: "i nu", meaning: "Cão" },
-        { word: "ねこ", reading: "ne ko", meaning: "Gato" },
-        { word: "とり", reading: "to ri", meaning: "Pássaro" },
-    
-        // Objetos
-        { word: "ほん", reading: "ho n", meaning: "Livro" },
-        { word: "えんぴつ", reading: "e n pi tsu", meaning: "Lápis" },
-        { word: "かさ", reading: "ka sa", meaning: "Guarda-chuva" },
-        { word: "くつ", reading: "ku tsu", meaning: "Sapatos" },
-        { word: "でんわ", reading: "de n wa", meaning: "Telefone" },
-        { word: "くるま", reading: "ku ru ma", meaning: "Carro" },
-    
-        // Tempo e Natureza
-        { word: "てんき", reading: "te n ki", meaning: "Tempo (clima)" },
-        { word: "あめ", reading: "a me", meaning: "Chuva" },
-        { word: "ゆき", reading: "yu ki", meaning: "Neve" },
-        { word: "そら", reading: "so ra", meaning: "Céu" },
-        { word: "やま", reading: "ya ma", meaning: "Montanha" },
-        { word: "かわ", reading: "ka wa", meaning: "Rio" },
-    
-        // Datas e Tempo
-        { word: "きょう", reading: "kyo u", meaning: "Hoje" },
-        { word: "あした", reading: "a shi ta", meaning: "Amanhã" },
-        { word: "きのう", reading: "ki no u", meaning: "Ontem" },
-        { word: "いま", reading: "i ma", meaning: "Agora" },
-        { word: "じかん", reading: "ji ka n", meaning: "Tempo / Hora" },
-    
-        // Verbos (forma de dicionário)
-        { word: "たべる", reading: "ta be ru", meaning: "Comer" },
-        { word: "のむ", reading: "no mu", meaning: "Beber" },
-        { word: "みる", reading: "mi ru", meaning: "Ver" },
-        { word: "きく", reading: "ki ku", meaning: "Ouvir / Perguntar" },
-        { word: "よむ", reading: "yo mu", meaning: "Ler" },
-        { word: "かく", reading: "ka ku", meaning: "Escrever" },
-        { word: "いく", reading: "i ku", meaning: "Ir" },
-        { word: "かう", reading: "ka u", meaning: "Comprar" },
-        { word: "はなす", reading: "ha na su", meaning: "Falar" },
-        { word: "する", reading: "su ru", meaning: "Fazer" },
-    
-        // Adjetivos
-        { word: "おおきい", reading: "o o ki i", meaning: "Grande" },
-        { word: "ちいさい", reading: "chi i sa i", meaning: "Pequeno" },
-        { word: "あたらしい", reading: "a ta ra shi i", meaning: "Novo" },
-        { word: "ふるい", reading: "fu ru i", meaning: "Velho (coisas)" },
-        { word: "いい", reading: "i i", meaning: "Bom" },
-        { word: "わるい", reading: "wa ru i", meaning: "Mau" },
-        { word: "たかい", reading: "ta ka i", meaning: "Alto / Caro" },
-        { word: "やすい", reading: "ya su i", meaning: "Barato" },
-        { word: "おいしい", reading: "o i shi i", meaning: "Delicioso" },
-    
-        // Cores
-        { word: "あか", reading: "a ka", meaning: "Vermelho" },
-        { word: "あお", reading: "a o", meaning: "Azul" },
-        { word: "しろ", reading: "shi ro", meaning: "Branco" },
-        { word: "くろ", reading: "ku ro", meaning: "Preto" },
-    
-        // Números
-        { word: "いち", reading: "i chi", meaning: "Um" },
-        { word: "に", reading: "ni", meaning: "Dois" },
-        { word: "さん", reading: "sa n", meaning: "Três" },
-        { word: "よん", reading: "yo n", meaning: "Quatro" },
-        { word: "ご", reading: "go", meaning: "Cinco" },
-        { word: "ろく", reading: "ro ku", meaning: "Seis" },
-        { word: "なな", reading: "na na", meaning: "Sete" },
-        { word: "はち", reading: "ha chi", meaning: "Oito" },
-        { word: "きゅう", reading: "kyu u", meaning: "Nove" },
-        { word: "じゅう", reading: "ju u", meaning: "Dez" }
-    ];
+    // ===== DATA FROM BOTH SCRIPTS =====
+    const hiraganaWords=[{word:"おはよう",reading:"o ha yo u",meaning:"Bom dia (manhã)"},{word:"こんにちは",reading:"ko n ni chi wa",meaning:"Olá / Boa tarde"},{word:"こんばんは",reading:"ko n ba n wa",meaning:"Boa noite"},{word:"ありがとう",reading:"a ri ga to u",meaning:"Obrigado(a)"},{word:"ごめんなさい",reading:"go me n na sa i",meaning:"Desculpe"},{word:"さようなら",reading:"sa yo u na ra",meaning:"Adeus"},{word:"おねがいします",reading:"o ne ga i shi ma su",meaning:"Por favor"},{word:"わたし",reading:"wa ta shi",meaning:"Eu"},{word:"あなた",reading:"a na ta",meaning:"Tu / Você"},{word:"ひと",reading:"hi to",meaning:"Pessoa"},{word:"ともだち",reading:"to mo da chi",meaning:"Amigo(a)"},{word:"がくせい",reading:"ga ku se i",meaning:"Estudante"},{word:"せんせい",reading:"se n se i",meaning:"Professor(a)"},{word:"かぞく",reading:"ka zo ku",meaning:"Família"},{word:"がっこう",reading:"ga kko u",meaning:"Escola"},{word:"うち",reading:"u chi",meaning:"Casa"},{word:"えき",reading:"e ki",meaning:"Estação (de comboio)"},{word:"みせ",reading:"mi se",meaning:"Loja"},{word:"にほん",reading:"ni ho n",meaning:"Japão"},{word:"ごはん",reading:"go ha n",meaning:"Arroz / Refeição"},{word:"さかな",reading:"sa ka na",meaning:"Peixe"},{word:"にく",reading:"ni ku",meaning:"Carne"},{word:"やさい",reading:"ya sa i",meaning:"Vegetais"},{word:"みず",reading:"mi zu",meaning:"Água"},{word:"おちゃ",reading:"o cha",meaning:"Chá"},{word:"いぬ",reading:"i nu",meaning:"Cão"},{word:"ねこ",reading:"ne ko",meaning:"Gato"},{word:"とり",reading:"to ri",meaning:"Pássaro"},{word:"ほん",reading:"ho n",meaning:"Livro"},{word:"えんぴつ",reading:"e n pi tsu",meaning:"Lápis"},{word:"かさ",reading:"ka sa",meaning:"Guarda-chuva"},{word:"くつ",reading:"ku tsu",meaning:"Sapatos"},{word:"でんわ",reading:"de n wa",meaning:"Telefone"},{word:"くるま",reading:"ku ru ma",meaning:"Carro"},{word:"てんき",reading:"te n ki",meaning:"Tempo (clima)"},{word:"あめ",reading:"a me",meaning:"Chuva"},{word:"ゆき",reading:"yu ki",meaning:"Neve"},{word:"そら",reading:"so ra",meaning:"Céu"},{word:"やま",reading:"ya ma",meaning:"Montanha"},{word:"かわ",reading:"ka wa",meaning:"Rio"},{word:"きょう",reading:"kyo u",meaning:"Hoje"},{word:"あした",reading:"a shi ta",meaning:"Amanhã"},{word:"きのう",reading:"ki no u",meaning:"Ontem"},{word:"いま",reading:"i ma",meaning:"Agora"},{word:"じかん",reading:"ji ka n",meaning:"Tempo / Hora"},{word:"たべる",reading:"ta be ru",meaning:"Comer"},{word:"のむ",reading:"no mu",meaning:"Beber"},{word:"みる",reading:"mi ru",meaning:"Ver"},{word:"きく",reading:"ki ku",meaning:"Ouvir / Perguntar"},{word:"よむ",reading:"yo mu",meaning:"Ler"},{word:"かく",reading:"ka ku",meaning:"Escrever"},{word:"いく",reading:"i ku",meaning:"Ir"},{word:"かう",reading:"ka u",meaning:"Comprar"},{word:"はなす",reading:"ha na su",meaning:"Falar"},{word:"する",reading:"su ru",meaning:"Fazer"},{word:"おおきい",reading:"o o ki i",meaning:"Grande"},{word:"ちいさい",reading:"chi i sa i",meaning:"Pequeno"},{word:"あたらしい",reading:"a ta ra shi i",meaning:"Novo"},{word:"ふるい",reading:"fu ru i",meaning:"Velho (coisas)"},{word:"いい",reading:"i i",meaning:"Bom"},{word:"わるい",reading:"wa ru i",meaning:"Mau"},{word:"たかい",reading:"ta ka i",meaning:"Alto / Caro"},{word:"やすい",reading:"ya su i",meaning:"Barato"},{word:"おいしい",reading:"o i shi i",meaning:"Delicioso"},{word:"あか",reading:"a ka",meaning:"Vermelho"},{word:"あお",reading:"a o",meaning:"Azul"},{word:"しろ",reading:"shi ro",meaning:"Branco"},{word:"くろ",reading:"ku ro",meaning:"Preto"},{word:"いち",reading:"i chi",meaning:"Um"},{word:"に",reading:"ni",meaning:"Dois"},{word:"さん",reading:"sa n",meaning:"Três"},{word:"よん",reading:"yo n",meaning:"Quatro"},{word:"ご",reading:"go",meaning:"Cinco"},{word:"ろく",reading:"ro ku",meaning:"Seis"},{word:"なな",reading:"na na",meaning:"Sete"},{word:"はち",reading:"ha chi",meaning:"Oito"},{word:"きゅう",reading:"kyu u",meaning:"Nove"},{word:"じゅう",reading:"ju u",meaning:"Dez"}]
+    const katakanaWords=[{word:"パン",reading:"pa n",meaning:"Pão"},{word:"コーヒー",reading:"ko hi",meaning:"Café"},{word:"ジュース",reading:"ju su",meaning:"Sumo"},{word:"ビール",reading:"bi ru",meaning:"Cerveja"},{word:"ワイン",reading:"wa i n",meaning:"Vinho"},{word:"チーズ",reading:"chi zu",meaning:"Queijo"},{word:"ケーキ",reading:"ke ki",meaning:"Bolo"},{word:"アイスクリーム",reading:"a i su ku ri mu",meaning:"Gelado"},{word:"レストラン",reading:"re su to ra n",meaning:"Restaurante"},{word:"メニュー",reading:"me nyu",meaning:"Menu"},{word:"テレビ",reading:"te re bi",meaning:"Televisão"},{word:"ラジオ",reading:"ra ji o",meaning:"Rádio"},{word:"パソコン",reading:"pa so ko n",meaning:"Computador Pessoal"},{word:"カメラ",reading:"ka me ra",meaning:"Câmara"},{word:"スマホ",reading:"su ma ho",meaning:"Smartphone"},{word:"インターネット",reading:"i n ta ne tto",meaning:"Internet"},{word:"Eメール",reading:"i me ru",meaning:"E-mail"},{word:"アメリカ",reading:"a me ri ka",meaning:"América / EUA"},{word:"ブラジル",reading:"bu ra ji ru",meaning:"Brasil"},{word:"ポルトガル",reading:"po ru to ga ru",meaning:"Portugal"},{word:"ホテル",reading:"ho te ru",meaning:"Hotel"},{word:"スーパー",reading:"su pa",meaning:"Supermercado"},{word:"デパート",reading:"de pa to",meaning:"Centro Comercial"},{word:"トイレ",reading:"to i re",meaning:"Casa de Banho"},{word:"バス",reading:"ba su",meaning:"Autocarro"},{word:"タクシー",reading:"ta ku shi",meaning:"Táxi"},{word:"バイク",reading:"ba i ku",meaning:"Mota"},{word:"シャツ",reading:"sha tsu",meaning:"Camisa"},{word:"Tシャツ",reading:"ti sha tsu",meaning:"T-shirt"},{word:"ズボン",reading:"zu bo n",meaning:"Calças"},{word:"スカート",reading:"su ka to",meaning:"Saia"},{word:"スポーツ",reading:"su po tsu",meaning:"Desporto"},{word:"サッカー",reading:"sa kka",meaning:"Futebol"},{word:"テニス",reading:"te ni su",meaning:"Ténis"},{word:"ゴルフ",reading:"go ru fu",meaning:"Golfe"},{word:"ドア",reading:"do a",meaning:"Porta"},{word:"テーブル",reading:"te bu ru",meaning:"Mesa"},{word:"ベッド",reading:"be ddo",meaning:"Cama"},{word:"ペン",reading:"pe n",meaning:"Caneta"},{word:"ノート",reading:"no to",meaning:"Caderno"},{word:"テスト",reading:"te su to",meaning:"Teste"},{word:"パーティー",reading:"pa ti",meaning:"Festa"},{word:"クラス",reading:"ku ra su",meaning:"Aula / Turma"},{word:"ガラス",reading:"ga ra su",meaning:"Vidro"},{word:"ゼロ",reading:"ze ro",meaning:"Zero"},{word:"アレルギー",reading:"a re ru gi",meaning:"Alergia"},{word:"エネルギー",reading:"e ne ru gi",meaning:"Energia"},{word:"ビタミン",reading:"bi ta mi n",meaning:"Vitamina"},{word:"ピアノ",reading:"pi a no",meaning:"Piano"},{word:"ギター",reading:"gi ta",meaning:"Guitarra"}];
+    const hiraganaGroups={A:[{char:"あ",reading:"a"},{char:"い",reading:"i"},{char:"う",reading:"u"},{char:"え",reading:"e"},{char:"お",reading:"o"}],KA:[{char:"か",reading:"ka"},{char:"き",reading:"ki"},{char:"く",reading:"ku"},{char:"け",reading:"ke"},{char:"こ",reading:"ko"}],GA:[{char:"が",reading:"ga"},{char:"ぎ",reading:"gi"},{char:"ぐ",reading:"gu"},{char:"げ",reading:"ge"},{char:"ご",reading:"go"}],SA:[{char:"さ",reading:"sa"},{char:"し",reading:"shi"},{char:"す",reading:"su"},{char:"せ",reading:"se"},{char:"そ",reading:"so"}],ZA:[{char:"ざ",reading:"za"},{char:"じ",reading:"ji"},{char:"ず",reading:"zu"},{char:"ぜ",reading:"ze"},{char:"ぞ",reading:"zo"}],TA:[{char:"た",reading:"ta"},{char:"ち",reading:"chi"},{char:"つ",reading:"tsu"},{char:"て",reading:"te"},{char:"と",reading:"to"}],DA:[{char:"だ",reading:"da"},{char:"ぢ",reading:"ji"},{char:"づ",reading:"zu"},{char:"で",reading:"de"},{char:"ど",reading:"do"}],NA:[{char:"な",reading:"na"},{char:"に",reading:"ni"},{char:"ぬ",reading:"nu"},{char:"ね",reading:"ne"},{char:"の",reading:"no"}],HA:[{char:"は",reading:"ha"},{char:"ひ",reading:"hi"},{char:"ふ",reading:"fu"},{char:"へ",reading:"he"},{char:"ほ",reading:"ho"}],BA:[{char:"ば",reading:"ba"},{char:"び",reading:"bi"},{char:"ぶ",reading:"bu"},{char:"べ",reading:"be"},{char:"ぼ",reading:"bo"}],PA:[{char:"ぱ",reading:"pa"},{char:"ぴ",reading:"pi"},{char:"ぷ",reading:"pu"},{char:"ぺ",reading:"pe"},{char:"ぽ",reading:"po"}],MA:[{char:"ま",reading:"ma"},{char:"み",reading:"mi"},{char:"む",reading:"mu"},{char:"め",reading:"me"},{char:"も",reading:"mo"}],YA:[{char:"や",reading:"ya"},{char:"ゆ",reading:"yu"},{char:"よ",reading:"yo"}],RA:[{char:"ら",reading:"ra"},{char:"り",reading:"ri"},{char:"る",reading:"ru"},{char:"れ",reading:"re"},{char:"ろ",reading:"ro"}],WA:[{char:"わ",reading:"wa"},{char:"を",reading:"wo"},{char:"ん",reading:"n"}],YOON:[{char:"きゃ",reading:"kya"},{char:"きゅ",reading:"kyu"},{char:"きょ",reading:"kyo"},{char:"ぎゃ",reading:"gya"},{char:"ぎゅ",reading:"gyu"},{char:"ぎょ",reading:"gyo"},{char:"しゃ",reading:"sha"},{char:"しゅ",reading:"shu"},{char:"しょ",reading:"sho"},{char:"じゃ",reading:"ja"},{char:"じゅ",reading:"ju"},{char:"じょ",reading:"jo"},{char:"ちゃ",reading:"cha"},{char:"ちゅ",reading:"chu"},{char:"ちょ",reading:"cho"},{char:"にゃ",reading:"nya"},{char:"にゅ",reading:"nyu"},{char:"にょ",reading:"nyo"},{char:"ひゃ",reading:"hya"},{char:"ひゅ",reading:"hyu"},{char:"ひょ",reading:"hyo"},{char:"びゃ",reading:"bya"},{char:"びゅ",reading:"byu"},{char:"びょ",reading:"byo"},{char:"ぴゃ",reading:"pya"},{char:"ぴゅ",reading:"pyu"},{char:"ぴょ",reading:"pyo"},{char:"みゃ",reading:"mya"},{char:"みゅ",reading:"myu"},{char:"みょ",reading:"myo"},{char:"りゃ",reading:"rya"},{char:"りゅ",reading:"ryu"},{char:"りょ",reading:"ryo"}]};
+    const katakanaGroups={A:[{char:"ア",reading:"a"},{char:"イ",reading:"i"},{char:"ウ",reading:"u"},{char:"エ",reading:"e"},{char:"オ",reading:"o"}],KA:[{char:"カ",reading:"ka"},{char:"キ",reading:"ki"},{char:"ク",reading:"ku"},{char:"ケ",reading:"ke"},{char:"コ",reading:"ko"}],GA:[{char:"ガ",reading:"ga"},{char:"ギ",reading:"gi"},{char:"グ",reading:"gu"},{char:"ゲ",reading:"ge"},{char:"ゴ",reading:"go"}],SA:[{char:"サ",reading:"sa"},{char:"シ",reading:"shi"},{char:"ス",reading:"su"},{char:"セ",reading:"se"},{char:"ソ",reading:"so"}],ZA:[{char:"ザ",reading:"za"},{char:"ジ",reading:"ji"},{char:"ズ",reading:"zu"},{char:"ゼ",reading:"ze"},{char:"ゾ",reading:"zo"}],TA:[{char:"タ",reading:"ta"},{char:"チ",reading:"chi"},{char:"ツ",reading:"tsu"},{char:"テ",reading:"te"},{char:"ト",reading:"to"}],DA:[{char:"ダ",reading:"da"},{char:"ヂ",reading:"ji"},{char:"ヅ",reading:"zu"},{char:"デ",reading:"de"},{char:"ド",reading:"do"}],NA:[{char:"ナ",reading:"na"},{char:"ニ",reading:"ni"},{char:"ヌ",reading:"nu"},{char:"ネ",reading:"ne"},{char:"ノ",reading:"no"}],HA:[{char:"ハ",reading:"ha"},{char:"ヒ",reading:"hi"},{char:"フ",reading:"fu"},{char:"ヘ",reading:"he"},{char:"ホ",reading:"ho"}],BA:[{char:"バ",reading:"ba"},{char:"ビ",reading:"bi"},{char:"ブ",reading:"bu"},{char:"ベ",reading:"be"},{char:"ボ",reading:"bo"}],PA:[{char:"パ",reading:"pa"},{char:"ピ",reading:"pi"},{char:"プ",reading:"pu"},{char:"ペ",reading:"pe"},{char:"ポ",reading:"po"}],MA:[{char:"マ",reading:"ma"},{char:"ミ",reading:"mi"},{char:"ム",reading:"mu"},{char:"メ",reading:"me"},{char:"モ",reading:"mo"}],YA:[{char:"ヤ",reading:"ya"},{char:"ユ",reading:"yu"},{char:"ヨ",reading:"yo"}],RA:[{char:"ラ",reading:"ra"},{char:"リ",reading:"ri"},{char:"ル",reading:"ru"},{char:"レ",reading:"re"},{char:"ロ",reading:"ro"}],WA:[{char:"ワ",reading:"wa"},{char:"ヲ",reading:"wo"},{char:"ン",reading:"n"}],YOON:[{char:"キャ",reading:"kya"},{char:"キュ",reading:"kyu"},{char:"キョ",reading:"kyo"},{char:"ギャ",reading:"gya"},{char:"ギュ",reading:"gyu"},{char:"ギョ",reading:"gyo"},{char:"シャ",reading:"sha"},{char:"シュ",reading:"shu"},{char:"ショ",reading:"sho"},{char:"ジャ",reading:"ja"},{char:"ジュ",reading:"ju"},{char:"ジョ",reading:"jo"},{char:"チャ",reading:"cha"},{char:"チュ",reading:"chu"},{char:"チョ",reading:"cho"},{char:"ニャ",reading:"nya"},{char:"ニュ",reading:"nyu"},{char:"ニョ",reading:"nyo"},{char:"ヒャ",reading:"hya"},{char:"ヒュ",reading:"hyu"},{char:"ヒョ",reading:"hyo"},{char:"ビャ",reading:"bya"},{char:"ビュ",reading:"byu"},{char:"ビョ",reading:"byo"},{char:"ピャ",reading:"pya"},{char:"ピュ",reading:"pyu"},{char:"ピョ",reading:"pyo"},{char:"ミャ",reading:"mya"},{char:"ミュ",reading:"myu"},{char:"ミョ",reading:"myo"},{char:"リャ",reading:"rya"},{char:"リュ",reading:"ryu"},{char:"リョ",reading:"ryo"}]};
+    const romajiToKana={'a':{hira:'あ',kata:'ア'},'i':{hira:'い',kata:'イ'},'u':{hira:'う',kata:'ウ'},'e':{hira:'え',kata:'エ'},'o':{hira:'お',kata:'オ'},'ka':{hira:'か',kata:'カ'},'ki':{hira:'き',kata:'キ'},'ku':{hira:'く',kata:'ク'},'ke':{hira:'け',kata:'ケ'},'ko':{hira:'こ',kata:'コ'},'sa':{hira:'さ',kata:'サ'},'shi':{hira:'し',kata:'シ'},'su':{hira:'す',kata:'ス'},'se':{hira:'せ',kata:'セ'},'so':{hira:'そ',kata:'ソ'},'ta':{hira:'た',kata:'タ'},'chi':{hira:'ち',kata:'チ'},'tsu':{hira:'つ',kata:'ツ'},'te':{hira:'て',kata:'テ'},'to':{hira:'と',kata:'ト'},'na':{hira:'な',kata:'ナ'},'ni':{hira:'に',kata:'ニ'},'nu':{hira:'ぬ',kata:'ヌ'},'ne':{hira:'ね',kata:'ネ'},'no':{hira:'の',kata:'ノ'},'ha':{hira:'は',kata:'ハ'},'hi':{hira:'ひ',kata:'ヒ'},'fu':{hira:'ふ',kata:'フ'},'he':{hira:'へ',kata:'ヘ'},'ho':{hira:'ほ',kata:'ホ'},'ma':{hira:'ま',kata:'マ'},'mi':{hira:'み',kata:'ミ'},'mu':{hira:'む',kata:'ム'},'me':{hira:'め',kata:'メ'},'mo':{hira:'も',kata:'モ'},'ya':{hira:'や',kata:'ヤ'},'yu':{hira:'ゆ',kata:'ユ'},'yo':{hira:'よ',kata:'ヨ'},'ra':{hira:'ら',kata:'ラ'},'ri':{hira:'り',kata:'リ'},'ru':{hira:'る',kata:'ル'},'re':{hira:'れ',kata:'レ'},'ro':{hira:'ろ',kata:'ロ'},'wa':{hira:'わ',kata:'ワ'},'wo':{hira:'を',kata:'ヲ'},'n':{hira:'ん',kata:'ン'},'ga':{hira:'が',kata:'ガ'},'gi':{hira:'ぎ',kata:'ギ'},'gu':{hira:'ぐ',kata:'グ'},'ge':{hira:'げ',kata:'ゲ'},'go':{hira:'ご',kata:'ゴ'},'za':{hira:'ざ',kata:'ザ'},'ji':{hira:'じ',kata:'ジ'},'zu':{hira:'ず',kata:'ズ'},'ze':{hira:'ぜ',kata:'ゼ'},'zo':{hira:'ぞ',kata:'ゾ'},'da':{hira:'だ',kata:'ダ'},'dji':{hira:'ぢ',kata:'ヂ'},'dzu':{hira:'づ',kata:'ヅ'},'de':{hira:'で',kata:'デ'},'do':{hira:'ど',kata:'ド'},'ba':{hira:'ば',kata:'バ'},'bi':{hira:'び',kata:'ビ'},'bu':{hira:'ぶ',kata:'ブ'},'be':{hira:'べ',kata:'ベ'},'bo':{hira:'ぼ',kata:'ボ'},'pa':{hira:'ぱ',kata:'パ'},'pi':{hira:'ぴ',kata:'ピ'},'pu':{hira:'ぷ',kata:'プ'},'pe':{hira:'ぺ',kata:'ペ'},'po':{hira:'ぽ',kata:'ポ'},'kya':{hira:'きゃ',kata:'キャ'},'kyu':{hira:'きゅ',kata:'キュ'},'kyo':{hira:'きょ',kata:'キョ'},'gya':{hira:'ぎゃ',kata:'ギャ'},'gyu':{hira:'ぎゅ',kata:'ギュ'},'gyo':{hira:'ぎょ',kata:'ギョ'},'sha':{hira:'しゃ',kata:'シャ'},'shu':{hira:'しゅ',kata:'シュ'},'sho':{hira:'しょ',kata:'ショ'},'ja':{hira:'じゃ',kata:'ジャ'},'ju':{hira:'じゅ',kata:'ジュ'},'jo':{hira:'じょ',kata:'ジョ'},'cha':{hira:'ちゃ',kata:'チャ'},'chu':{hira:'ちゅ',kata:'チュ'},'cho':{hira:'ちょ',kata:'チョ'},'dja':{hira:'ぢゃ',kata:'ヂャ'},'dju':{hira:'ぢゅ',kata:'ヂュ'},'djo':{hira:'ぢょ',kata:'ヂョ'},'nya':{hira:'にゃ',kata:'ニャ'},'nyu':{hira:'にゅ',kata:'ニュ'},'nyo':{hira:'にょ',kata:'ニョ'},'hya':{hira:'ひゃ',kata:'ヒャ'},'hyu':{hira:'ひゅ',kata:'ヒュ'},'hyo':{hira:'ひょ',kata:'ヒョ'},'bya':{hira:'びゃ',kata:'ビャ'},'byu':{hira:'びゅ',kata:'ビュ'},'byo':{hira:'びょ',kata:'ビョ'},'pya':{hira:'ぴゃ',kata:'ピャ'},'pyu':{hira:'ぴゅ',kata:'ピュ'},'pyo':{hira:'ぴょ',kata:'ピョ'},'mya':{hira:'みゃ',kata:'ミャ'},'myu':{hira:'みゅ',kata:'ミュ'},'myo':{hira:'みょ',kata:'ミョ'},'rya':{hira:'りゃ',kata:'リャ'},'ryu':{hira:'りゅ',kata:'リュ'},'ryo':{hira:'りょ',kata:'リョ'},'kka':{hira:'っか',kata:'ッカ'},'kki':{hira:'っき',kata:'ッキ'},'kku':{hira:'っく',kata:'ック'},'kke':{hira:'っけ',kata:'ッケ'},'kko':{hira:'っこ',kata:'ッコ'},'ssa':{hira:'ッサ',kata:'ッサ'},'sshi':{hira:'っし',kata:'ッシ'},'ssu':{hira:'っす',kata:'ッス'},'sse':{hira:'っせ',kata:'ッセ'},'sso':{hira:'っそ',kata:'ッソ'},'tta':{hira:'った',kata:'ッタ'},'tchi':{hira:'っち',kata:'ッチ'},'ttsu':{hira:'っつ',kata:'ッツ'},'tte':{hira:'って',kata:'ッテ'},'tto':{hira:'っと',kata:'ット'},'ppa':{hira:'っぱ',kata:'ッパ'},'ppi':{hira:'っぴ',kata:'ッピ'},'ppu':{hira:'っぷ',kata:'ップ'},'ppe':{hira:'っぺ',kata:'ッペ'},'ppo':{hira:'っぽ',kata:'ッポ'},'kkya':{hira:'っきゃ',kata:'っきゃ'},'kkyu':{hira:'っきゅ',kata:'っきゅ'},'kkyo':{hira:'っきょ',kata:'っきょ'},'ssha':{hira:'っしゃ',kata:'っしゃ'},'sshu':{hira:'っしゅ',kata:'っしゅ'},'ssho':{hira:'っしょ',kata:'っしょ'},'tcha':{hira:'っちゃ',kata:'っちゃ'},'tchu':{hira:'っちゅ',kata:'っちゅ'},'tcho':{hira:'っちょ',kata:'っちょ'},'ppya':{hira:'っぴゃ',kata:'っぴゃ'},'ppyu':{hira:'っぴゅ',kata:'っぴゅ'},'ppyo':{hira:'っぴょ',kata:'っぴょ'}};
 
-    const katakanaWords = [
-        // Comida e Bebida
-        { word: "パン", reading: "pa n", meaning: "Pão" },
-        { word: "コーヒー", reading: "ko hi", meaning: "Café" },
-        { word: "ジュース", reading: "ju su", meaning: "Sumo" },
-        { word: "ビール", reading: "bi ru", meaning: "Cerveja" },
-        { word: "ワイン", reading: "wa i n", meaning: "Vinho" },
-        { word: "チーズ", reading: "chi zu", meaning: "Queijo" },
-        { word: "ケーキ", reading: "ke ki", meaning: "Bolo" },
-        { word: "アイスクリーム", reading: "a i su ku ri mu", meaning: "Gelado" },
-        { word: "レストラン", reading: "re su to ra n", meaning: "Restaurante" },
-        { word: "メニュー", reading: "me nyu", meaning: "Menu" },
-    
-        // Tecnologia
-        { word: "テレビ", reading: "te re bi", meaning: "Televisão" },
-        { word: "ラジオ", reading: "ra ji o", meaning: "Rádio" },
-        { word: "パソコン", reading: "pa so ko n", meaning: "Computador Pessoal" },
-        { word: "カメラ", reading: "ka me ra", meaning: "Câmara" },
-        { word: "スマホ", reading: "su ma ho", meaning: "Smartphone" },
-        { word: "インターネット", reading: "i n ta ne tto", meaning: "Internet" },
-        { word: "Eメール", reading: "i me ru", meaning: "E-mail" },
-    
-        // Lugares
-        { word: "アメリカ", reading: "a me ri ka", meaning: "América / EUA" },
-        { word: "ブラジル", reading: "bu ra ji ru", meaning: "Brasil" },
-        { word: "ポルトガル", reading: "po ru to ga ru", meaning: "Portugal" },
-        { word: "ホテル", reading: "ho te ru", meaning: "Hotel" },
-        { word: "スーパー", reading: "su pa", meaning: "Supermercado" },
-        { word: "デパート", reading: "de pa to", meaning: "Centro Comercial" },
-        { word: "トイレ", reading: "to i re", meaning: "Casa de Banho" },
-    
-        // Transportes
-        { word: "バス", reading: "ba su", meaning: "Autocarro" },
-        { word: "タクシー", reading: "ta ku shi", meaning: "Táxi" },
-        { word: "バイク", reading: "ba i ku", meaning: "Mota" },
-    
-        // Roupas
-        { word: "シャツ", reading: "sha tsu", meaning: "Camisa" },
-        { word: "Tシャツ", reading: "ti sha tsu", meaning: "T-shirt" },
-        { word: "ズボン", reading: "zu bo n", meaning: "Calças" },
-        { word: "スカート", reading: "su ka to", meaning: "Saia" },
-    
-        // Desporto
-        { word: "スポーツ", reading: "su po tsu", meaning: "Desporto" },
-        { word: "サッカー", reading: "sa kka", meaning: "Futebol" },
-        { word: "テニス", reading: "te ni su", meaning: "Ténis" },
-        { word: "ゴルフ", reading: "go ru fu", meaning: "Golfe" },
-    
-        // Objetos Domésticos
-        { word: "ドア", reading: "do a", meaning: "Porta" },
-        { word: "テーブル", reading: "te bu ru", meaning: "Mesa" },
-        { word: "ベッド", reading: "be ddo", meaning: "Cama" },
-        { word: "ペン", reading: "pe n", meaning: "Caneta" },
-        { word: "ノート", reading: "no to", meaning: "Caderno" },
-    
-        // Outros
-        { word: "テスト", reading: "te su to", meaning: "Teste" },
-        { word: "パーティー", reading: "pa ti", meaning: "Festa" },
-        { word: "クラス", reading: "ku ra su", meaning: "Aula / Turma" },
-        { word: "ガラス", reading: "ga ra su", meaning: "Vidro" },
-        { word: "ゼロ", reading: "ze ro", meaning: "Zero" },
-        { word: "アレルギー", reading: "a re ru gi", meaning: "Alergia" },
-        { word: "エネルギー", reading: "e ne ru gi", meaning: "Energia" },
-        { word: "ビタミン", reading: "bi ta mi n", meaning: "Vitamina" },
-        { word: "ピアノ", reading: "pi a no", meaning: "Piano" },
-        { word: "ギター", reading: "gi ta", meaning: "Guitarra" }
-    ];
-
-const romajiToKana = {
-    // --- 1. Gojūon (The Basic 50 Sounds) ---
-    'a': { hira: 'あ', kata: 'ア' }, 'i': { hira: 'い', kata: 'イ' }, 'u': { hira: 'う', kata: 'ウ' }, 'e': { hira: 'え', kata: 'エ' }, 'o': { hira: 'お', kata: 'オ' },
-    'ka': { hira: 'か', kata: 'カ' }, 'ki': { hira: 'き', kata: 'キ' }, 'ku': { hira: 'く', kata: 'ク' }, 'ke': { hira: 'け', kata: 'ケ' }, 'ko': { hira: 'こ', kata: 'コ' },
-    'sa': { hira: 'さ', kata: 'サ' }, 'shi': { hira: 'し', kata: 'シ' }, 'su': { hira: 'す', kata: 'ス' }, 'se': { hira: 'せ', kata: 'セ' }, 'so': { hira: 'そ', kata: 'ソ' },
-    'ta': { hira: 'た', kata: 'タ' }, 'chi': { hira: 'ち', kata: 'チ' }, 'tsu': { hira: 'つ', kata: 'ツ' }, 'te': { hira: 'て', kata: 'テ' }, 'to': { hira: 'と', kata: 'ト' },
-    'na': { hira: 'な', kata: 'ナ' }, 'ni': { hira: 'に', kata: 'ニ' }, 'nu': { hira: 'ぬ', kata: 'ヌ' }, 'ne': { hira: 'ね', kata: 'ネ' }, 'no': { hira: 'の', kata: 'ノ' },
-    'ha': { hira: 'は', kata: 'ハ' }, 'hi': { hira: 'ひ', kata: 'ヒ' }, 'fu': { hira: 'ふ', kata: 'フ' }, 'he': { hira: 'へ', kata: 'ヘ' }, 'ho': { hira: 'ほ', kata: 'ホ' },
-    'ma': { hira: 'ま', kata: 'マ' }, 'mi': { hira: 'み', kata: 'ミ' }, 'mu': { hira: 'む', kata: 'ム' }, 'me': { hira: 'め', kata: 'メ' }, 'mo': { hira: 'も', kata: 'モ' },
-    'ya': { hira: 'や', kata: 'ヤ' }, 'yu': { hira: 'ゆ', kata: 'ユ' }, 'yo': { hira: 'よ', kata: 'ヨ' },
-    'ra': { hira: 'ら', kata: 'ラ' }, 'ri': { hira: 'り', kata: 'リ' }, 'ru': { hira: 'る', kata: 'ル' }, 're': { hira: 'れ', kata: 'レ' }, 'ro': { hira: 'ろ', kata: 'ロ' },
-    'wa': { hira: 'わ', kata: 'ワ' }, 'wo': { hira: 'を', kata: 'ヲ' }, 'n': { hira: 'ん', kata: 'ン' },
-
-    // --- 2. Dakuten (Voiced Sounds) ---
-    'ga': { hira: 'が', kata: 'ガ' }, 'gi': { hira: 'ぎ', kata: 'ギ' }, 'gu': { hira: 'ぐ', kata: 'グ' }, 'ge': { hira: 'げ', kata: 'ゲ' }, 'go': { hira: 'ご', kata: 'ゴ' },
-    'za': { hira: 'ざ', kata: 'ザ' }, 'ji': { hira: 'じ', kata: 'ジ' }, 'zu': { hira: 'ず', kata: 'ズ' }, 'ze': { hira: 'ぜ', kata: 'ゼ' }, 'zo': { hira: 'ぞ', kata: 'ゾ' },
-    'da': { hira: 'だ', kata: 'ダ' }, 'dji': { hira: 'ぢ', kata: 'ヂ' }, 'dzu': { hira: 'づ', kata: 'ヅ' }, 'de': { hira: 'で', kata: 'デ' }, 'do': { hira: 'ど', kata: 'ド' }, // dji/dzu for distinction
-    'ba': { hira: 'ば', kata: 'バ' }, 'bi': { hira: 'び', kata: 'ビ' }, 'bu': { hira: 'ぶ', kata: 'ブ' }, 'be': { hira: 'べ', kata: 'ベ' }, 'bo': { hira: 'ぼ', kata: 'ボ' },
-
-    // --- 3. Handakuten (Plosive Sounds) ---
-    'pa': { hira: 'ぱ', kata: 'パ' }, 'pi': { hira: 'ぴ', kata: 'ピ' }, 'pu': { hira: 'ぷ', kata: 'プ' }, 'pe': { hira: 'ぺ', kata: 'ペ' }, 'po': { hira: 'ぽ', kata: 'ポ' },
-
-    // --- 4. Yōon (Contracted Sounds) ---
-    'kya': { hira: 'きゃ', kata: 'キャ' }, 'kyu': { hira: 'きゅ', kata: 'キュ' }, 'kyo': { hira: 'きょ', kata: 'キョ' },
-    'gya': { hira: 'ぎゃ', kata: 'ギャ' }, 'gyu': { hira: 'ぎゅ', kata: 'ギュ' }, 'gyo': { hira: 'ぎょ', kata: 'ギョ' },
-    'sha': { hira: 'しゃ', kata: 'シャ' }, 'shu': { hira: 'しゅ', kata: 'シュ' }, 'sho': { hira: 'しょ', kata: 'ショ' },
-    'ja': { hira: 'じゃ', kata: 'ジャ' }, 'ju': { hira: 'じゅ', kata: 'ジュ' }, 'jo': { hira: 'じょ', kata: 'ジョ' },
-    'cha': { hira: 'ちゃ', kata: 'チャ' }, 'chu': { hira: 'ちゅ', kata: 'チュ' }, 'cho': { hira: 'ちょ', kata: 'チョ' },
-    'dja': { hira: 'ぢゃ', kata: 'ヂャ' }, 'dju': { hira: 'ぢゅ', kata: 'ヂュ' }, 'djo': { hira: 'ぢょ', kata: 'ヂョ' },
-    'nya': { hira: 'にゃ', kata: 'ニャ' }, 'nyu': { hira: 'にゅ', kata: 'ニュ' }, 'nyo': { hira: 'にょ', kata: 'ニョ' },
-    'hya': { hira: 'ひゃ', kata: 'ヒャ' }, 'hyu': { hira: 'ひゅ', kata: 'ヒュ' }, 'hyo': { hira: 'ひょ', kata: 'ヒョ' },
-    'bya': { hira: 'びゃ', kata: 'ビャ' }, 'byu': { hira: 'びゅ', kata: 'ビュ' }, 'byo': { hira: 'びょ', kata: 'ビョ' },
-    'pya': { hira: 'ぴゃ', kata: 'ピャ' }, 'pyu': { hira: 'ぴゅ', kata: 'ピュ' }, 'pyo': { hira: 'ぴょ', kata: 'ピョ' },
-    'mya': { hira: 'みゃ', kata: 'ミャ' }, 'myu': { hira: 'みゅ', kata: 'ミュ' }, 'myo': { hira: 'みょ', kata: 'ミョ' },
-    'rya': { hira: 'りゃ', kata: 'リャ' }, 'ryu': { hira: 'りゅ', kata: 'リュ' }, 'ryo': { hira: 'りょ', kata: 'リョ' },
-
-    // --- 5. Sokuon (Doubled Consonants) ---
-    'kka': { hira: 'っか', kata: 'ッカ' }, 'kki': { hira: 'っき', kata: 'ッキ' }, 'kku': { hira: 'っく', kata: 'ック' }, 'kke': { hira: 'っけ', kata: 'ッケ' }, 'kko': { hira: 'っこ', kata: 'ッコ' },
-    'ssa': { hira: 'ッサ', kata: 'ッサ' }, 'sshi': { hira: 'っし', kata: 'ッシ' }, 'ssu': { hira: 'っす', kata: 'ッス' }, 'sse': { hira: 'っせ', kata: 'ッセ' }, 'sso': { hira: 'っそ', kata: 'ッソ' },
-    'tta': { hira: 'った', kata: 'ッタ' }, 'tchi': { hira: 'っち', kata: 'ッチ' }, 'ttsu': { hira: 'っつ', kata: 'ッツ' }, 'tte': { hira: 'って', kata: 'ッテ' }, 'tto': { hira: 'っと', kata: 'ット' },
-    'ppa': { hira: 'っぱ', kata: 'ッパ' }, 'ppi': { hira: 'っぴ', kata: 'ッピ' }, 'ppu': { hira: 'っぷ', kata: 'ップ' }, 'ppe': { hira: 'っぺ', kata: 'ッペ' }, 'ppo': { hira: 'っぽ', kata: 'ッポ' },
-    // Also include yōon variants
-    'kkya': { hira: 'っきゃ', kata: 'っきゃ' }, 'kkyu': { hira: 'っきゅ', kata: 'っきゅ' }, 'kkyo': { hira: 'っきょ', kata: 'っきょ' },
-    'ssha': { hira: 'っしゃ', kata: 'っしゃ' }, 'sshu': { hira: 'っしゅ', kata: 'っしゅ' }, 'ssho': { hira: 'っしょ', kata: 'っしょ' },
-    'tcha': { hira: 'っちゃ', kata: 'っちゃ' }, 'tchu': { hira: 'っちゅ', kata: 'っちゅ' }, 'tcho': { hira: 'っちょ', kata: 'っちょ' },
-    'ppya': { hira: 'っぴゃ', kata: 'っぴゃ' }, 'ppyu': { hira: 'っぴゅ', kata: 'っぴゅ' }, 'ppyo': { hira: 'っぴょ', kata: 'っぴょ' },
-
-    // --- 6. Extended Katakana (For Foreign Sounds) ---
-    // These are primarily for katakana, hiragana equivalents are for completeness.
-    //     'wi': { hira: 'うぃ', kata: 'ウィ' }, 'we': { hira: 'うぇ', kata: 'ウェ' }, 'wo': { hira: 'うぉ', kata: 'ウォ' },
-    //     'va': { hira: 'ゔぁ', kata: 'ヴァ' }, 'vi': { hira: 'ゔぃ', kata: 'ヴィ' }, 'vu': { hira: 'ゔ', kata: 'ヴ' }, 've': { hira: 'ゔぇ', kata: 'ヴェ' }, 'vo': { hira: 'ゔぉ', kata: 'ヴォ' },
-    //     'vya': { hira: 'ゔゃ', kata: 'ヴャ' }, 'vyu': { hira: 'ゔゅ', kata: 'ヴュ' }, 'vyo': { hira: 'ゔょ', kata: 'ヴョ' },
-    //     'she': { hira: 'しぇ', kata: 'シェ' }, 'je': { hira: 'じぇ', kata: 'ジェ' },
-    //     'che': { hira: 'ちぇ', kata: 'チェ' },
-    //     'tsa': { hira: 'つぁ', kata: 'ツァ' }, 'tsi': { hira: 'つぃ', kata: 'ツィ' }, 'tse': { hira: 'つぇ', kata: 'ツェ' }, 'tso': { hira: 'つぉ', kata: 'ツォ' },
-    //     'ti': { hira: 'てぃ', kata: 'ティ' }, 'tu': { hira: 'てぅ', kata: 'テュ' },
-    //     'di': { hira: 'でぃ', kata: 'ディ' }, 'du': { hira: 'でぅ', kata: 'デュ' },
-    //     'fa': { hira: 'ふぁ', kata: 'ファ' }, 'fi': { hira: 'ふぃ', kata: 'フィ' }, 'fe': { hira: 'ふぇ', kata: 'フェ' }, 'fo': { hira: 'ふぉ', kata: 'フォ' },
-    //     'fya': { hira: 'ふゃ', kata: 'フャ' }, 'fyu': { hira: 'ふゅ', kata: 'フュ' }, 'fyo': { hira: 'ふょ', kata: 'フョ' },
-};
-
-    function generateMixedWord(reading) {
-        const syllables = reading.split(' ');
-        let mixedWord = '';
-        for (const syl of syllables) {
-            if (romajiToKana[syl]) {
-                // Randomly choose between hiragana and katakana
-                const chosenKana = Math.random() < 0.5 
-                    ? romajiToKana[syl].hira 
-                    : romajiToKana[syl].kata;
-                mixedWord += chosenKana;
-            } else {
-                // If syllable not in map, just append it (fallback)
-                mixedWord += syl;
-            }
-        }
-        return mixedWord;
-    }
-
-function generateRandomSyllableWord(maxLength) {
-    const syllables = Object.keys(romajiToKana);
-    // Generate a random word length, e.g., between 2 and 5 syllables
-    const wordLength = Math.floor(Math.random() * (maxLength - 1)) + 2; 
-    
-    let generatedKana = '';
-    let generatedReading = '';
-
-    for (let i = 0; i < wordLength; i++) {
-        // Pick a random syllable (e.g., 'ka', 'mi', 'ryu')
-        const randomSyllable = syllables[Math.floor(Math.random() * syllables.length)];
-        
-        // Get its kana characters from the map
-        const kanaPair = romajiToKana[randomSyllable];
-        
-        // Randomly choose to display it as hiragana or katakana
-        const chosenKana = Math.random() < 0.5 ? kanaPair.hira : kanaPair.kata;
-        
-        generatedKana += chosenKana;
-        generatedReading += randomSyllable + ' ';
-    }
-    
-    // Return an object that looks like our other word objects
-    return {
-        word: generatedKana,
-        reading: generatedReading.trim(), // Remove trailing space
-        meaning: "Palavra Aleatória"
-    };
-}
-
-    // --- Global Variables ---
+    // ===== GLOBAL VARIABLES =====
+    let currentAppMode = 'kana'; // 'vocab' or 'kana'
     let deck = [];
-    let currentWord = null;
+    let currentItem = null;
     let correctCount = 0;
     let incorrectCount = 0;
 
-    // --- DOM Elements ---
-    const wordDisplay = document.getElementById("wordDisplay");
+    // ===== DOM ELEMENTS =====
+    // Shared
+    const promptDisplay = document.getElementById("promptDisplay");
     const meaningDisplay = document.getElementById("meaningDisplay");
     const answerBox = document.getElementById("answerBox");
     const checkBtn = document.getElementById("checkBtn");
@@ -381,102 +169,119 @@ function generateRandomSyllableWord(maxLength) {
     const correctDisplay = document.getElementById("correctCount");
     const incorrectDisplay = document.getElementById("incorrectCount");
     const resultDisplay = document.getElementById("resultDisplay");
-    const selectHiragana = document.getElementById('selectHiragana');
-    const selectKatakana = document.getElementById('selectKatakana');
-    const selectMixed = document.getElementById('selectMixed');
-    const selectRandom = document.getElementById('selectRandom');
+    
+    // Master mode selectors
+    const appModeRadios = document.querySelectorAll('input[name="appMode"]');
+    const vocabControls = document.getElementById('vocab-controls');
+    const kanaControls = document.getElementById('kana-controls');
+
+    // Vocabulary specific
+    const vocabScriptRadios = document.querySelectorAll('input[name="vocabScript"]');
     const showAllBtn = document.getElementById("showAllBtn");
     const allWordsContainer = document.getElementById("allWordsContainer");
 
-    // --- Core Functions ---
-    function buildDeck() {
-        if (selectKatakana.checked) {
-            deck = [...katakanaWords];
-        } else if (selectMixed.checked) {
-            // Combine both arrays for mixed mode
-            deck = [...hiraganaWords, ...katakanaWords];
-        } else {
-            // Default to hiragana
+    // Kana specific
+    const kanaScriptRadios = document.querySelectorAll('input[name="kanaScript"]');
+    const optionsBtn = document.getElementById("optionsBtn");
+    const optionsPanel = document.getElementById("options");
+    const checkAllHira = document.getElementById("checkAllHira");
+    const groupCheckboxesHira = document.querySelectorAll(".group-checkbox-hira");
+    const checkAllKata = document.getElementById("checkAllKata");
+    const groupCheckboxesKata = document.querySelectorAll(".group-checkbox-kata");
+
+    // ===== CORE MERGED FUNCTIONS =====
+
+function buildDeck() {
+    deck = [];
+    if (currentAppMode === 'vocab') {
+        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+        if (vocabMode === 'hira') {
             deck = [...hiraganaWords];
+        } else if (vocabMode === 'kata') {
+            deck = [...katakanaWords];
+        } else if (vocabMode === 'mixed') {
+            deck = [...hiraganaWords, ...katakanaWords];
         }
-        updateRemaining();
+        // 'random' mode doesn't need a pre-built deck
+    } else if (currentAppMode === 'kana') {
+            for (const key in hiraganaGroups) {
+                if (document.getElementById('grp' + key)?.checked) {
+                    deck.push(...hiraganaGroups[key]);
+                }
+            }
+            for (const key in katakanaGroups) {
+                if (document.getElementById('grp' + key + '_kata')?.checked) {
+                    deck.push(...katakanaGroups[key]);
+                }
+            }
     }
+    updateRemaining();
+}
 
-    function nextWord() {
-    // NEW: Handle Random Generator mode first
-    if (selectRandom.checked) {
-        // Generate a random word with a max length of 5 syllables
-        currentWord = generateRandomSyllableWord(5);
-        
-        meaningDisplay.textContent = currentWord.meaning;
-        wordDisplay.textContent = currentWord.word;
+    function nextItem() {
+        // --- Vocabulary Mode ---
+        if (currentAppMode === 'vocab') {
+            const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+            if (vocabMode === 'random') {
+                currentItem = generateRandomSyllableWord(5);
+                promptDisplay.textContent = currentItem.word;
+                meaningDisplay.textContent = currentItem.meaning;
+                remainingCount.textContent = "∞";
+                resetUIState();
+                return;
+            }
+            
+            if (deck.length === 0) {
+                showEndScreen('Pressiona "Reniciar" para começar de novo!');
+                return;
+            }
+            const idx = Math.floor(Math.random() * deck.length);
+            currentItem = deck.splice(idx, 1)[0];
+            
+            if (vocabMode === 'mixed') {
+                 promptDisplay.textContent = generateMixedWord(currentItem.reading);
+            } else {
+                 promptDisplay.textContent = currentItem.word;
+            }
+            meaningDisplay.textContent = "...";
 
-        // Reset UI elements
-        answerBox.value = "";
-        answerBox.focus();
-        resultDisplay.textContent = "Aguardando Resposta...";
-        resultDisplay.className = "neutral";
-        checkBtn.disabled = false;
-        nextBtn.disabled = true;
-        answerBox.disabled = false;
-        // In this mode, "remaining" is infinite, so we can hide it or show a symbol
-        remainingCount.textContent = "∞"; 
-        return; // Exit the function here for this mode
-    }
-
-    // This part below only runs for Hiragana, Katakana, and Mixed modes
-    if (deck.length === 0) {
-        meaningDisplay.textContent = "Parabéns!";
-        wordDisplay.textContent = "Acabou!";
-            checkBtn.disabled = true;
-            nextBtn.disabled = true;
-            answerBox.disabled = true;
-            answerBox.value = "";
-            resultDisplay.textContent = 'Pressiona "Reniciar" para começar de novo!';
-            resultDisplay.className = "";
-            return;
-        }
-        
-        const idx = Math.floor(Math.random() * deck.length);
-        currentWord = deck.splice(idx, 1)[0];
-
-        meaningDisplay.textContent = "...";
-
-        if (selectMixed.checked) {
-            wordDisplay.textContent = generateMixedWord(currentWord.reading);
-        } else {
-            wordDisplay.textContent = currentWord.word;
+        // --- Kana Mode ---
+        } else if (currentAppMode === 'kana') {
+            if (deck.length === 0) {
+                showEndScreen('Seleciona as linhas e pressiona "Reniciar" para começar!');
+                return;
+            }
+            const idx = Math.floor(Math.random() * deck.length);
+            currentItem = deck.splice(idx, 1)[0];
+            // Standardize property for checkAnswer
+            currentItem.word = currentItem.char; 
+            promptDisplay.textContent = currentItem.word;
         }
 
-        answerBox.value = "";
-        answerBox.focus();
-        resultDisplay.textContent = "Aguardando Resposta...";
-        resultDisplay.className = "neutral";
-        checkBtn.disabled = false;
-        nextBtn.disabled = true;
-        answerBox.disabled = false;
+        resetUIState();
         updateRemaining();
     }
 
     function checkAnswer() {
-    if (checkBtn.disabled || !currentWord) return;
-    
-    // Get the user's answer, trim whitespace, and convert to lower case
-    const userAnswer = answerBox.value.trim().toLowerCase();
+        if (checkBtn.disabled || !currentItem) return;
+        
+        const userAnswer = answerBox.value.trim().toLowerCase();
+        const correctAnswer = currentItem.reading;
+        
+        if (userAnswer === correctAnswer) {
+            correctCount++;
+            resultDisplay.textContent = "✅ Correto!";
+            resultDisplay.className = "correct";
+        } else {
+            incorrectCount++;
+            resultDisplay.textContent = `❌ Incorreto! A resposta era: ${correctAnswer}`;
+            resultDisplay.className = "incorrect";
+        }
 
-    // Compare with the correct reading
-    if (userAnswer === currentWord.reading) {
-        correctCount++;
-        resultDisplay.textContent = "✅ Correto!";
-        resultDisplay.className = "correct";
-    } else {
-        incorrectCount++;
-        // Show the correct answer
-        resultDisplay.textContent = `❌ Incorreto! A resposta era: ${currentWord.reading}`;
-        resultDisplay.className = "incorrect";
-    }
+        if (currentAppMode === 'vocab') {
+            meaningDisplay.textContent = currentItem.meaning;
+        }
 
-        meaningDisplay.textContent = currentWord.meaning;    
         correctDisplay.textContent = correctCount;
         incorrectDisplay.textContent = incorrectCount;
         checkBtn.disabled = true;
@@ -484,82 +289,179 @@ function generateRandomSyllableWord(maxLength) {
         nextBtn.focus();
     }
 
-    function updateRemaining() {
-        remainingCount.textContent = deck.length + (currentWord ? 1 : 0);
-    }
-
     function resetGame() {
         correctCount = 0;
         incorrectCount = 0;
         correctDisplay.textContent = 0;
         incorrectDisplay.textContent = 0;
-        currentWord = null;
+        currentItem = null;
+        allWordsContainer.style.display = 'none';
+        
+        updateUIVisibility(); // Adjust UI based on mode
         buildDeck();
-        nextWord();
+        nextItem();
+    }
+    
+    // ===== HELPER & UI FUNCTIONS =====
+    
+    function updateUIVisibility() {
+        if (currentAppMode === 'vocab') {
+            vocabControls.style.display = 'block';
+            kanaControls.style.display = 'none';
+            meaningDisplay.style.display = 'block';
+            answerBox.placeholder = "Leitura da Palavra";
+            answerBox.maxLength = 50;
+        } else { // kana mode
+            vocabControls.style.display = 'none';
+            kanaControls.style.display = 'block';
+            meaningDisplay.style.display = 'none';
+            answerBox.placeholder = "Romaji do Caracter";
+            answerBox.maxLength = 4;
+        }
     }
 
+    function resetUIState() {
+        answerBox.value = "";
+        answerBox.focus();
+        resultDisplay.textContent = "Aguardando Resposta...";
+        resultDisplay.className = "neutral";
+        checkBtn.disabled = false;
+        nextBtn.disabled = true;
+        answerBox.disabled = false;
+    }
+
+    function showEndScreen(message) {
+        promptDisplay.textContent = "Acabou!";
+        if (currentAppMode === 'vocab') meaningDisplay.textContent = "Parabéns!";
+        checkBtn.disabled = true;
+        nextBtn.disabled = true;
+        answerBox.disabled = true;
+        answerBox.value = "";
+        resultDisplay.textContent = message;
+        resultDisplay.className = "";
+    }
+
+    function updateRemaining() {
+        remainingCount.textContent = deck.length + (currentItem && document.querySelector('input[name="vocabScript"]:checked')?.value !== 'random' ? 1 : 0);
+    }
+
+    function handleEnterKey(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            if (!checkBtn.disabled) {
+                checkAnswer();
+            } else if (!nextBtn.disabled) {
+                nextItem();
+            }
+        }
+    }
+
+    // ===== VOCABULARY SPECIFIC FUNCTIONS =====
+    function generateMixedWord(reading) {
+        const syllables = reading.split(' ');
+        let mixedWord = '';
+        for (const syl of syllables) {
+            if (romajiToKana[syl]) {
+                const chosenKana = Math.random() < 0.5 ? romajiToKana[syl].hira : romajiToKana[syl].kata;
+                mixedWord += chosenKana;
+            } else {
+                mixedWord += syl; // Fallback
+            }
+        }
+        return mixedWord;
+    }
+
+    function generateRandomSyllableWord(maxLength) {
+        const syllables = Object.keys(romajiToKana);
+        const wordLength = Math.floor(Math.random() * (maxLength - 1)) + 2;
+        let generatedKana = '';
+        let generatedReading = '';
+        for (let i = 0; i < wordLength; i++) {
+            const randomSyllable = syllables[Math.floor(Math.random() * syllables.length)];
+            const kanaPair = romajiToKana[randomSyllable];
+            const chosenKana = Math.random() < 0.5 ? kanaPair.hira : kanaPair.kata;
+            generatedKana += chosenKana;
+            generatedReading += randomSyllable + ' ';
+        }
+        return {
+            word: generatedKana,
+            reading: generatedReading.trim(),
+            meaning: "Palavra Aleatória"
+        };
+    }
+    
     function toggleAllWords() {
-        // Se o contentor já estiver visível, esconda-o e pare a função
         if (allWordsContainer.style.display === "block") {
             allWordsContainer.style.display = "none";
             return;
         }
-
-        // Limpa a lista anterior
         allWordsContainer.innerHTML = '';
-
-        const isKatakana = selectKatakana.checked;
+        
+        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+        const isKatakana = vocabMode === 'kata';
         const sourceList = isKatakana ? katakanaWords : hiraganaWords;
         const listTitle = isKatakana ? "Lista de Palavras Katakana" : "Lista de Palavras Hiragana";
-    
-        // Cria e adiciona um título à lista
+        
         const titleElement = document.createElement('h3');
         titleElement.textContent = listTitle;
         allWordsContainer.appendChild(titleElement);
-    
-        // Percorre a lista de palavras e cria um parágrafo para cada uma
-        sourceList.forEach(word => {
-        const p = document.createElement('p');
-            // Usamos word.reading[0] para mostrar a leitura principal
-            p.innerHTML = `<strong>${word.word}</strong> - ${word.meaning}`;
+        
+        sourceList.forEach(item => {
+            const p = document.createElement('p');
+            p.innerHTML = `<strong>${item.word}</strong> (${item.reading}) - ${item.meaning}`;
             allWordsContainer.appendChild(p);
         });
-
-        // Mostra o contentor
         allWordsContainer.style.display = "block";
     }
 
-    // --- Event Listeners ---
+    // ===== KANA SPECIFIC FUNCTIONS =====
+    function toggleOptionsPanel() {
+        optionsPanel.style.display = (optionsPanel.style.display === "none") ? "flex" : "none";
+    }
+
+    // ===== EVENT LISTENERS =====
+    // --- Main Controls ---
     checkBtn.addEventListener("click", checkAnswer);
-    nextBtn.addEventListener("click", nextWord);
+    nextBtn.addEventListener("click", nextItem);
     resetBtn.addEventListener("click", resetGame);
+    answerBox.addEventListener("keydown", handleEnterKey);
+
+    // --- Mode Switching ---
+    appModeRadios.forEach(radio => radio.addEventListener('change', (e) => {
+        currentAppMode = e.target.value;
+        resetGame();
+    }));
+
+    // --- Vocabulary Controls ---
+    vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        allWordsContainer.style.display = 'none';
+        const isRandom = document.querySelector('input[name="vocabScript"]:checked').value === 'random';
+        const isMixed = document.querySelector('input[name="vocabScript"]:checked').value === 'mixed';
+        showAllBtn.disabled = isRandom || isMixed;
+    }));
     showAllBtn.addEventListener("click", toggleAllWords);
 
-    answerBox.addEventListener("keydown", e => {
-        if (e.key === "Enter") {
-            e.preventDefault(); // Prevents form submission
-            if (!checkBtn.disabled) {
-                checkAnswer();
-            } else {
-                nextWord();
-            }
-        }
-    });
-
-    function handleModeChange() {
-        allWordsContainer.style.display = 'none';
-        // Disable "Show All" button if in random mode, otherwise enable it
-        showAllBtn.disabled = selectRandom.checked || selectMixed.checked;
-    }
+    // --- Kana Controls ---
+    optionsBtn.addEventListener("click", toggleOptionsPanel);
     
-    selectHiragana.addEventListener('change', handleModeChange);
-    selectKatakana.addEventListener('change', handleModeChange);
-    selectMixed.addEventListener('change', handleModeChange);
-    selectRandom.addEventListener('change', handleModeChange);
+    // Check-all logic for Hiragana
+    checkAllHira.addEventListener('change', () => {
+        groupCheckboxesHira.forEach(checkbox => checkbox.checked = checkAllHira.checked);
+    });
+    groupCheckboxesHira.forEach(checkbox => checkbox.addEventListener('change', () => {
+        checkAllHira.checked = Array.from(groupCheckboxesHira).every(cb => cb.checked);
+    }));
+
+    // Check-all logic for Katakana
+    checkAllKata.addEventListener('change', () => {
+        groupCheckboxesKata.forEach(checkbox => checkbox.checked = checkAllKata.checked);
+    });
+    groupCheckboxesKata.forEach(checkbox => checkbox.addEventListener('change', () => {
+        checkAllKata.checked = Array.from(groupCheckboxesKata).every(cb => cb.checked);
+    }));
 
     // --- Initial setup ---
     resetGame();
-
 </script>
 </body>
 </html>
