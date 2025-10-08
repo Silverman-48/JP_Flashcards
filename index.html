@@ -83,20 +83,11 @@
         Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span>
     </div>
 
-    <div id="vocab-controls" class="sub-options">
-        <div class="mode-choice">
-            <label><input type="radio" name="vocabScript" value="hira" checked> Hiragana</label>
-            <label><input type="radio" name="vocabScript" value="kata"> Katakana</label>
-            <label><input type="radio" name="vocabScript" value="mixed"> Misto</label>
-            <label><input type="radio" name="vocabScript" value="random"> Aleatório</label>
-        </div>
-        <button id="showAllBtn">Ver Lista de Palavras</button>
-        <div id="allWordsContainer" class="word-list-container"></div>
-    </div>
-    
-    <div id="kana-controls" class="sub-options" style="display: none;">
-        <button id="optionsBtn">Ver/Esconder Linhas de Kana</button>
-        <div class="groups-container" id="options" style="display: none">
+    <div id="kana-controls" class="sub-options">
+        <button id="showAllBtn2">Ver Linhas Selecionadas</button>
+        <button id="optionsBtn2">Ver/Esconder Linhas de Kana</button>
+        <div id="allWordsContainer2" class="word-list-container"></div>
+        <div class="groups-container" id="options2" style="display: none">
             <div class="groups">
                 <h3>Linhas Hiragana</h3>
                 <h4><label><input type="checkbox" id="checkAllHira" checked> Ativar/Desativar Todas</label></h4>
@@ -142,141 +133,464 @@
         </div>
     </div>
 
+    <div id="vocab-controls" class="sub-options">
+        <div class="mode-choice">
+            <label><input type="radio" name="vocabScript" value="normal" checked> Normal</label>
+            <label><input type="radio" name="vocabScript" value="random"> Aleatório</label>
+        </div>
+        <button id="showAllBtn1">Ver Lista de Palavras</button>
+        <button id="optionsBtn1">Ver/Esconder Lições</button>
+        <div id="allWordsContainer1" class="word-list-container"></div>
+        <div class="groups-container" id="options1" style="display: none">
+            <div class="groups">
+                <h3>Lições Hiragana</h3>
+                <h4><label><input type="checkbox" id="checkAllWordsHira" checked> Ativar/Desativar Todas</label></h4>
+                <hr>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL01" checked> Lição 1</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL02" checked> Lição 2</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL03" checked> Lição 3</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL04" checked> Lição 4</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL05" checked> Lição 5</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL06" checked> Lição 6</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL07" checked> Lição 7</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL08" checked> Lição 8</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL09" checked> Lição 9</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL10" checked> Lição 10</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL11" checked> Lição 11</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL12" checked> Lição 12</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL13" checked> Lição 13</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL14" checked> Lição 14</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL15" checked> Lição 15</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL16" checked> Lição 16</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL17" checked> Lição 17</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL18" checked> Lição 18</label>
+            </div>
+            <div class="groups">
+                <h3>Lições Katakana</h3>
+                <h4><label><input type="checkbox" id="checkAllWordsKata" checked> Ativar/Desativar Todas</label></h4>
+                <hr>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL01_kata" checked> Lição 1</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL02_kata" checked> Lição 2</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL03_kata" checked> Lição 3</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL04_kata" checked> Lição 4</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL05_kata" checked> Lição 5</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL06_kata" checked> Lição 6</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL07_kata" checked> Lição 7</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL08_kata" checked> Lição 8</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL09_kata" checked> Lição 9</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL10_kata" checked> Lição 10</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL11_kata" checked> Lição 11</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL12_kata" checked> Lição 12</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL13_kata" checked> Lição 13</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL14_kata" checked> Lição 14</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL15_kata" checked> Lição 15</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL16_kata" checked> Lição 16</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL17_kata" checked> Lição 17</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL18_kata" checked> Lição 18</label>
+            </div>
+    </div>
+
 <script>
     // ===== DATA FROM BOTH SCRIPTS =====
-   const hiraganaWords=[
-    {word:"おはよう",reading:"ohayou",meaning:"Bom dia (manhã)"},
-    {word:"こんにちは",reading:"konnichiwa",meaning:"Olá / Boa tarde"},
-    {word:"こんばんは",reading:"konbanwa",meaning:"Boa noite"},
-    {word:"ありがとう",reading:"arigatou",meaning:"Obrigado(a)"},
-    {word:"ごめんなさい",reading:"gomennasai",meaning:"Desculpe"},
-    {word:"さようなら",reading:"sayounara",meaning:"Adeus"},
-    {word:"おねがいします",reading:"onegaishimasu",meaning:"Por favor"},
-    {word:"わたし",reading:"watashi",meaning:"Eu"},
-    {word:"あなた",reading:"anata",meaning:"Tu / Você"},
-    {word:"ひと",reading:"hito",meaning:"Pessoa"},
-    {word:"ともだち",reading:"tomodachi",meaning:"Amigo(a)"},
-    {word:"がくせい",reading:"gakusei",meaning:"Estudante"},
-    {word:"せんせい",reading:"sensei",meaning:"Professor(a)"},
-    {word:"かぞく",reading:"kazoku",meaning:"Família"},
-    {word:"がっこう",reading:"gakkou",meaning:"Escola"},
-    {word:"うち",reading:"uchi",meaning:"Casa"},
-    {word:"えき",reading:"eki",meaning:"Estação (de comboio)"},
-    {word:"みせ",reading:"mise",meaning:"Loja"},
-    {word:"にほん",reading:"nihon",meaning:"Japão"},
-    {word:"ごはん",reading:"gohan",meaning:"Arroz / Refeição"},
-    {word:"さかな",reading:"sakana",meaning:"Peixe"},
-    {word:"にく",reading:"niku",meaning:"Carne"},
-    {word:"やさい",reading:"yasai",meaning:"Vegetais"},
-    {word:"みず",reading:"mizu",meaning:"Água"},
-    {word:"おちゃ",reading:"ocha",meaning:"Chá"},
-    {word:"いぬ",reading:"inu",meaning:"Cão"},
-    {word:"ねこ",reading:"neko",meaning:"Gato"},
-    {word:"とり",reading:"tori",meaning:"Pássaro"},
-    {word:"ほん",reading:"hon",meaning:"Livro"},
-    {word:"えんぴつ",reading:"enpitsu",meaning:"Lápis"},
-    {word:"かさ",reading:"kasa",meaning:"Guarda-chuva"},
-    {word:"くつ",reading:"kutsu",meaning:"Sapatos"},
-    {word:"でんわ",reading:"denwa",meaning:"Telefone"},
-    {word:"くるま",reading:"kuruma",meaning:"Carro"},
-    {word:"てんき",reading:"tenki",meaning:"Tempo (clima)"},
-    {word:"あめ",reading:"ame",meaning:"Chuva"},
-    {word:"ゆき",reading:"yuki",meaning:"Neve"},
-    {word:"そら",reading:"sora",meaning:"Céu"},
-    {word:"やま",reading:"yama",meaning:"Montanha"},
-    {word:"かわ",reading:"kawa",meaning:"Rio"},
-    {word:"きょう",reading:"kyou",meaning:"Hoje"},
-    {word:"あした",reading:"ashita",meaning:"Amanhã"},
-    {word:"きのう",reading:"kinou",meaning:"Ontem"},
-    {word:"いま",reading:"ima",meaning:"Agora"},
-    {word:"じかん",reading:"jikan",meaning:"Tempo / Hora"},
-    {word:"たべる",reading:"taberu",meaning:"Comer"},
-    {word:"のむ",reading:"nomu",meaning:"Beber"},
-    {word:"みる",reading:"miru",meaning:"Ver"},
-    {word:"きく",reading:"kiku",meaning:"Ouvir / Perguntar"},
-    {word:"よむ",reading:"yomu",meaning:"Ler"},
-    {word:"かく",reading:"kaku",meaning:"Escrever"},
-    {word:"いく",reading:"iku",meaning:"Ir"},
-    {word:"かう",reading:"kau",meaning:"Comprar"},
-    {word:"はなす",reading:"hanasu",meaning:"Falar"},
-    {word:"する",reading:"suru",meaning:"Fazer"},
-    {word:"おおきい",reading:"ookii",meaning:"Grande"},
-    {word:"ちいさい",reading:"chiisai",meaning:"Pequeno"},
-    {word:"あたらしい",reading:"atarashii",meaning:"Novo"},
-    {word:"ふるい",reading:"furui",meaning:"Velho (coisas)"},
-    {word:"いい",reading:"ii",meaning:"Bom"},
-    {word:"わるい",reading:"warui",meaning:"Mau"},
-    {word:"たかい",reading:"takai",meaning:"Alto / Caro"},
-    {word:"やすい",reading:"yasui",meaning:"Barato"},
-    {word:"おいしい",reading:"oishii",meaning:"Delicioso"},
-    {word:"あか",reading:"aka",meaning:"Vermelho"},
-    {word:"あお",reading:"ao",meaning:"Azul"},
-    {word:"しろ",reading:"shiro",meaning:"Branco"},
-    {word:"くろ",reading:"kuro",meaning:"Preto"},
-    {word:"いち",reading:"ichi",meaning:"Um"},
-    {word:"に",reading:"ni",meaning:"Dois"},
-    {word:"さん",reading:"san",meaning:"Três"},
-    {word:"よん",reading:"yon",meaning:"Quatro"},
-    {word:"ご",reading:"go",meaning:"Cinco"},
-    {word:"ろく",reading:"roku",meaning:"Seis"},
-    {word:"なな",reading:"nana",meaning:"Sete"},
-    {word:"はち",reading:"hachi",meaning:"Oito"},
-    {word:"きゅう",reading:"kyuu",meaning:"Nove"},
-    {word:"じゅう",reading:"juu",meaning:"Dez"}
-];
+const hiraganaWords = {
+L01:[{word:"あい",reading:"ai",meaning:"Amor"},
+{word:"いえ",reading:"ie",meaning:"Casa"},
+{word:"うえ",reading:"ue",meaning:"Acima (em cima, sobre)"},
+{word:"え",reading:"e",meaning:"Desenho (pintura, imagem)"},
+{word:"おおい",reading:"ooi",meaning:"Muito (quantificador)"},
+{word:"あお",reading:"ao",meaning:"Azul"},
+{word:"いい",reading:"ii",meaning:"Bom / Bem"},
+{word:"あう",reading:"au",meaning:"Encontrar-se (com alguém)"}],
 
-const katakanaWords=[
-    {word:"パン",reading:"pan",meaning:"Pão"},
-    {word:"コーヒー",reading:"koohii",meaning:"Café"},
-    {word:"ジュース",reading:"juusu",meaning:"Sumo"},
-    {word:"ビール",reading:"biiru",meaning:"Cerveja"},
-    {word:"ワイン",reading:"wain",meaning:"Vinho"},
-    {word:"チーズ",reading:"chiizu",meaning:"Queijo"},
-    {word:"ケーキ",reading:"keeki",meaning:"Bolo"},
-    {word:"アイスクリーム",reading:"aisukuriimu",meaning:"Gelado"},
-    {word:"レストラン",reading:"resutoran",meaning:"Restaurante"},
-    {word:"メニュー",reading:"menyuu",meaning:"Menu"},
-    {word:"テレビ",reading:"terebi",meaning:"Televisão"},
-    {word:"ラジオ",reading:"rajio",meaning:"Rádio"},
-    {word:"パソコン",reading:"pasokon",meaning:"Computador Pessoal"},
-    {word:"カメラ",reading:"kamera",meaning:"Câmara"},
-    {word:"スマホ",reading:"sumaho",meaning:"Smartphone"},
-    {word:"インターネット",reading:"intaanetto",meaning:"Internet"},
-    {word:"Eメール",reading:"imeeru",meaning:"E-mail"},
-    {word:"アメリカ",reading:"amerika",meaning:"América / EUA"},
-    {word:"ブラジル",reading:"burajiru",meaning:"Brasil"},
-    {word:"ポルトガル",reading:"porutogaru",meaning:"Portugal"},
-    {word:"ホテル",reading:"hoteru",meaning:"Hotel"},
-    {word:"スーパー",reading:"suupaa",meaning:"Supermercado"},
-    {word:"デパート",reading:"depaato",meaning:"Centro Comercial"},
-    {word:"トイレ",reading:"toire",meaning:"Casa de Banho"},
-    {word:"バス",reading:"basu",meaning:"Autocarro"},
-    {word:"タクシー",reading:"takushii",meaning:"Táxi"},
-    {word:"バイク",reading:"baiku",meaning:"Mota"},
-    {word:"シャツ",reading:"shatsu",meaning:"Camisa"},
-    {word:"Tシャツ",reading:"tishatsu",meaning:"T-shirt"},
-    {word:"ズボン",reading:"zubon",meaning:"Calças"},
-    {word:"スカート",reading:"sukaato",meaning:"Saia"},
-    {word:"スポーツ",reading:"supootsu",meaning:"Desporto"},
-    {word:"サッカー",reading:"sakkaa",meaning:"Futebol"},
-    {word:"テニス",reading:"tenisu",meaning:"Ténis"},
-    {word:"ゴルフ",reading:"gorufu",meaning:"Golfe"},
-    {word:"ドア",reading:"doa",meaning:"Porta"},
-    {word:"テーブル",reading:"teeburu",meaning:"Mesa"},
-    {word:"ベッド",reading:"beddo",meaning:"Cama"},
-    {word:"ペン",reading:"pen",meaning:"Caneta"},
-    {word:"ノート",reading:"nooto",meaning:"Caderno"},
-    {word:"テスト",reading:"tesuto",meaning:"Teste"},
-    {word:"パーティー",reading:"paatii",meaning:"Festa"},
-    {word:"クラス",reading:"kurasu",meaning:"Aula / Turma"},
-    {word:"ガラス",reading:"garasu",meaning:"Vidro"},
-    {word:"ゼロ",reading:"zero",meaning:"Zero"},
-    {word:"アレルギー",reading:"arerugii",meaning:"Alergia"},
-    {word:"エネルギー",reading:"enerugii",meaning:"Energia"},
-    {word:"ビタミン",reading:"bitamin",meaning:"Vitamina"},
-    {word:"ピアノ",reading:"piano",meaning:"Piano"},
-    {word:"ギター",reading:"gitaa",meaning:"Guitarra"}
-];
+L02:[{word:"かお",reading:"kao",meaning:"Rosto (cara, face)"},
+{word:"えき",reading:"eki",meaning:"Estação (de comboio)"},
+{word:"きく",reading:"kiku",meaning:"Ouvir / Perguntar"},
+{word:"いけ",reading:"ike",meaning:"Lagoa"},
+{word:"こえ",reading:"koe",meaning:"Voz"},
+{word:"あき",reading:"aki",meaning:"Outono"},
+{word:"き",reading:"ki",meaning:"Árvore / Madeira"},
+{word:"かく",reading:"kaku",meaning:"Escrever / Desenhar"}],
+
+L03:[{word:"かさ",reading:"kasa",meaning:"Guarda-chuva"},
+{word:"しお",reading:"shio",meaning:"Sal"},
+{word:"いす",reading:"isu",meaning:"Cadeira"},
+{word:"せかい",reading:"sekai",meaning:"Mundo"},
+{word:"きそく",reading:"kisoku",meaning:"Regras"},
+{word:"すいか",reading:"suika",meaning:"Melancia"},
+{word:"おかし",reading:"okashi",meaning:"Doces (guloseima)"},
+{word:"すし",reading:"sushi",meaning:"Sushi"}],
+
+L04:[{word:"した",reading:"shita",meaning:"Abaixo (embaixo, sob)"},
+{word:"くち",reading:"kuchi",meaning:"Boca"},
+{word:"つくえ",reading:"tsukue",meaning:"Secretária (mesa)"},
+{word:"て",reading:"te",meaning:"Mão"},
+{word:"いと",reading:"ito",meaning:"Fio (linha)"},
+{word:"たけ",reading:"take",meaning:"Bambu"},
+{word:"とけい",reading:"tokei",meaning:"Relógio"},
+{word:"くつ",reading:"kutsu",meaning:"Sapato"}],
+
+L05:[{word:"なつ",reading:"natsu",meaning:"Verão"},
+{word:"にし",reading:"nishi",meaning:"Oeste"},
+{word:"いぬ",reading:"inu",meaning:"Cão (cachorro)"},
+{word:"ねこ",reading:"neko",meaning:"Gato"},
+{word:"きのこ",reading:"kinoko",meaning:"Cogumelo"},
+{word:"さかな",reading:"sakana",meaning:"Peixe"},
+{word:"おかね",reading:"okane",meaning:"Dinheiro"},
+{word:"にく",reading:"niku",meaning:"Carne"}],
+
+L06:[{word:"はこ",reading:"hako",meaning:"Caixa"},
+{word:"ひ",reading:"hi",meaning:"Fogo / Dia"},
+{word:"ふね",reading:"fune",meaning:"Barco (navio)"},
+{word:"へそ",reading:"heso",meaning:"Umbigo"},
+{word:"ほし",reading:"hoshi",meaning:"Estrela"},
+{word:"はな",reading:"hana",meaning:"Flor / Nariz"},
+{word:"ふく",reading:"fuku",meaning:"Roupas"},
+{word:"はち",reading:"hachi",meaning:"Oito / Abelha"}],
+
+L07:[{word:"まち",reading:"machi",meaning:"Cidade / Bairro"},
+{word:"みみ",reading:"mimi",meaning:"Orelha"},
+{word:"むし",reading:"mushi",meaning:"Inseto"},
+{word:"め",reading:"me",meaning:"Olho"},
+{word:"もも",reading:"momo",meaning:"Pêssego"},
+{word:"あめ",reading:"ame",meaning:"Chuva / Rebuçado"},
+{word:"くも",reading:"kumo",meaning:"Nuvem / Aranha"},
+{word:"きもの",reading:"kimono",meaning:"Quimono"}],
+
+L08:[{word:"やね",reading:"yane",meaning:"Telhado"},
+{word:"ゆめ",reading:"yume",meaning:"Sonho"},
+{word:"よやく",reading:"yoyaku",meaning:"Reserva / Agendamento"},
+{word:"やま",reading:"yama",meaning:"Montanha"},
+{word:"ゆき",reading:"yuki",meaning:"Neve"},
+{word:"よむ",reading:"yomu",meaning:"Ler"},
+{word:"やさい",reading:"yasai",meaning:"Legumes / Verduras"},
+{word:"やすみ",reading:"yasumi",meaning:"Descanso (folga, feriado)"},
+{word:"ゆかた",reading:"yukata",meaning:"Yukata (quimono de verão)"},
+{word:"やくそく",reading:"yakusoku",meaning:"Promessa (compromisso)"}],
+
+L09:[{word:"さくら",reading:"sakura",meaning:"Cerejeira (flor de cerejeira)"},
+{word:"となり",reading:"tonari",meaning:"Vizinho (próximo)"},
+{word:"くるま",reading:"kuruma",meaning:"Carro"},
+{word:"れきし",reading:"rekishi",meaning:"História"},
+{word:"おふろ",reading:"ofuro",meaning:"Banheira (p/ tomar banho)"},
+{word:"きれい",reading:"kirei",meaning:"Bonito / Limpo"},
+{word:"しろ",reading:"shiro",meaning:"Branco"},
+{word:"くろ",reading:"kuro",meaning:"Preto"}],
+
+L10:[{word:"わたし",reading:"watashi",meaning:"Eu"},
+{word:"ほしをみる",reading:"hoshi o miru",meaning:"Ver as estrelas"},
+{word:"ほんをよむ",reading:"hon o yomu",meaning:"Ler um livro"},
+{word:"にほん",reading:"nihon",meaning:"Japão"},
+{word:"わかめ",reading:"wakame",meaning:"Alga marinha"},
+{word:"みかん",reading:"mikan",meaning:"Tangerina"},
+{word:"わに",reading:"wani",meaning:"Crocodilo"},
+{word:"かわ",reading:"kawa",meaning:"Rio / Pele"},
+{word:"きん",reading:"kin",meaning:"Ouro"},
+{word:"みなさん",reading:"minasan",meaning:"Todos (toda a gente)"}],
+
+L11:[{word:"てがみ",reading:"tegami",meaning:"Carta"},
+{word:"かぎ",reading:"kagi",meaning:"Chave"},
+{word:"かぐ",reading:"kagu",meaning:"Móveis (de casa)"},
+{word:"げんき",reading:"genki",meaning:"Saúde (bem-estar)"},
+{word:"りんご",reading:"ringo",meaning:"Maçã"},
+{word:"がいこく",reading:"gaikoku",meaning:"País estrangeiro"},
+{word:"たまご",reading:"tamago",meaning:"Ovo"},
+{word:"ごご",reading:"gogo",meaning:"Tarde (p.m.)"},
+{word:"めがね",reading:"megane",meaning:"Óculos"},
+{word:"ごはん",reading:"gohan",meaning:"Arroz cozido / Refeição"}],
+
+L12:[{word:"かざん",reading:"kazan",meaning:"Vulcão"},
+{word:"かんじ",reading:"kanji",meaning:"Caractere chinês"},
+{word:"みず",reading:"mizu",meaning:"Água"},
+{word:"かぜ",reading:"kaze",meaning:"Vento / Resfriado"},
+{word:"かぞく",reading:"kazoku",meaning:"Família"},
+{word:"ざんねん",reading:"zannen",meaning:"Lamentável (que pena)"},
+{word:"じしん",reading:"jishin",meaning:"Terramoto"},
+{word:"ぜんぜん",reading:"zenzen",meaning:"De jeito nenhum (negação)"},
+{word:"じかん",reading:"jikan",meaning:"Tempo (duração)"},
+{word:"ざつおん",reading:"zatsuon",meaning:"Ruído (som indesejado)"}],
+
+L13:[{word:"ひだり",reading:"hidari",meaning:"Esquerda"},
+{word:"はなぢ",reading:"hanaji",meaning:"Sangramento nasal"},
+{word:"つづく",reading:"tsuzuku",meaning:"Continuar"},
+{word:"でんわ",reading:"denwa",meaning:"Telefone"},
+{word:"まど",reading:"mado",meaning:"Janela"},
+{word:"だいがく",reading:"daigaku",meaning:"Universidade"},
+{word:"でぐち",reading:"deguchi",meaning:"Saída"},
+{word:"かたづけ",reading:"katazuke",meaning:"Organização (arrumação)"},
+{word:"どこ",reading:"doko",meaning:"Onde (pron. interrogativo)"},
+{word:"だいすき",reading:"daisuki",meaning:"Adorar (gostar muito)"}],
+
+L14:[{word:"たばこ",reading:"tabako",meaning:"Cigarro"},
+{word:"びん",reading:"bin",meaning:"Garrafa"},
+{word:"しんぶん",reading:"shinbun",meaning:"Jornal"},
+{word:"かべ",reading:"kabe",meaning:"Parede"},
+{word:"ぼく",reading:"boku",meaning:"Eu (informal masculino)"},
+{word:"ばんごはん",reading:"bangohan",meaning:"Jantar"},
+{word:"ぶんか",reading:"bunka",meaning:"Cultura"},
+{word:"べんり",reading:"benri",meaning:"Prático (conveniente)"},
+{word:"ぼんさい",reading:"bonsai",meaning:"Bonsai (arbusto japonês)"},
+{word:"ぶんがく",reading:"bungaku",meaning:"Literatura"}],
+
+L15:[{word:"でんぱ",reading:"denpa",meaning:"Onda Eletromagnética"},
+{word:"えんぴつ",reading:"enpitsu",meaning:"Lápis"},
+{word:"てんぷら",reading:"tempura",meaning:"Tempura"},
+{word:"ぺこぺこ",reading:"pekopeko",meaning:"Faminto (onom.)"},
+{word:"さんぽ",reading:"sanpo",meaning:"Passeio"},
+{word:"かんぱい",reading:"kanpai",meaning:"Saúde! (brinde ao beber)"},
+{word:"ぴかぴか",reading:"pikapika",meaning:"Brilhante / Reluzente (onom.)"},
+{word:"ぺらぺら",reading:"perapera",meaning:"Fluente em idioma (onom.)"},
+{word:"ぱくぱく",reading:"pakupaku",meaning:"Comer rapidamente (onom.)"},
+{word:"ぽかぽか",reading:"pokapoka",meaning:"Quente / Confortável (onom.)"}],
+
+L16:[{word:"けっこん",reading:"kekkon",meaning:"Casamento"},
+{word:"さっか",reading:"sakka",meaning:"Escritor (autor)"},
+{word:"きっぷ",reading:"kippu",meaning:"Bilhete (de transporte)"},
+{word:"しっぱい",reading:"shippai",meaning:"Falha (fracasso)"},
+{word:"ざっし",reading:"zasshi",meaning:"Revista"},
+{word:"きっさてん",reading:"kissaten",meaning:"Cafetaria (café)"},
+{word:"きって",reading:"kitte",meaning:"Selo (postagem)"},
+{word:"あさって",reading:"asatte",meaning:"Depois de amanhã"},
+{word:"こっち",reading:"kocchi",meaning:"Por aqui (informal)"},
+{word:"しっぽ",reading:"shippo",meaning:"Cauda (de animal)"}],
+
+L17:[{word:"おじいさん",reading:"ojiisan",meaning:"Avô"},
+{word:"おばあさん",reading:"obaasan",meaning:"Avó"},
+{word:"おとうさん",reading:"otousan",meaning:"Pai"},
+{word:"おかあさん",reading:"okaasan",meaning:"Mãe"},
+{word:"おにいさん",reading:"oniisan",meaning:"Irmão mais velho"},
+{word:"おねえさん",reading:"oneesan",meaning:"Irmã mais velha"},
+{word:"おとうとさん",reading:"otoutosan",meaning:"Irmão mais novo"},
+{word:"いもうとさん",reading:"imoutosan",meaning:"Irmã mais nova"},
+{word:"せんせい",reading:"sensei",meaning:"Professor (mestre)"},
+{word:"がくせい",reading:"gakusei",meaning:"Estudante (aluno)"},
+{word:"おおきい",reading:"ookii",meaning:"Grande"},
+{word:"ちいさい",reading:"chiisai",meaning:"Pequeno"},
+{word:"こおり",reading:"koori",meaning:"Gelo"},
+{word:"ぼうし",reading:"boushi",meaning:"Chapéu"},
+{word:"ぞう",reading:"zou",meaning:"Elefante"},
+{word:"ひこうき",reading:"hikouki",meaning:"Avião"}],
+
+L18:[{word:"とうきょう",reading:"toukyou",meaning:"Tóquio"},
+{word:"きょうと",reading:"kyouto",meaning:"Quioto"},
+{word:"きょうしつ",reading:"kyoushitsu",meaning:"Sala de aula"},
+{word:"べんきょう",reading:"benkyou",meaning:"Estudo"},
+{word:"ぎゅうにゅう",reading:"gyuunyuu",meaning:"Leite (gado bovino)"},
+{word:"でんしゃ",reading:"densha",meaning:"Comboio"},
+{word:"じてんしゃ",reading:"jitensha",meaning:"Bicicleta"},
+{word:"いしゃ",reading:"isha",meaning:"Médico"},
+{word:"じしょ",reading:"jisho",meaning:"Dicionário"},
+{word:"としょかん",reading:"toshokan",meaning:"Biblioteca"},
+{word:"しょくどう",reading:"shokudou",meaning:"Refeitório (cantina)"},
+{word:"じんじゃ",reading:"jinja",meaning:"Santuário xintoísta"},
+{word:"じゅう",reading:"juu",meaning:"Dez"},
+{word:"おちゃ",reading:"ocha",meaning:"Chá"},
+{word:"ひゃく",reading:"hyaku",meaning:"Cem"},
+{word:"さんびゃく",reading:"sanbyaku",meaning:"Trezentos"},
+{word:"びょういん",reading:"byouin",meaning:"Hospital"},
+{word:"ろっぴゃく",reading:"roppyaku",meaning:"Seiscentos"},
+{word:"りゅうがく",reading:"ryuugaku",meaning:"Estudar no exterior"},
+{word:"りょこう",reading:"ryokou",meaning:"Viagem"}]
+};
+
+const katakanaWords = {
+L01:[{word:"あい",reading:"ai",meaning:"Amor"},
+{word:"いえ",reading:"ie",meaning:"Casa"},
+{word:"うえ",reading:"ue",meaning:"Acima (em cima, sobre)"},
+{word:"え",reading:"e",meaning:"Desenho (pintura, imagem)"},
+{word:"おおい",reading:"ooi",meaning:"Muito (quantificador)"},
+{word:"あお",reading:"ao",meaning:"Azul"},
+{word:"いい",reading:"ii",meaning:"Bom / Bem"},
+{word:"あう",reading:"au",meaning:"Encontrar-se (com alguém)"}],
+
+L02:[{word:"かお",reading:"kao",meaning:"Rosto (cara, face)"},
+{word:"えき",reading:"eki",meaning:"Estação (de comboio)"},
+{word:"きく",reading:"kiku",meaning:"Ouvir / Perguntar"},
+{word:"いけ",reading:"ike",meaning:"Lagoa"},
+{word:"こえ",reading:"koe",meaning:"Voz"},
+{word:"あき",reading:"aki",meaning:"Outono"},
+{word:"き",reading:"ki",meaning:"Árvore / Madeira"},
+{word:"かく",reading:"kaku",meaning:"Escrever / Desenhar"}],
+
+L03:[{word:"かさ",reading:"kasa",meaning:"Guarda-chuva"},
+{word:"しお",reading:"shio",meaning:"Sal"},
+{word:"いす",reading:"isu",meaning:"Cadeira"},
+{word:"せかい",reading:"sekai",meaning:"Mundo"},
+{word:"きそく",reading:"kisoku",meaning:"Regras"},
+{word:"すいか",reading:"suika",meaning:"Melancia"},
+{word:"おかし",reading:"okashi",meaning:"Doces (guloseima)"},
+{word:"すし",reading:"sushi",meaning:"Sushi"}],
+
+L04:[{word:"した",reading:"shita",meaning:"Abaixo (embaixo, sob)"},
+{word:"くち",reading:"kuchi",meaning:"Boca"},
+{word:"つくえ",reading:"tsukue",meaning:"Secretária (mesa)"},
+{word:"て",reading:"te",meaning:"Mão"},
+{word:"いと",reading:"ito",meaning:"Fio (linha)"},
+{word:"たけ",reading:"take",meaning:"Bambu"},
+{word:"とけい",reading:"tokei",meaning:"Relógio"},
+{word:"くつ",reading:"kutsu",meaning:"Sapato"}],
+
+L05:[{word:"なつ",reading:"natsu",meaning:"Verão"},
+{word:"にし",reading:"nishi",meaning:"Oeste"},
+{word:"いぬ",reading:"inu",meaning:"Cão (cachorro)"},
+{word:"ねこ",reading:"neko",meaning:"Gato"},
+{word:"きのこ",reading:"kinoko",meaning:"Cogumelo"},
+{word:"さかな",reading:"sakana",meaning:"Peixe"},
+{word:"おかね",reading:"okane",meaning:"Dinheiro"},
+{word:"にく",reading:"niku",meaning:"Carne"}],
+
+L06:[{word:"はこ",reading:"hako",meaning:"Caixa"},
+{word:"ひ",reading:"hi",meaning:"Fogo / Dia"},
+{word:"ふね",reading:"fune",meaning:"Barco (navio)"},
+{word:"へそ",reading:"heso",meaning:"Umbigo"},
+{word:"ほし",reading:"hoshi",meaning:"Estrela"},
+{word:"はな",reading:"hana",meaning:"Flor / Nariz"},
+{word:"ふく",reading:"fuku",meaning:"Roupas"},
+{word:"はち",reading:"hachi",meaning:"Oito / Abelha"}],
+
+L07:[{word:"まち",reading:"machi",meaning:"Cidade / Bairro"},
+{word:"みみ",reading:"mimi",meaning:"Orelha"},
+{word:"むし",reading:"mushi",meaning:"Inseto"},
+{word:"め",reading:"me",meaning:"Olho"},
+{word:"もも",reading:"momo",meaning:"Pêssego"},
+{word:"あめ",reading:"ame",meaning:"Chuva / Rebuçado"},
+{word:"くも",reading:"kumo",meaning:"Nuvem / Aranha"},
+{word:"きもの",reading:"kimono",meaning:"Quimono"}],
+
+L08:[{word:"やね",reading:"yane",meaning:"Telhado"},
+{word:"ゆめ",reading:"yume",meaning:"Sonho"},
+{word:"よやく",reading:"yoyaku",meaning:"Reserva / Agendamento"},
+{word:"やま",reading:"yama",meaning:"Montanha"},
+{word:"ゆき",reading:"yuki",meaning:"Neve"},
+{word:"よむ",reading:"yomu",meaning:"Ler"},
+{word:"やさい",reading:"yasai",meaning:"Legumes / Verduras"},
+{word:"やすみ",reading:"yasumi",meaning:"Descanso (folga, feriado)"},
+{word:"ゆかた",reading:"yukata",meaning:"Yukata (quimono de verão)"},
+{word:"やくそく",reading:"yakusoku",meaning:"Promessa (compromisso)"}],
+
+L09:[{word:"さくら",reading:"sakura",meaning:"Cerejeira (flor de cerejeira)"},
+{word:"となり",reading:"tonari",meaning:"Vizinho (próximo)"},
+{word:"くるま",reading:"kuruma",meaning:"Carro"},
+{word:"れきし",reading:"rekishi",meaning:"História"},
+{word:"おふろ",reading:"ofuro",meaning:"Banheira (p/ tomar banho)"},
+{word:"きれい",reading:"kirei",meaning:"Bonito / Limpo"},
+{word:"しろ",reading:"shiro",meaning:"Branco"},
+{word:"くろ",reading:"kuro",meaning:"Preto"}],
+
+L10:[{word:"わたし",reading:"watashi",meaning:"Eu"},
+{word:"ほしをみる",reading:"hoshi o miru",meaning:"Ver as estrelas"},
+{word:"ほんをよむ",reading:"hon o yomu",meaning:"Ler um livro"},
+{word:"にほん",reading:"nihon",meaning:"Japão"},
+{word:"わかめ",reading:"wakame",meaning:"Alga marinha"},
+{word:"みかん",reading:"mikan",meaning:"Tangerina"},
+{word:"わに",reading:"wani",meaning:"Crocodilo"},
+{word:"かわ",reading:"kawa",meaning:"Rio / Pele"},
+{word:"きん",reading:"kin",meaning:"Ouro"},
+{word:"みなさん",reading:"minasan",meaning:"Todos (toda a gente)"}],
+
+L11:[{word:"てがみ",reading:"tegami",meaning:"Carta"},
+{word:"かぎ",reading:"kagi",meaning:"Chave"},
+{word:"かぐ",reading:"kagu",meaning:"Móveis (de casa)"},
+{word:"げんき",reading:"genki",meaning:"Saúde (bem-estar)"},
+{word:"りんご",reading:"ringo",meaning:"Maçã"},
+{word:"がいこく",reading:"gaikoku",meaning:"País estrangeiro"},
+{word:"たまご",reading:"tamago",meaning:"Ovo"},
+{word:"ごご",reading:"gogo",meaning:"Tarde (p.m.)"},
+{word:"めがね",reading:"megane",meaning:"Óculos"},
+{word:"ごはん",reading:"gohan",meaning:"Arroz cozido / Refeição"}],
+
+L12:[{word:"かざん",reading:"kazan",meaning:"Vulcão"},
+{word:"かんじ",reading:"kanji",meaning:"Caractere chinês"},
+{word:"みず",reading:"mizu",meaning:"Água"},
+{word:"かぜ",reading:"kaze",meaning:"Vento / Resfriado"},
+{word:"かぞく",reading:"kazoku",meaning:"Família"},
+{word:"ざんねん",reading:"zannen",meaning:"Lamentável (que pena)"},
+{word:"じしん",reading:"jishin",meaning:"Terramoto"},
+{word:"ぜんぜん",reading:"zenzen",meaning:"De jeito nenhum (negação)"},
+{word:"じかん",reading:"jikan",meaning:"Tempo (duração)"},
+{word:"ざつおん",reading:"zatsuon",meaning:"Ruído (som indesejado)"}],
+
+L13:[{word:"ひだり",reading:"hidari",meaning:"Esquerda"},
+{word:"はなぢ",reading:"hanaji",meaning:"Sangramento nasal"},
+{word:"つづく",reading:"tsuzuku",meaning:"Continuar"},
+{word:"でんわ",reading:"denwa",meaning:"Telefone"},
+{word:"まど",reading:"mado",meaning:"Janela"},
+{word:"だいがく",reading:"daigaku",meaning:"Universidade"},
+{word:"でぐち",reading:"deguchi",meaning:"Saída"},
+{word:"かたづけ",reading:"katazuke",meaning:"Organização (arrumação)"},
+{word:"どこ",reading:"doko",meaning:"Onde (pron. interrogativo)"},
+{word:"だいすき",reading:"daisuki",meaning:"Adorar (gostar muito)"}],
+
+L14:[{word:"たばこ",reading:"tabako",meaning:"Cigarro"},
+{word:"びん",reading:"bin",meaning:"Garrafa"},
+{word:"しんぶん",reading:"shinbun",meaning:"Jornal"},
+{word:"かべ",reading:"kabe",meaning:"Parede"},
+{word:"ぼく",reading:"boku",meaning:"Eu (informal masculino)"},
+{word:"ばんごはん",reading:"bangohan",meaning:"Jantar"},
+{word:"ぶんか",reading:"bunka",meaning:"Cultura"},
+{word:"べんり",reading:"benri",meaning:"Prático (conveniente)"},
+{word:"ぼんさい",reading:"bonsai",meaning:"Bonsai (arbusto japonês)"},
+{word:"ぶんがく",reading:"bungaku",meaning:"Literatura"}],
+
+L15:[{word:"でんぱ",reading:"denpa",meaning:"Onda Eletromagnética"},
+{word:"えんぴつ",reading:"enpitsu",meaning:"Lápis"},
+{word:"てんぷら",reading:"tempura",meaning:"Tempura"},
+{word:"ぺこぺこ",reading:"pekopeko",meaning:"Faminto (onom.)"},
+{word:"さんぽ",reading:"sanpo",meaning:"Passeio"},
+{word:"かんぱい",reading:"kanpai",meaning:"Saúde! (brinde ao beber)"},
+{word:"ぴかぴか",reading:"pikapika",meaning:"Brilhante / Reluzente (onom.)"},
+{word:"ぺらぺら",reading:"perapera",meaning:"Fluente em idioma (onom.)"},
+{word:"ぱくぱく",reading:"pakupaku",meaning:"Comer rapidamente (onom.)"},
+{word:"ぽかぽか",reading:"pokapoka",meaning:"Quente / Confortável (onom.)"}],
+
+L16:[{word:"けっこん",reading:"kekkon",meaning:"Casamento"},
+{word:"さっか",reading:"sakka",meaning:"Escritor (autor)"},
+{word:"きっぷ",reading:"kippu",meaning:"Bilhete (de transporte)"},
+{word:"しっぱい",reading:"shippai",meaning:"Falha (fracasso)"},
+{word:"ざっし",reading:"zasshi",meaning:"Revista"},
+{word:"きっさてん",reading:"kissaten",meaning:"Cafetaria (café)"},
+{word:"きって",reading:"kitte",meaning:"Selo (postagem)"},
+{word:"あさって",reading:"asatte",meaning:"Depois de amanhã"},
+{word:"こっち",reading:"kocchi",meaning:"Por aqui (informal)"},
+{word:"しっぽ",reading:"shippo",meaning:"Cauda (de animal)"}],
+
+L17:[{word:"おじいさん",reading:"ojiisan",meaning:"Avô"},
+{word:"おばあさん",reading:"obaasan",meaning:"Avó"},
+{word:"おとうさん",reading:"otousan",meaning:"Pai"},
+{word:"おかあさん",reading:"okaasan",meaning:"Mãe"},
+{word:"おにいさん",reading:"oniisan",meaning:"Irmão mais velho"},
+{word:"おねえさん",reading:"oneesan",meaning:"Irmã mais velha"},
+{word:"おとうとさん",reading:"otoutosan",meaning:"Irmão mais novo"},
+{word:"いもうとさん",reading:"imoutosan",meaning:"Irmã mais nova"},
+{word:"せんせい",reading:"sensei",meaning:"Professor (mestre)"},
+{word:"がくせい",reading:"gakusei",meaning:"Estudante (aluno)"},
+{word:"おおきい",reading:"ookii",meaning:"Grande"},
+{word:"ちいさい",reading:"chiisai",meaning:"Pequeno"},
+{word:"こおり",reading:"koori",meaning:"Gelo"},
+{word:"ぼうし",reading:"boushi",meaning:"Chapéu"},
+{word:"ぞう",reading:"zou",meaning:"Elefante"},
+{word:"ひこうき",reading:"hikouki",meaning:"Avião"}],
+
+L18:[{word:"とうきょう",reading:"toukyou",meaning:"Tóquio"},
+{word:"きょうと",reading:"kyouto",meaning:"Quioto"},
+{word:"きょうしつ",reading:"kyoushitsu",meaning:"Sala de aula"},
+{word:"べんきょう",reading:"benkyou",meaning:"Estudo"},
+{word:"ぎゅうにゅう",reading:"gyuunyuu",meaning:"Leite (gado bovino)"},
+{word:"でんしゃ",reading:"densha",meaning:"Comboio"},
+{word:"じてんしゃ",reading:"jitensha",meaning:"Bicicleta"},
+{word:"いしゃ",reading:"isha",meaning:"Médico"},
+{word:"じしょ",reading:"jisho",meaning:"Dicionário"},
+{word:"としょかん",reading:"toshokan",meaning:"Biblioteca"},
+{word:"しょくどう",reading:"shokudou",meaning:"Refeitório (cantina)"},
+{word:"じんじゃ",reading:"jinja",meaning:"Santuário xintoísta"},
+{word:"じゅう",reading:"juu",meaning:"Dez"},
+{word:"おちゃ",reading:"ocha",meaning:"Chá"},
+{word:"ひゃく",reading:"hyaku",meaning:"Cem"},
+{word:"さんびゃく",reading:"sanbyaku",meaning:"Trezentos"},
+{word:"びょういん",reading:"byouin",meaning:"Hospital"},
+{word:"ろっぴゃく",reading:"roppyaku",meaning:"Seiscentos"},
+{word:"りゅうがく",reading:"ryuugaku",meaning:"Estudar no exterior"},
+{word:"りょこう",reading:"ryokou",meaning:"Viagem"}]
+};
 
     const hiraganaGroups={A:[{char:"あ",reading:"a"},{char:"い",reading:"i"},{char:"う",reading:"u"},{char:"え",reading:"e"},{char:"お",reading:"o"}],KA:[{char:"か",reading:"ka"},{char:"き",reading:"ki"},{char:"く",reading:"ku"},{char:"け",reading:"ke"},{char:"こ",reading:"ko"}],GA:[{char:"が",reading:"ga"},{char:"ぎ",reading:"gi"},{char:"ぐ",reading:"gu"},{char:"げ",reading:"ge"},{char:"ご",reading:"go"}],SA:[{char:"さ",reading:"sa"},{char:"し",reading:"shi"},{char:"す",reading:"su"},{char:"せ",reading:"se"},{char:"そ",reading:"so"}],ZA:[{char:"ざ",reading:"za"},{char:"じ",reading:"ji"},{char:"ず",reading:"zu"},{char:"ぜ",reading:"ze"},{char:"ぞ",reading:"zo"}],TA:[{char:"た",reading:"ta"},{char:"ち",reading:"chi"},{char:"つ",reading:"tsu"},{char:"て",reading:"te"},{char:"と",reading:"to"}],DA:[{char:"だ",reading:"da"},{char:"ぢ",reading:"ji"},{char:"づ",reading:"zu"},{char:"で",reading:"de"},{char:"ど",reading:"do"}],NA:[{char:"な",reading:"na"},{char:"に",reading:"ni"},{char:"ぬ",reading:"nu"},{char:"ね",reading:"ne"},{char:"の",reading:"no"}],HA:[{char:"は",reading:"ha"},{char:"ひ",reading:"hi"},{char:"ふ",reading:"fu"},{char:"へ",reading:"he"},{char:"ほ",reading:"ho"}],BA:[{char:"ば",reading:"ba"},{char:"び",reading:"bi"},{char:"ぶ",reading:"bu"},{char:"べ",reading:"be"},{char:"ぼ",reading:"bo"}],PA:[{char:"ぱ",reading:"pa"},{char:"ぴ",reading:"pi"},{char:"ぷ",reading:"pu"},{char:"ぺ",reading:"pe"},{char:"ぽ",reading:"po"}],MA:[{char:"ま",reading:"ma"},{char:"み",reading:"mi"},{char:"む",reading:"mu"},{char:"め",reading:"me"},{char:"も",reading:"mo"}],YA:[{char:"や",reading:"ya"},{char:"ゆ",reading:"yu"},{char:"よ",reading:"yo"}],RA:[{char:"ら",reading:"ra"},{char:"り",reading:"ri"},{char:"る",reading:"ru"},{char:"れ",reading:"re"},{char:"ろ",reading:"ro"}],WA:[{char:"わ",reading:"wa"},{char:"を",reading:"wo"},{char:"ん",reading:"n"}],YOON:[{char:"きゃ",reading:"kya"},{char:"きゅ",reading:"kyu"},{char:"きょ",reading:"kyo"},{char:"ぎゃ",reading:"gya"},{char:"ぎゅ",reading:"gyu"},{char:"ぎょ",reading:"gyo"},{char:"しゃ",reading:"sha"},{char:"しゅ",reading:"shu"},{char:"しょ",reading:"sho"},{char:"じゃ",reading:"ja"},{char:"じゅ",reading:"ju"},{char:"じょ",reading:"jo"},{char:"ちゃ",reading:"cha"},{char:"ちゅ",reading:"chu"},{char:"ちょ",reading:"cho"},{char:"にゃ",reading:"nya"},{char:"にゅ",reading:"nyu"},{char:"にょ",reading:"nyo"},{char:"ひゃ",reading:"hya"},{char:"ひゅ",reading:"hyu"},{char:"ひょ",reading:"hyo"},{char:"びゃ",reading:"bya"},{char:"びゅ",reading:"byu"},{char:"びょ",reading:"byo"},{char:"ぴゃ",reading:"pya"},{char:"ぴゅ",reading:"pyu"},{char:"ぴょ",reading:"pyo"},{char:"みゃ",reading:"mya"},{char:"みゅ",reading:"myu"},{char:"みょ",reading:"myo"},{char:"りゃ",reading:"rya"},{char:"りゅ",reading:"ryu"},{char:"りょ",reading:"ryo"}]};
     const katakanaGroups={A:[{char:"ア",reading:"a"},{char:"イ",reading:"i"},{char:"ウ",reading:"u"},{char:"エ",reading:"e"},{char:"オ",reading:"o"}],KA:[{char:"カ",reading:"ka"},{char:"キ",reading:"ki"},{char:"ク",reading:"ku"},{char:"ケ",reading:"ke"},{char:"コ",reading:"ko"}],GA:[{char:"ガ",reading:"ga"},{char:"ギ",reading:"gi"},{char:"グ",reading:"gu"},{char:"ゲ",reading:"ge"},{char:"ゴ",reading:"go"}],SA:[{char:"サ",reading:"sa"},{char:"シ",reading:"shi"},{char:"ス",reading:"su"},{char:"セ",reading:"se"},{char:"ソ",reading:"so"}],ZA:[{char:"ザ",reading:"za"},{char:"ジ",reading:"ji"},{char:"ズ",reading:"zu"},{char:"ゼ",reading:"ze"},{char:"ゾ",reading:"zo"}],TA:[{char:"タ",reading:"ta"},{char:"チ",reading:"chi"},{char:"ツ",reading:"tsu"},{char:"テ",reading:"te"},{char:"ト",reading:"to"}],DA:[{char:"ダ",reading:"da"},{char:"ヂ",reading:"ji"},{char:"ヅ",reading:"zu"},{char:"デ",reading:"de"},{char:"ド",reading:"do"}],NA:[{char:"ナ",reading:"na"},{char:"ニ",reading:"ni"},{char:"ヌ",reading:"nu"},{char:"ネ",reading:"ne"},{char:"ノ",reading:"no"}],HA:[{char:"ハ",reading:"ha"},{char:"ヒ",reading:"hi"},{char:"フ",reading:"fu"},{char:"ヘ",reading:"he"},{char:"ホ",reading:"ho"}],BA:[{char:"バ",reading:"ba"},{char:"ビ",reading:"bi"},{char:"ブ",reading:"bu"},{char:"ベ",reading:"be"},{char:"ボ",reading:"bo"}],PA:[{char:"パ",reading:"pa"},{char:"ピ",reading:"pi"},{char:"プ",reading:"pu"},{char:"ペ",reading:"pe"},{char:"ポ",reading:"po"}],MA:[{char:"マ",reading:"ma"},{char:"ミ",reading:"mi"},{char:"ム",reading:"mu"},{char:"メ",reading:"me"},{char:"モ",reading:"mo"}],YA:[{char:"ヤ",reading:"ya"},{char:"ユ",reading:"yu"},{char:"ヨ",reading:"yo"}],RA:[{char:"ラ",reading:"ra"},{char:"リ",reading:"ri"},{char:"ル",reading:"ru"},{char:"レ",reading:"re"},{char:"ロ",reading:"ro"}],WA:[{char:"ワ",reading:"wa"},{char:"ヲ",reading:"wo"},{char:"ン",reading:"n"}],YOON:[{char:"キャ",reading:"kya"},{char:"キュ",reading:"kyu"},{char:"キョ",reading:"kyo"},{char:"ギャ",reading:"gya"},{char:"ギュ",reading:"gyu"},{char:"ギョ",reading:"gyo"},{char:"シャ",reading:"sha"},{char:"シュ",reading:"shu"},{char:"ショ",reading:"sho"},{char:"ジャ",reading:"ja"},{char:"ジュ",reading:"ju"},{char:"ジョ",reading:"jo"},{char:"チャ",reading:"cha"},{char:"チュ",reading:"chu"},{char:"チョ",reading:"cho"},{char:"ニャ",reading:"nya"},{char:"ニュ",reading:"nyu"},{char:"ニョ",reading:"nyo"},{char:"ヒャ",reading:"hya"},{char:"ヒュ",reading:"hyu"},{char:"ヒョ",reading:"hyo"},{char:"ビャ",reading:"bya"},{char:"ビュ",reading:"byu"},{char:"ビョ",reading:"byo"},{char:"ピャ",reading:"pya"},{char:"ピュ",reading:"pyu"},{char:"ピョ",reading:"pyo"},{char:"ミャ",reading:"mya"},{char:"ミュ",reading:"myu"},{char:"ミョ",reading:"myo"},{char:"リャ",reading:"rya"},{char:"リュ",reading:"ryu"},{char:"リョ",reading:"ryo"}]};
@@ -309,32 +623,41 @@ const katakanaWords=[
 
     // Vocabulary specific
     const vocabScriptRadios = document.querySelectorAll('input[name="vocabScript"]');
-    const showAllBtn = document.getElementById("showAllBtn");
-    const allWordsContainer = document.getElementById("allWordsContainer");
+    const showAllBtn1 = document.getElementById("showAllBtn1");
+    const showAllBtn2 = document.getElementById("showAllBtn2");
+    const allWordsContainer1 = document.getElementById("allWordsContainer1");
+    const allWordsContainer2 = document.getElementById("allWordsContainer2");
 
     // Kana specific
     const kanaScriptRadios = document.querySelectorAll('input[name="kanaScript"]');
-    const optionsBtn = document.getElementById("optionsBtn");
-    const optionsPanel = document.getElementById("options");
+    const optionsBtn1 = document.getElementById("optionsBtn1");
+    const optionsBtn2 = document.getElementById("optionsBtn2");
+    const optionsPanel1 = document.getElementById("options1");
+    const optionsPanel2 = document.getElementById("options2");
     const checkAllHira = document.getElementById("checkAllHira");
     const groupCheckboxesHira = document.querySelectorAll(".group-checkbox-hira");
     const checkAllKata = document.getElementById("checkAllKata");
     const groupCheckboxesKata = document.querySelectorAll(".group-checkbox-kata");
+    const checkAllWordsHira = document.getElementById("checkAllWordsHira");
+    const groupCheckboxesWordsHira = document.querySelectorAll(".group-checkbox-words-hira");
+    const checkAllWordsKata = document.getElementById("checkAllWordsKata");
+    const groupCheckboxesWordsKata = document.querySelectorAll(".group-checkbox-words-kata");
 
     // ===== CORE MERGED FUNCTIONS =====
 
 function buildDeck() {
     deck = [];
     if (currentAppMode === 'vocab') {
-        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-        if (vocabMode === 'hira') {
-            deck = [...hiraganaWords];
-        } else if (vocabMode === 'kata') {
-            deck = [...katakanaWords];
-        } else if (vocabMode === 'mixed') {
-            deck = [...hiraganaWords, ...katakanaWords];
-        }
-        // 'random' mode doesn't need a pre-built deck
+            for (const key in hiraganaWords) {
+                if (document.getElementById('wrd' + key)?.checked) {
+                    deck.push(...hiraganaWords[key]);
+                }
+            }
+            for (const key in katakanaWords) {
+                if (document.getElementById('wrd' + key + '_kata')?.checked) {
+                    deck.push(...katakanaWords[key]);
+                }
+            }
     } else if (currentAppMode === 'kana') {
             for (const key in hiraganaGroups) {
                 if (document.getElementById('grp' + key)?.checked) {
@@ -370,9 +693,7 @@ function buildDeck() {
             const idx = Math.floor(Math.random() * deck.length);
             currentItem = deck.splice(idx, 1)[0];
             
-            if (vocabMode === 'mixed') {
-                 promptDisplay.textContent = generateMixedWord(currentItem.reading);
-            } else {
+            if (vocabMode === 'normal') {
                  promptDisplay.textContent = currentItem.word;
             }
             meaningDisplay.textContent = "...";
@@ -427,10 +748,15 @@ function buildDeck() {
         correctDisplay.textContent = 0;
         incorrectDisplay.textContent = 0;
         currentItem = null;
-        allWordsContainer.style.display = 'none';
+        allWordsContainer1.style.display = 'none';
+        allWordsContainer2.style.display = 'none';
+        options1.style.display = 'none';
+        options2.style.display = 'none';
         
         updateUIVisibility(); // Adjust UI based on mode
         buildDeck();
+        toggleAllWords1();
+        toggleAllWords2();
         nextItem();
     }
     
@@ -488,21 +814,6 @@ function buildDeck() {
         }
     }
 
-    // ===== VOCABULARY SPECIFIC FUNCTIONS =====
-    function generateMixedWord(reading) {
-        const syllables = reading.split(' ');
-        let mixedWord = '';
-        for (const syl of syllables) {
-            if (romajiToKana[syl]) {
-                const chosenKana = Math.random() < 0.5 ? romajiToKana[syl].hira : romajiToKana[syl].kata;
-                mixedWord += chosenKana;
-            } else {
-                mixedWord += syl; // Fallback
-            }
-        }
-        return mixedWord;
-    }
-
     function generateRandomSyllableWord(maxLength) {
         const syllables = Object.keys(romajiToKana);
         const wordLength = Math.floor(Math.random() * (maxLength - 1)) + 2;
@@ -521,34 +832,66 @@ function buildDeck() {
             meaning: "Palavra Aleatória"
         };
     }
-    
-    function toggleAllWords() {
-        if (allWordsContainer.style.display === "block") {
-            allWordsContainer.style.display = "none";
+
+    function showAllWords1() {
+        if (allWordsContainer1.style.display === "block") {
+            allWordsContainer1.style.display = "none";
             return;
         }
-        allWordsContainer.innerHTML = '';
+        allWordsContainer1.style.display = "block";
+    }
+
+    function showAllWords2() {
+        if (allWordsContainer2.style.display === "block") {
+            allWordsContainer2.style.display = "none";
+            return;
+        }
+        allWordsContainer2.style.display = "block";
+    }
+    
+    function toggleAllWords1() {
+        allWordsContainer1.innerHTML = '';
         
         const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-        const isKatakana = vocabMode === 'kata';
-        const sourceList = isKatakana ? katakanaWords : hiraganaWords;
-        const listTitle = isKatakana ? "Lista de Palavras Katakana" : "Lista de Palavras Hiragana";
+        const isNormal = vocabMode === 'normal';
+        const sourceList = deck;
+        const listTitle = "Lista de Palavras";
         
         const titleElement = document.createElement('h3');
         titleElement.textContent = listTitle;
-        allWordsContainer.appendChild(titleElement);
+        allWordsContainer1.appendChild(titleElement);
         
         sourceList.forEach(item => {
             const p = document.createElement('p');
             p.innerHTML = `<strong>${item.word}</strong> (${item.reading}) - ${item.meaning}`;
-            allWordsContainer.appendChild(p);
+            allWordsContainer1.appendChild(p);
         });
-        allWordsContainer.style.display = "block";
+    }
+
+    function toggleAllWords2() {
+        allWordsContainer2.innerHTML = '';
+        
+        const sourceList = deck;
+        const listTitle = "Lista de Kana";
+        
+        const titleElement = document.createElement('h3');
+        titleElement.textContent = listTitle;
+        allWordsContainer2.appendChild(titleElement);
+        
+        sourceList.forEach(item => {
+            const p = document.createElement('p');
+            p.innerHTML = `<strong>${item.char}</strong> - ${item.reading}`;
+            allWordsContainer2.appendChild(p);
+        });
     }
 
     // ===== KANA SPECIFIC FUNCTIONS =====
-    function toggleOptionsPanel() {
-        optionsPanel.style.display = (optionsPanel.style.display === "none") ? "flex" : "none";
+    function toggleOptionsPanel1() {
+        optionsPanel1.style.display = (optionsPanel1.style.display === "none") ? "flex" : "none";
+    }
+
+    function toggleOptionsPanel2() {
+        optionsPanel2.style.display = (optionsPanel2.style.display === "none") ? "flex" : "none";
     }
 
     // ===== EVENT LISTENERS =====
@@ -566,15 +909,20 @@ function buildDeck() {
 
     // --- Vocabulary Controls ---
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
-        allWordsContainer.style.display = 'none';
+        allWordsContainer1.style.display = 'none';
+        options1.style.display = 'none';
+        const isNormal = document.querySelector('input[name="vocabScript"]:checked').value === 'normal';
         const isRandom = document.querySelector('input[name="vocabScript"]:checked').value === 'random';
-        const isMixed = document.querySelector('input[name="vocabScript"]:checked').value === 'mixed';
-        showAllBtn.disabled = isRandom || isMixed;
+        showAllBtn1.disabled = isRandom;
+        optionsBtn1.disabled = isRandom;
+        resetGame();
     }));
-    showAllBtn.addEventListener("click", toggleAllWords);
+    showAllBtn1.addEventListener("click", showAllWords1);
+    showAllBtn2.addEventListener("click", showAllWords2);
 
     // --- Kana Controls ---
-    optionsBtn.addEventListener("click", toggleOptionsPanel);
+    optionsBtn1.addEventListener("click", toggleOptionsPanel1);
+    optionsBtn2.addEventListener("click", toggleOptionsPanel2);
     
     // Check-all logic for Hiragana
     checkAllHira.addEventListener('change', () => {
@@ -590,6 +938,20 @@ function buildDeck() {
     });
     groupCheckboxesKata.forEach(checkbox => checkbox.addEventListener('change', () => {
         checkAllKata.checked = Array.from(groupCheckboxesKata).every(cb => cb.checked);
+    }));
+
+    checkAllWordsHira.addEventListener('change', () => {
+        groupCheckboxesWordsHira.forEach(checkbox => checkbox.checked = checkAllWordsHira.checked);
+    });
+    groupCheckboxesWordsHira.forEach(checkbox => checkbox.addEventListener('change', () => {
+        checkAllWordsHira.checked = Array.from(groupCheckboxesWordsHira).every(cb => cb.checked);
+    }));
+
+    checkAllWordsKata.addEventListener('change', () => {
+        groupCheckboxesWordsKata.forEach(checkbox => checkbox.checked = checkAllWordsKata.checked);
+    });
+    groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => {
+        checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked);
     }));
 
     // --- Initial setup ---
