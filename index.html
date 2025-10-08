@@ -309,13 +309,13 @@ function buildDeck() {
             vocabControls.style.display = 'block';
             kanaControls.style.display = 'none';
             meaningDisplay.style.display = 'block';
-            answerBox.placeholder = "Leitura da Palavra";
-            answerBox.maxLength = 50;
+            answerBox.placeholder = "Romaji";
+            answerBox.maxLength = 30;
         } else { // kana mode
             vocabControls.style.display = 'none';
             kanaControls.style.display = 'block';
             meaningDisplay.style.display = 'none';
-            answerBox.placeholder = "Romaji do Caracter";
+            answerBox.placeholder = "Romaji";
             answerBox.maxLength = 4;
         }
     }
