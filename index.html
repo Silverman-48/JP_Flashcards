@@ -67,6 +67,7 @@
         <!--<h3>Escolha o Modo de Prática:</h3>-->
         <label><input type="radio" name="appMode" value="kana" checked> Kana</label>
         <label><input type="radio" name="appMode" value="vocab"> Vocabulário</label>
+        <label><input type="radio" name="appMode" value="random"> Aleatório</label>
     </div>
 
     <div id="meaningDisplay">...</div>
@@ -142,8 +143,6 @@
         <div class="mode-choice">
             <label><input type="radio" name="vocabScript" value="normal" checked> Normal</label>
             <label><input type="radio" name="vocabScript" value="alt"> Inverso</label>
-            <br>
-            <label><input type="radio" name="vocabScript" value="random"> Aleatório</label>
         </div>
         <button id="showAllBtn1">Ver Lista de Palavras</button>
         <br>
@@ -834,14 +833,6 @@ function buildDeck() {
         // --- Vocabulary Mode ---
         if (currentAppMode === 'vocab') {
             const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-            if (vocabMode === 'random') {
-                currentItem = generateRandomSyllableWord(4);
-                promptDisplay.textContent = currentItem.word;
-                meaningDisplay.textContent = currentItem.meaning;
-                remainingCount.textContent = "∞";
-                resetUIState();
-                return;
-            }
             
             if (deck.length === 0) {
                 showEndScreen('Pressiona "Reiniciar" para começar de novo!');
@@ -875,6 +866,13 @@ function buildDeck() {
             } else {
                 promptDisplay.textContent = currentItem.word;
             }
+        } else if (currentAppMode === 'random') {
+            currentItem = generateRandomSyllableWord(4);
+            promptDisplay.textContent = currentItem.word;
+            meaningDisplay.textContent = currentItem.meaning;
+            remainingCount.textContent = "∞";
+            resetUIState();
+            return;
         }
 
         resetUIState();
@@ -954,7 +952,7 @@ function buildDeck() {
             answerBox.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
-        } else { // kana mode
+        } else if (currentAppMode === 'kana') {
             vocabControls.style.display = 'none';
             kanaControls.style.display = 'block';
 
@@ -973,6 +971,14 @@ function buildDeck() {
                 answerBox.maxLength = 4;
                 checkBtn.textContent = 'Verificar';
             }
+        } else if (currentAppMode === 'random') {
+            vocabControls.style.display = 'none';
+            kanaControls.style.display = 'none';
+            meaningDisplay.style.display = 'none';
+            answerCounters.style.display = 'inline-block';
+            answerBox.style.display = 'inline-block';
+            answerBox.placeholder = "Romaji";
+            answerBox.maxLength = 30;
         }
     }
 
@@ -1010,7 +1016,7 @@ function buildDeck() {
         const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
 
         // If in vocabulary mode and the sub-mode is 'random', display infinity
-        if (currentAppMode === 'vocab' && vocabMode === 'random') {
+        if (currentAppMode === 'random') {
             remainingCount.textContent = "∞";
             return; // Exit the function here for random mode
         }
@@ -1046,7 +1052,6 @@ function buildDeck() {
         return {
             word: generatedKana,
             reading: generatedReading.trim(),
-            meaning: "Palavra Aleatória"
         };
     }
 
@@ -1132,9 +1137,6 @@ function buildDeck() {
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
         allWordsContainer1.style.display = 'none';
         options1.style.display = 'none';
-        const isRandom = document.querySelector('input[name="vocabScript"]:checked').value === 'random';
-        showAllBtn1.disabled = isRandom;
-        optionsBtn1.disabled = isRandom;
         resetGame();
     }));
     showAllBtn1.addEventListener("click", showAllWords1);
