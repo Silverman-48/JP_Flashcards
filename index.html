@@ -80,10 +80,14 @@
     
     <div class="stats">
         Restantes: <span id="remainingCount">0</span><br>
-        Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span>
+        <span id="answerCounters">Corretos: <span id="correctCount">0</span> | Incorretos: <span id="incorrectCount">0</span></span>
     </div>
 
     <div id="kana-controls" class="sub-options">
+        <div class="mode-choice">
+            <label><input type="radio" name="kanaScript" value="normal" checked> Normal</label>
+            <label><input type="radio" name="kanaScript" value="reverse"> Inverso</label>
+        </div>
         <button id="showAllBtn2">Ver Linhas Selecionadas</button>
         <br>
         <button id="optionsBtn2">Ver/Esconder Linhas de Kana</button>
@@ -812,12 +816,14 @@ function buildDeck() {
     } else if (currentAppMode === 'kana') {
             for (const key in hiraganaGroups) {
                 if (document.getElementById('grp' + key)?.checked) {
-                    deck.push(...hiraganaGroups[key]);
+                    const items = hiraganaGroups[key].map(item => ({ ...item, type: 'Hiragana' }));
+                    deck.push(...items);
                 }
             }
             for (const key in katakanaGroups) {
                 if (document.getElementById('grp' + key + '_kata')?.checked) {
-                    deck.push(...katakanaGroups[key]);
+                    const items = katakanaGroups[key].map(item => ({ ...item, type: 'Katakana' }));
+                    deck.push(...items);
                 }
             }
     }
@@ -860,9 +866,15 @@ function buildDeck() {
             }
             const idx = Math.floor(Math.random() * deck.length);
             currentItem = deck.splice(idx, 1)[0];
-            // Standardize property for checkAnswer
-            currentItem.word = currentItem.char; 
-            promptDisplay.textContent = currentItem.word;
+            currentItem.word = currentItem.char;
+
+            const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
+            if (kanaMode === 'reverse') {
+                promptDisplay.textContent = currentItem.reading;
+                meaningDisplay.textContent = `(${currentItem.type})`; // Display the hint
+            } else {
+                promptDisplay.textContent = currentItem.word;
+            }
         }
 
         resetUIState();
@@ -871,6 +883,18 @@ function buildDeck() {
 
     function checkAnswer() {
         if (checkBtn.disabled || !currentItem) return;
+
+        // --- Logic for Kana Reverse Mode ---
+        if (currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse') {
+            promptDisplay.textContent = currentItem.word; // Reveal the kana
+            meaningDisplay.textContent = currentItem.reading; // Show the reading underneath
+            resultDisplay.textContent = 'Resposta Correta:';
+            resultDisplay.className = "neutral";
+            checkBtn.disabled = true;
+            nextBtn.disabled = false;
+            nextBtn.focus();
+            return;
+        }
 
         const userAnswer = answerBox.value.trim().toLowerCase();
         const correctAnswer = currentItem.reading;
@@ -926,25 +950,48 @@ function buildDeck() {
             vocabControls.style.display = 'block';
             kanaControls.style.display = 'none';
             meaningDisplay.style.display = 'block';
+            answerCounters.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
         } else { // kana mode
             vocabControls.style.display = 'none';
             kanaControls.style.display = 'block';
-            meaningDisplay.style.display = 'none';
-            answerBox.placeholder = "Romaji";
-            answerBox.maxLength = 4;
+
+            const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
+            if (kanaMode === 'reverse') {
+                meaningDisplay.style.display = 'block'; // Make hint area visible
+                answerBox.style.display = 'none';
+                answerCounters.style.display = 'none';
+                resultDisplay.textContent = 'Pressiona "Mostrar" ou Enter';
+                checkBtn.textContent = 'Mostrar';
+            } else { // normal kana mode
+                meaningDisplay.style.display = 'none'; // Hide hint area
+                answerBox.style.display = 'inline-block';
+                answerCounters.style.display = 'inline-block';
+                answerBox.placeholder = "Romaji";
+                answerBox.maxLength = 4;
+                checkBtn.textContent = 'Verificar';
+            }
         }
     }
 
     function resetUIState() {
         answerBox.value = "";
-        answerBox.focus();
         resultDisplay.textContent = "Aguardando Resposta...";
         resultDisplay.className = "neutral";
         checkBtn.disabled = false;
         nextBtn.disabled = true;
         answerBox.disabled = false;
+
+        const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
+
+        if (isKanaReverse) {
+            // In reverse mode, focus the 'Show' button so Enter will trigger it.
+            checkBtn.focus();
+        } else {
+            // In all other modes, focus the text input box.
+            answerBox.focus();
+        }
     }
 
     function showEndScreen(message) {
@@ -958,19 +1005,19 @@ function buildDeck() {
         resultDisplay.className = "";
     }
 
-    function updateRemaining() {
-        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+    function updateRemaining() {
+        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
 
-        // If in vocabulary mode and the sub-mode is 'random', display infinity
-        if (currentAppMode === 'vocab' && vocabMode === 'random') {
-            remainingCount.textContent = "∞";
-            return; // Exit the function here for random mode
-        }
+        // If in vocabulary mode and the sub-mode is 'random', display infinity
+        if (currentAppMode === 'vocab' && vocabMode === 'random') {
+            remainingCount.textContent = "∞";
+            return; // Exit the function here for random mode
+        }
 
-        // For all other modes (Kana, normal/alt vocab), calculate the count normally
-        // The count is the number of items left in the deck plus the one currently being shown
-        remainingCount.textContent = deck.length + (currentItem ? 1 : 0);
-    }
+        // For all other modes (Kana, normal/alt vocab), calculate the count normally
+        // The count is the number of items left in the deck plus the one currently being shown
+        remainingCount.textContent = deck.length + (currentItem ? 1 : 0);
+    }
 
     function handleEnterKey(e) {
         if (e.key === "Enter") {
@@ -1095,6 +1142,8 @@ function buildDeck() {
     // --- Kana Controls ---
     optionsBtn1.addEventListener("click", toggleOptionsPanel1);
     optionsBtn2.addEventListener("click", toggleOptionsPanel2);
+
+    kanaScriptRadios.forEach(radio => radio.addEventListener('change', resetGame));
     
     // Check-all logic for Hiragana
     checkAllHira.addEventListener('change', () => {
