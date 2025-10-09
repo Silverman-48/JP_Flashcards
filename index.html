@@ -8,7 +8,7 @@
         body { font-family: Arial, sans-serif; text-align: center; margin: 30px; background-color: #f4f4f9; }
         
         /* --- Shared Elements --- */
-        #promptDisplay { font-size: 80px; margin: 20px; color: #333; font-family: "MS Gothic", sans-serif; min-height: 90px; }
+        #promptDisplay { font-size: 80px; margin: 20px; color: #333; font-family: "MS PGothic", sans-serif; min-height: 90px; }
         #meaningDisplay { font-size: 22px; margin-bottom: 20px; color: #555; font-weight: bold; min-height: 25px; }
         input[type="text"] { font-size: 20px; padding: 10px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
         button { font-size: 16px; margin: 5px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; background-color: #5c67f2; color: white; transition: background-color 0.2s; }
@@ -89,46 +89,46 @@
         <div id="allWordsContainer2" class="word-list-container"></div>
         <div class="groups-container" id="options2" style="display: none">
             <div class="groups">
-                <h3>Linhas Hiragana</h3>
+                <h3>Hiragana</h3>
                 <h4><label><input type="checkbox" id="checkAllHira" checked> Ativar/Desativar Todas</label></h4>
                 <hr>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpA" checked> Linha A</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpKA" checked> Linha KA</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpGA" checked> Linha GA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpSA" checked> Linha SA</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpZA" checked> Linha ZA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpTA" checked> Linha TA</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpDA" checked> Linha DA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpNA" checked> Linha NA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpHA" checked> Linha HA</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpBA" checked> Linha BA</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpPA" checked> Linha PA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpMA" checked> Linha MA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpYA" checked> Linha YA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpRA" checked> Linha RA</label>
                 <label><input type="checkbox" class="group-checkbox-hira" id="grpWA" checked> Linha WA/N</label>
-                <label><input type="checkbox" class="group-checkbox-hira" id="grpYOON" checked> Sons Complexos</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpGA" checked> Som Sonoro GA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpZA" checked> Som Sonoro ZA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpDA" checked> Som Sonoro DA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpBA" checked> Som Sonoro BA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpPA" checked> Som Semissonoro PA</label>
+                <label><input type="checkbox" class="group-checkbox-hira" id="grpYOON" checked> Ditongos</label>
             </div>
             <div class="groups">
-                <h3>Linhas Katakana</h3>
+                <h3>Katakana</h3>
                 <h4><label><input type="checkbox" id="checkAllKata" checked> Ativar/Desativar Todas</label></h4>
                 <hr>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpA_kata" checked> Linha A</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpKA_kata" checked> Linha KA</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpGA_kata" checked> Linha GA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpSA_kata" checked> Linha SA</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpZA_kata" checked> Linha ZA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpTA_kata" checked> Linha TA</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpDA_kata" checked> Linha DA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpNA_kata" checked> Linha NA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpHA_kata" checked> Linha HA</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpBA_kata" checked> Linha BA</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpPA_kata" checked> Linha PA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpMA_kata" checked> Linha MA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpYA_kata" checked> Linha YA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpRA_kata" checked> Linha RA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpWA_kata" checked> Linha WA/N</label>
-                <label><input type="checkbox" class="group-checkbox-kata" id="grpYOON_kata" checked> Sons Complexos</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpGA_kata" checked> Som Sonoro GA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpZA_kata" checked> Som Sonoro ZA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpDA_kata" checked> Som Sonoro DA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpBA_kata" checked> Som Sonoro BA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpPA_kata" checked> Som Semissonoro PA</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpYOON_kata" checked> Ditongos</label>
             </div>
         </div>
     </div>
@@ -136,6 +136,7 @@
     <div id="vocab-controls" class="sub-options">
         <div class="mode-choice">
             <label><input type="radio" name="vocabScript" value="normal" checked> Normal</label>
+            <label><input type="radio" name="vocabScript" value="alt"> Inverso</label>
             <label><input type="radio" name="vocabScript" value="random"> Aleatório</label>
         </div>
         <button id="showAllBtn1">Ver Lista de Palavras</button>
@@ -143,50 +144,50 @@
         <div id="allWordsContainer1" class="word-list-container"></div>
         <div class="groups-container" id="options1" style="display: none">
             <div class="groups">
-                <h3>Lições Hiragana</h3>
+                <h3>Hiragana</h3>
                 <h4><label><input type="checkbox" id="checkAllWordsHira" checked> Ativar/Desativar Todas</label></h4>
                 <hr>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL01" checked> Lição 1</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL02" checked> Lição 2</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL03" checked> Lição 3</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL04" checked> Lição 4</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL05" checked> Lição 5</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL06" checked> Lição 6</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL07" checked> Lição 7</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL08" checked> Lição 8</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL09" checked> Lição 9</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL10" checked> Lição 10</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL11" checked> Lição 11</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL12" checked> Lição 12</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL13" checked> Lição 13</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL14" checked> Lição 14</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL15" checked> Lição 15</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL16" checked> Lição 16</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL17" checked> Lição 17</label>
-                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL18" checked> Lição 18</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL01" checked> Lição 1 - Linha A</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL02" checked> Lição 2 - Linha KA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL03" checked> Lição 3 - Linha SA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL04" checked> Lição 4 - Linha TA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL05" checked> Lição 5 - Linha NA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL06" checked> Lição 6 - Linha HA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL07" checked> Lição 7 - Linha MA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL08" checked> Lição 8 - Linha YA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL09" checked> Lição 9 - Linha RA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL10" checked> Lição 10 - Linha WA/N</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL11" checked> Lição 11 - Som Sonoro GA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL12" checked> Lição 12 - Som Sonoro ZA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL13" checked> Lição 13 - Som Sonoro DA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL14" checked> Lição 14 - Som Sonoro BA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL15" checked> Lição 15 - Som Semissonoro PA</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL16" checked> Lição 16 - Som Oclusivo</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL17" checked> Lição 17 - Som Longo</label>
+                <label><input type="checkbox" class="group-checkbox-words-hira" id="wrdL18" checked> Lição 18 - Ditongo</label>
             </div>
             <div class="groups">
-                <h3>Lições Katakana</h3>
+                <h3>Katakana</h3>
                 <h4><label><input type="checkbox" id="checkAllWordsKata" checked> Ativar/Desativar Todas</label></h4>
                 <hr>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL01_kata" checked> Lição 1</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL02_kata" checked> Lição 2</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL03_kata" checked> Lição 3</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL04_kata" checked> Lição 4</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL05_kata" checked> Lição 5</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL06_kata" checked> Lição 6</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL07_kata" checked> Lição 7</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL08_kata" checked> Lição 8</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL09_kata" checked> Lição 9</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL10_kata" checked> Lição 10</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL11_kata" checked> Lição 11</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL12_kata" checked> Lição 12</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL13_kata" checked> Lição 13</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL14_kata" checked> Lição 14</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL15_kata" checked> Lição 15</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL16_kata" checked> Lição 16</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL17_kata" checked> Lição 17</label>
-                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL18_kata" checked> Lição 18</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL01_kata" checked> Lição 1 - Linha A</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL02_kata" checked> Lição 2 - Linha KA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL03_kata" checked> Lição 3 - Linha SA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL04_kata" checked> Lição 4 - Linha TA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL05_kata" checked> Lição 5 - Linha NA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL06_kata" checked> Lição 6 - Linha HA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL07_kata" checked> Lição 7 - Linha MA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL08_kata" checked> Lição 8 - Linha YA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL09_kata" checked> Lição 9 - Linha RA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL10_kata" checked> Lição 10 - Linha WA/N</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL11_kata" checked> Lição 11 - Som Sonoro GA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL12_kata" checked> Lição 12 - Som Sonoro ZA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL13_kata" checked> Lição 13 - Som Sonoro DA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL14_kata" checked> Lição 14 - Som Sonoro BA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL15_kata" checked> Lição 15 - Som Semissonoro PA</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL16_kata" checked> Lição 16 - Som Oclusivo</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL17_kata" checked> Lição 17 - Som Longo</label>
+                <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL18_kata" checked> Lição 18 - Ditongo</label>
             </div>
     </div>
 
@@ -594,7 +595,10 @@ L18:[{word:"とうきょう",reading:"toukyou",meaning:"Tóquio"},
 
     const hiraganaGroups={A:[{char:"あ",reading:"a"},{char:"い",reading:"i"},{char:"う",reading:"u"},{char:"え",reading:"e"},{char:"お",reading:"o"}],KA:[{char:"か",reading:"ka"},{char:"き",reading:"ki"},{char:"く",reading:"ku"},{char:"け",reading:"ke"},{char:"こ",reading:"ko"}],GA:[{char:"が",reading:"ga"},{char:"ぎ",reading:"gi"},{char:"ぐ",reading:"gu"},{char:"げ",reading:"ge"},{char:"ご",reading:"go"}],SA:[{char:"さ",reading:"sa"},{char:"し",reading:"shi"},{char:"す",reading:"su"},{char:"せ",reading:"se"},{char:"そ",reading:"so"}],ZA:[{char:"ざ",reading:"za"},{char:"じ",reading:"ji"},{char:"ず",reading:"zu"},{char:"ぜ",reading:"ze"},{char:"ぞ",reading:"zo"}],TA:[{char:"た",reading:"ta"},{char:"ち",reading:"chi"},{char:"つ",reading:"tsu"},{char:"て",reading:"te"},{char:"と",reading:"to"}],DA:[{char:"だ",reading:"da"},{char:"ぢ",reading:"ji"},{char:"づ",reading:"zu"},{char:"で",reading:"de"},{char:"ど",reading:"do"}],NA:[{char:"な",reading:"na"},{char:"に",reading:"ni"},{char:"ぬ",reading:"nu"},{char:"ね",reading:"ne"},{char:"の",reading:"no"}],HA:[{char:"は",reading:"ha"},{char:"ひ",reading:"hi"},{char:"ふ",reading:"fu"},{char:"へ",reading:"he"},{char:"ほ",reading:"ho"}],BA:[{char:"ば",reading:"ba"},{char:"び",reading:"bi"},{char:"ぶ",reading:"bu"},{char:"べ",reading:"be"},{char:"ぼ",reading:"bo"}],PA:[{char:"ぱ",reading:"pa"},{char:"ぴ",reading:"pi"},{char:"ぷ",reading:"pu"},{char:"ぺ",reading:"pe"},{char:"ぽ",reading:"po"}],MA:[{char:"ま",reading:"ma"},{char:"み",reading:"mi"},{char:"む",reading:"mu"},{char:"め",reading:"me"},{char:"も",reading:"mo"}],YA:[{char:"や",reading:"ya"},{char:"ゆ",reading:"yu"},{char:"よ",reading:"yo"}],RA:[{char:"ら",reading:"ra"},{char:"り",reading:"ri"},{char:"る",reading:"ru"},{char:"れ",reading:"re"},{char:"ろ",reading:"ro"}],WA:[{char:"わ",reading:"wa"},{char:"を",reading:"wo"},{char:"ん",reading:"n"}],YOON:[{char:"きゃ",reading:"kya"},{char:"きゅ",reading:"kyu"},{char:"きょ",reading:"kyo"},{char:"ぎゃ",reading:"gya"},{char:"ぎゅ",reading:"gyu"},{char:"ぎょ",reading:"gyo"},{char:"しゃ",reading:"sha"},{char:"しゅ",reading:"shu"},{char:"しょ",reading:"sho"},{char:"じゃ",reading:"ja"},{char:"じゅ",reading:"ju"},{char:"じょ",reading:"jo"},{char:"ちゃ",reading:"cha"},{char:"ちゅ",reading:"chu"},{char:"ちょ",reading:"cho"},{char:"にゃ",reading:"nya"},{char:"にゅ",reading:"nyu"},{char:"にょ",reading:"nyo"},{char:"ひゃ",reading:"hya"},{char:"ひゅ",reading:"hyu"},{char:"ひょ",reading:"hyo"},{char:"びゃ",reading:"bya"},{char:"びゅ",reading:"byu"},{char:"びょ",reading:"byo"},{char:"ぴゃ",reading:"pya"},{char:"ぴゅ",reading:"pyu"},{char:"ぴょ",reading:"pyo"},{char:"みゃ",reading:"mya"},{char:"みゅ",reading:"myu"},{char:"みょ",reading:"myo"},{char:"りゃ",reading:"rya"},{char:"りゅ",reading:"ryu"},{char:"りょ",reading:"ryo"}]};
     const katakanaGroups={A:[{char:"ア",reading:"a"},{char:"イ",reading:"i"},{char:"ウ",reading:"u"},{char:"エ",reading:"e"},{char:"オ",reading:"o"}],KA:[{char:"カ",reading:"ka"},{char:"キ",reading:"ki"},{char:"ク",reading:"ku"},{char:"ケ",reading:"ke"},{char:"コ",reading:"ko"}],GA:[{char:"ガ",reading:"ga"},{char:"ギ",reading:"gi"},{char:"グ",reading:"gu"},{char:"ゲ",reading:"ge"},{char:"ゴ",reading:"go"}],SA:[{char:"サ",reading:"sa"},{char:"シ",reading:"shi"},{char:"ス",reading:"su"},{char:"セ",reading:"se"},{char:"ソ",reading:"so"}],ZA:[{char:"ザ",reading:"za"},{char:"ジ",reading:"ji"},{char:"ズ",reading:"zu"},{char:"ゼ",reading:"ze"},{char:"ゾ",reading:"zo"}],TA:[{char:"タ",reading:"ta"},{char:"チ",reading:"chi"},{char:"ツ",reading:"tsu"},{char:"テ",reading:"te"},{char:"ト",reading:"to"}],DA:[{char:"ダ",reading:"da"},{char:"ヂ",reading:"ji"},{char:"ヅ",reading:"zu"},{char:"デ",reading:"de"},{char:"ド",reading:"do"}],NA:[{char:"ナ",reading:"na"},{char:"ニ",reading:"ni"},{char:"ヌ",reading:"nu"},{char:"ネ",reading:"ne"},{char:"ノ",reading:"no"}],HA:[{char:"ハ",reading:"ha"},{char:"ヒ",reading:"hi"},{char:"フ",reading:"fu"},{char:"ヘ",reading:"he"},{char:"ホ",reading:"ho"}],BA:[{char:"バ",reading:"ba"},{char:"ビ",reading:"bi"},{char:"ブ",reading:"bu"},{char:"ベ",reading:"be"},{char:"ボ",reading:"bo"}],PA:[{char:"パ",reading:"pa"},{char:"ピ",reading:"pi"},{char:"プ",reading:"pu"},{char:"ペ",reading:"pe"},{char:"ポ",reading:"po"}],MA:[{char:"マ",reading:"ma"},{char:"ミ",reading:"mi"},{char:"ム",reading:"mu"},{char:"メ",reading:"me"},{char:"モ",reading:"mo"}],YA:[{char:"ヤ",reading:"ya"},{char:"ユ",reading:"yu"},{char:"ヨ",reading:"yo"}],RA:[{char:"ラ",reading:"ra"},{char:"リ",reading:"ri"},{char:"ル",reading:"ru"},{char:"レ",reading:"re"},{char:"ロ",reading:"ro"}],WA:[{char:"ワ",reading:"wa"},{char:"ヲ",reading:"wo"},{char:"ン",reading:"n"}],YOON:[{char:"キャ",reading:"kya"},{char:"キュ",reading:"kyu"},{char:"キョ",reading:"kyo"},{char:"ギャ",reading:"gya"},{char:"ギュ",reading:"gyu"},{char:"ギョ",reading:"gyo"},{char:"シャ",reading:"sha"},{char:"シュ",reading:"shu"},{char:"ショ",reading:"sho"},{char:"ジャ",reading:"ja"},{char:"ジュ",reading:"ju"},{char:"ジョ",reading:"jo"},{char:"チャ",reading:"cha"},{char:"チュ",reading:"chu"},{char:"チョ",reading:"cho"},{char:"ニャ",reading:"nya"},{char:"ニュ",reading:"nyu"},{char:"ニョ",reading:"nyo"},{char:"ヒャ",reading:"hya"},{char:"ヒュ",reading:"hyu"},{char:"ヒョ",reading:"hyo"},{char:"ビャ",reading:"bya"},{char:"ビュ",reading:"byu"},{char:"ビョ",reading:"byo"},{char:"ピャ",reading:"pya"},{char:"ピュ",reading:"pyu"},{char:"ピョ",reading:"pyo"},{char:"ミャ",reading:"mya"},{char:"ミュ",reading:"myu"},{char:"ミョ",reading:"myo"},{char:"リャ",reading:"rya"},{char:"リュ",reading:"ryu"},{char:"リョ",reading:"ryo"}]};
-    const romajiToKana={'a':{hira:'あ',kata:'ア'},'i':{hira:'い',kata:'イ'},'u':{hira:'う',kata:'ウ'},'e':{hira:'え',kata:'エ'},'o':{hira:'お',kata:'オ'},'ka':{hira:'か',kata:'カ'},'ki':{hira:'き',kata:'キ'},'ku':{hira:'く',kata:'ク'},'ke':{hira:'け',kata:'ケ'},'ko':{hira:'こ',kata:'コ'},'sa':{hira:'さ',kata:'サ'},'shi':{hira:'し',kata:'シ'},'su':{hira:'す',kata:'ス'},'se':{hira:'せ',kata:'セ'},'so':{hira:'そ',kata:'ソ'},'ta':{hira:'た',kata:'タ'},'chi':{hira:'ち',kata:'チ'},'tsu':{hira:'つ',kata:'ツ'},'te':{hira:'て',kata:'テ'},'to':{hira:'と',kata:'ト'},'na':{hira:'な',kata:'ナ'},'ni':{hira:'に',kata:'ニ'},'nu':{hira:'ぬ',kata:'ヌ'},'ne':{hira:'ね',kata:'ネ'},'no':{hira:'の',kata:'ノ'},'ha':{hira:'は',kata:'ハ'},'hi':{hira:'ひ',kata:'ヒ'},'fu':{hira:'ふ',kata:'フ'},'he':{hira:'へ',kata:'ヘ'},'ho':{hira:'ほ',kata:'ホ'},'ma':{hira:'ま',kata:'マ'},'mi':{hira:'み',kata:'ミ'},'mu':{hira:'む',kata:'ム'},'me':{hira:'め',kata:'メ'},'mo':{hira:'も',kata:'モ'},'ya':{hira:'や',kata:'ヤ'},'yu':{hira:'ゆ',kata:'ユ'},'yo':{hira:'よ',kata:'ヨ'},'ra':{hira:'ら',kata:'ラ'},'ri':{hira:'り',kata:'リ'},'ru':{hira:'る',kata:'ル'},'re':{hira:'れ',kata:'レ'},'ro':{hira:'ろ',kata:'ロ'},'wa':{hira:'わ',kata:'ワ'},'wo':{hira:'を',kata:'ヲ'},'n':{hira:'ん',kata:'ン'},'ga':{hira:'が',kata:'ガ'},'gi':{hira:'ぎ',kata:'ギ'},'gu':{hira:'ぐ',kata:'グ'},'ge':{hira:'げ',kata:'ゲ'},'go':{hira:'ご',kata:'ゴ'},'za':{hira:'ざ',kata:'ザ'},'ji':{hira:'じ',kata:'ジ'},'zu':{hira:'ず',kata:'ズ'},'ze':{hira:'ぜ',kata:'ゼ'},'zo':{hira:'ぞ',kata:'ゾ'},'da':{hira:'だ',kata:'ダ'},'dji':{hira:'ぢ',kata:'ヂ'},'dzu':{hira:'づ',kata:'ヅ'},'de':{hira:'で',kata:'デ'},'do':{hira:'ど',kata:'ド'},'ba':{hira:'ば',kata:'バ'},'bi':{hira:'び',kata:'ビ'},'bu':{hira:'ぶ',kata:'ブ'},'be':{hira:'べ',kata:'ベ'},'bo':{hira:'ぼ',kata:'ボ'},'pa':{hira:'ぱ',kata:'パ'},'pi':{hira:'ぴ',kata:'ピ'},'pu':{hira:'ぷ',kata:'プ'},'pe':{hira:'ぺ',kata:'ペ'},'po':{hira:'ぽ',kata:'ポ'},'kya':{hira:'きゃ',kata:'キャ'},'kyu':{hira:'きゅ',kata:'キュ'},'kyo':{hira:'きょ',kata:'キョ'},'gya':{hira:'ぎゃ',kata:'ギャ'},'gyu':{hira:'ぎゅ',kata:'ギュ'},'gyo':{hira:'ぎょ',kata:'ギョ'},'sha':{hira:'しゃ',kata:'シャ'},'shu':{hira:'しゅ',kata:'シュ'},'sho':{hira:'しょ',kata:'ショ'},'ja':{hira:'じゃ',kata:'ジャ'},'ju':{hira:'じゅ',kata:'ジュ'},'jo':{hira:'じょ',kata:'ジョ'},'cha':{hira:'ちゃ',kata:'チャ'},'chu':{hira:'ちゅ',kata:'チュ'},'cho':{hira:'ちょ',kata:'チョ'},'dja':{hira:'ぢゃ',kata:'ヂャ'},'dju':{hira:'ぢゅ',kata:'ヂュ'},'djo':{hira:'ぢょ',kata:'ヂョ'},'nya':{hira:'にゃ',kata:'ニャ'},'nyu':{hira:'にゅ',kata:'ニュ'},'nyo':{hira:'にょ',kata:'ニョ'},'hya':{hira:'ひゃ',kata:'ヒャ'},'hyu':{hira:'ひゅ',kata:'ヒュ'},'hyo':{hira:'ひょ',kata:'ヒョ'},'bya':{hira:'びゃ',kata:'ビャ'},'byu':{hira:'びゅ',kata:'ビュ'},'byo':{hira:'びょ',kata:'ビョ'},'pya':{hira:'ぴゃ',kata:'ピャ'},'pyu':{hira:'ぴゅ',kata:'ピュ'},'pyo':{hira:'ぴょ',kata:'ピョ'},'mya':{hira:'みゃ',kata:'ミャ'},'myu':{hira:'みゅ',kata:'ミュ'},'myo':{hira:'みょ',kata:'ミョ'},'rya':{hira:'りゃ',kata:'リャ'},'ryu':{hira:'りゅ',kata:'リュ'},'ryo':{hira:'りょ',kata:'リョ'},'kka':{hira:'っか',kata:'ッカ'},'kki':{hira:'っき',kata:'ッキ'},'kku':{hira:'っく',kata:'ック'},'kke':{hira:'っけ',kata:'ッケ'},'kko':{hira:'っこ',kata:'ッコ'},'ssa':{hira:'ッサ',kata:'ッサ'},'sshi':{hira:'っし',kata:'ッシ'},'ssu':{hira:'っす',kata:'ッス'},'sse':{hira:'っせ',kata:'ッセ'},'sso':{hira:'っそ',kata:'ッソ'},'tta':{hira:'った',kata:'ッタ'},'tchi':{hira:'っち',kata:'ッチ'},'ttsu':{hira:'っつ',kata:'ッツ'},'tte':{hira:'って',kata:'ッテ'},'tto':{hira:'っと',kata:'ット'},'ppa':{hira:'っぱ',kata:'ッパ'},'ppi':{hira:'っぴ',kata:'ッピ'},'ppu':{hira:'っぷ',kata:'ップ'},'ppe':{hira:'っぺ',kata:'ッペ'},'ppo':{hira:'っぽ',kata:'ッポ'},'kkya':{hira:'っきゃ',kata:'っきゃ'},'kkyu':{hira:'っきゅ',kata:'っきゅ'},'kkyo':{hira:'っきょ',kata:'っきょ'},'ssha':{hira:'っしゃ',kata:'っしゃ'},'sshu':{hira:'っしゅ',kata:'っしゅ'},'ssho':{hira:'っしょ',kata:'っしょ'},'tcha':{hira:'っちゃ',kata:'っちゃ'},'tchu':{hira:'っちゅ',kata:'っちゅ'},'tcho':{hira:'っちょ',kata:'っちょ'},'ppya':{hira:'っぴゃ',kata:'っぴゃ'},'ppyu':{hira:'っぴゅ',kata:'っぴゅ'},'ppyo':{hira:'っぴょ',kata:'っぴょ'}};
+    const romajiToKana={'a':{hira:'あ',kata:'ア'},'i':{hira:'い',kata:'イ'},'u':{hira:'う',kata:'ウ'},'e':{hira:'え',kata:'エ'},'o':{hira:'お',kata:'オ'},'ka':{hira:'か',kata:'カ'},'ki':{hira:'き',kata:'キ'},'ku':{hira:'く',kata:'ク'},'ke':{hira:'け',kata:'ケ'},'ko':{hira:'こ',kata:'コ'},'sa':{hira:'さ',kata:'サ'},'shi':{hira:'し',kata:'シ'},'su':{hira:'す',kata:'ス'},'se':{hira:'せ',kata:'セ'},'so':{hira:'そ',kata:'ソ'},'ta':{hira:'た',kata:'タ'},'chi':{hira:'ち',kata:'チ'},'tsu':{hira:'つ',kata:'ツ'},'te':{hira:'て',kata:'テ'},'to':{hira:'と',kata:'ト'},'na':{hira:'な',kata:'ナ'},'ni':{hira:'に',kata:'ニ'},'nu':{hira:'ぬ',kata:'ヌ'},'ne':{hira:'ね',kata:'ネ'},'no':{hira:'の',kata:'ノ'},'ha':{hira:'は',kata:'ハ'},'hi':{hira:'ひ',kata:'ヒ'},'fu':{hira:'ふ',kata:'フ'},'he':{hira:'へ',kata:'ヘ'},'ho':{hira:'ほ',kata:'ホ'},'ma':{hira:'ま',kata:'マ'},'mi':{hira:'み',kata:'ミ'},'mu':{hira:'む',kata:'ム'},'me':{hira:'め',kata:'メ'},'mo':{hira:'も',kata:'モ'},'ya':{hira:'や',kata:'ヤ'},'yu':{hira:'ゆ',kata:'ユ'},'yo':{hira:'よ',kata:'ヨ'},'ra':{hira:'ら',kata:'ラ'},'ri':{hira:'り',kata:'リ'},'ru':{hira:'る',kata:'ル'},'re':{hira:'れ',kata:'レ'},'ro':{hira:'ろ',kata:'ロ'},'wa':{hira:'わ',kata:'ワ'},'wo':{hira:'を',kata:'ヲ'},'n':{hira:'ん',kata:'ン'},'ga':{hira:'が',kata:'ガ'},'gi':{hira:'ぎ',kata:'ギ'},'gu':{hira:'ぐ',kata:'グ'},'ge':{hira:'げ',kata:'ゲ'},'go':{hira:'ご',kata:'ゴ'},'za':{hira:'ざ',kata:'ザ'},'ji':{hira:'じ',kata:'ジ'},'zu':{hira:'ず',kata:'ズ'},'ze':{hira:'ぜ',kata:'ゼ'},'zo':{hira:'ぞ',kata:'ゾ'},'da':{hira:'だ',kata:'ダ'},'dji':{hira:'ぢ',kata:'ヂ'},'dzu':{hira:'づ',kata:'ヅ'},'de':{hira:'で',kata:'デ'},'do':{hira:'ど',kata:'ド'},'ba':{hira:'ば',kata:'バ'},'bi':{hira:'び',kata:'ビ'},'bu':{hira:'ぶ',kata:'ブ'},'be':{hira:'べ',kata:'ベ'},'bo':{hira:'ぼ',kata:'ボ'},'pa':{hira:'ぱ',kata:'パ'},'pi':{hira:'ぴ',kata:'ピ'},'pu':{hira:'ぷ',kata:'プ'},'pe':{hira:'ぺ',kata:'ペ'},'po':{hira:'ぽ',kata:'ポ'},'kya':{hira:'きゃ',kata:'キャ'},'kyu':{hira:'きゅ',kata:'キュ'},'kyo':{hira:'きょ',kata:'キョ'},'gya':{hira:'ぎゃ',kata:'ギャ'},'gyu':{hira:'ぎゅ',kata:'ギュ'},'gyo':{hira:'ぎょ',kata:'ギョ'},'sha':{hira:'しゃ',kata:'シャ'},'shu':{hira:'しゅ',kata:'シュ'},'sho':{hira:'しょ',kata:'ショ'},'ja':{hira:'じゃ',kata:'ジャ'},'ju':{hira:'じゅ',kata:'ジュ'},'jo':{hira:'じょ',kata:'ジョ'},'cha':{hira:'ちゃ',kata:'チャ'},'chu':{hira:'ちゅ',kata:'チュ'},'cho':{hira:'ちょ',kata:'チョ'},'dja':{hira:'ぢゃ',kata:'ヂャ'},'dju':{hira:'ぢゅ',kata:'ヂュ'},'djo':{hira:'ぢょ',kata:'ヂョ'},'nya':{hira:'にゃ',kata:'ニャ'},'nyu':{hira:'にゅ',kata:'ニュ'},'nyo':{hira:'にょ',kata:'ニョ'},'hya':{hira:'ひゃ',kata:'ヒャ'},'hyu':{hira:'ひゅ',kata:'ヒュ'},'hyo':{hira:'ひょ',kata:'ヒョ'},'bya':{hira:'びゃ',kata:'ビャ'},'byu':{hira:'びゅ',kata:'ビュ'},'byo':{hira:'びょ',kata:'ビョ'},'pya':{hira:'ぴゃ',kata:'ピャ'},'pyu':{hira:'ぴゅ',kata:'ピュ'},'pyo':{hira:'ぴょ',kata:'ピョ'},'mya':{hira:'みゃ',kata:'ミャ'},'myu':{hira:'みゅ',kata:'ミュ'},'myo':{hira:'みょ',kata:'ミョ'},'rya':{hira:'りゃ',kata:'リャ'},'ryu':{hira:'りゅ',kata:'リュ'},'ryo':{hira:'りょ',kata:'リョ'},'kka':{hira:'っか',kata:'ッカ'},'kki':{hira:'っき',kata:'ッキ'},'kku':{hira:'っく',kata:'ック'},
+
+// 'kke':{hira:'っけ',kata:'ッケ'},'kko':{hira:'っこ',kata:'ッコ'},'ssa':{hira:'ッサ',kata:'ッサ'},'sshi':{hira:'っし',kata:'ッシ'},'ssu':{hira:'っす',kata:'ッス'},'sse':{hira:'っせ',kata:'ッセ'},'sso':{hira:'っそ',kata:'ッソ'},'tta':{hira:'った',kata:'ッタ'},'tchi':{hira:'っち',kata:'ッチ'},'ttsu':{hira:'っつ',kata:'ッツ'},'tte':{hira:'って',kata:'ッテ'},'tto':{hira:'っと',kata:'ット'},'ppa':{hira:'っぱ',kata:'ッパ'},'ppi':{hira:'っぴ',kata:'ッピ'},'ppu':{hira:'っぷ',kata:'ップ'},'ppe':{hira:'っぺ',kata:'ッペ'},'ppo':{hira:'っぽ',kata:'ッポ'},'kkya':{hira:'っきゃ',kata:'っきゃ'},'kkyu':{hira:'っきゅ',kata:'っきゅ'},'kkyo':{hira:'っきょ',kata:'っきょ'},'ssha':{hira:'っしゃ',kata:'っしゃ'},'sshu':{hira:'っしゅ',kata:'っしゅ'},'ssho':{hira:'っしょ',kata:'っしょ'},'tcha':{hira:'っちゃ',kata:'っちゃ'},'tchu':{hira:'っちゅ',kata:'っちゅ'},'tcho':{hira:'っちょ',kata:'っちょ'},'ppya':{hira:'っぴゃ',kata:'っぴゃ'},'ppyu':{hira:'っぴゅ',kata:'っぴゅ'},'ppyo':{hira:'っぴょ',kata:'っぴょ'}
+};
 
     // ===== GLOBAL VARIABLES =====
     let currentAppMode = 'kana'; // 'vocab' or 'kana'
@@ -678,7 +682,7 @@ function buildDeck() {
         if (currentAppMode === 'vocab') {
             const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
             if (vocabMode === 'random') {
-                currentItem = generateRandomSyllableWord(5);
+                currentItem = generateRandomSyllableWord(4);
                 promptDisplay.textContent = currentItem.word;
                 meaningDisplay.textContent = currentItem.meaning;
                 remainingCount.textContent = "∞";
@@ -694,9 +698,12 @@ function buildDeck() {
             currentItem = deck.splice(idx, 1)[0];
             
             if (vocabMode === 'normal') {
-                 promptDisplay.textContent = currentItem.word;
-            }
+            promptDisplay.textContent = currentItem.word;
             meaningDisplay.textContent = "...";
+            } else {
+            promptDisplay.textContent = "...";
+            meaningDisplay.textContent = currentItem.meaning;
+            }
 
         // --- Kana Mode ---
         } else if (currentAppMode === 'kana') {
@@ -717,7 +724,7 @@ function buildDeck() {
 
     function checkAnswer() {
         if (checkBtn.disabled || !currentItem) return;
-        
+
         const userAnswer = answerBox.value.trim().toLowerCase();
         const correctAnswer = currentItem.reading;
         
@@ -732,7 +739,12 @@ function buildDeck() {
         }
 
         if (currentAppMode === 'vocab') {
+            const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+            if (vocabMode === 'normal') {
             meaningDisplay.textContent = currentItem.meaning;
+            } else {
+            promptDisplay.textContent = currentItem.word;
+            }
         }
 
         correctDisplay.textContent = correctCount;
@@ -824,7 +836,7 @@ function buildDeck() {
             const kanaPair = romajiToKana[randomSyllable];
             const chosenKana = Math.random() < 0.5 ? kanaPair.hira : kanaPair.kata;
             generatedKana += chosenKana;
-            generatedReading += randomSyllable + ' ';
+            generatedReading += randomSyllable + '';
         }
         return {
             word: generatedKana,
@@ -834,6 +846,7 @@ function buildDeck() {
     }
 
     function showAllWords1() {
+            options1.style.display = "none";
         if (allWordsContainer1.style.display === "block") {
             allWordsContainer1.style.display = "none";
             return;
@@ -842,6 +855,7 @@ function buildDeck() {
     }
 
     function showAllWords2() {
+            options2.style.display = "none";
         if (allWordsContainer2.style.display === "block") {
             allWordsContainer2.style.display = "none";
             return;
@@ -887,10 +901,12 @@ function buildDeck() {
 
     // ===== KANA SPECIFIC FUNCTIONS =====
     function toggleOptionsPanel1() {
+            allWordsContainer1.style.display = "none";
         optionsPanel1.style.display = (optionsPanel1.style.display === "none") ? "flex" : "none";
     }
 
     function toggleOptionsPanel2() {
+            allWordsContainer2.style.display = "none";
         optionsPanel2.style.display = (optionsPanel2.style.display === "none") ? "flex" : "none";
     }
 
@@ -912,6 +928,7 @@ function buildDeck() {
         allWordsContainer1.style.display = 'none';
         options1.style.display = 'none';
         const isNormal = document.querySelector('input[name="vocabScript"]:checked').value === 'normal';
+        const isAlt = document.querySelector('input[name="vocabScript"]:checked').value === 'alt';
         const isRandom = document.querySelector('input[name="vocabScript"]:checked').value === 'random';
         showAllBtn1.disabled = isRandom;
         optionsBtn1.disabled = isRandom;
