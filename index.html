@@ -1004,6 +1004,20 @@ const katakanaWords = {
         }
     }
 
+    function boot(newMode) {
+        pendingScoreUpdate = null; // Discard any unconfirmed answer
+        currentAppMode = newMode;
+        const state = appState[currentAppMode];
+
+        if (state.deck.length === 0 && !state.currentItem && currentAppMode !== 'random') {
+            resetGame();
+            updateUIVisibility();
+            displayCurrentItem();
+            updateStats();
+            resetUIState();
+        }
+    }
+
 function handleSelfScore(isCorrect) {
     const state = appState.kana; // This mode only exists for Kana
     if (isCorrect) {
@@ -1307,7 +1321,7 @@ function resetUIState() {
     groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked)));
 
     // --- Initial setup ---
-    switchMode(currentAppMode); // Initial setup using the new logic
+    boot(currentAppMode); // Initial setup using the new logic
 </script>
 </body>
 </html>
