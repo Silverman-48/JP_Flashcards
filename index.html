@@ -1266,6 +1266,11 @@ function resetUIState() {
 
     // MODIFIED: Sub-mode changes no longer reset the game. They just update the UI.
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        if (state.deck.length === 0) {
+            showEndScreen(currentAppMode === 'vocab' ? 'Pressiona "Reiniciar" para começar de novo!' : 'Seleciona as linhas e pressiona "Reniciar" para começar!');
+            return;
+        }
+        
         updateUIVisibility();
 
 
@@ -1279,6 +1284,11 @@ function resetUIState() {
     }));
 
     kanaScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        if (state.deck.length === 0) {
+            showEndScreen(currentAppMode === 'vocab' ? 'Pressiona "Reiniciar" para começar de novo!' : 'Seleciona as linhas e pressiona "Reniciar" para começar!');
+            return;
+        }
+        
         updateUIVisibility();
 
 
