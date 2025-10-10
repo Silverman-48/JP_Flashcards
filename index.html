@@ -73,6 +73,8 @@
     
     <button id="checkBtn">Verificar</button>
     <button id="nextBtn">Seguinte</button>
+    <button id="correctBtn" style="display: none; background-color: #28a745;">Correto</button>
+    <button id="incorrectBtn" style="display: none; background-color: #dc3545;">Incorreto</button>
     <button id="resetBtn">Reiniciar</button>
     
     <div class="stats">
@@ -85,9 +87,8 @@
             <label><input type="radio" name="kanaScript" value="normal" checked> Normal</label>
             <label><input type="radio" name="kanaScript" value="reverse"> Inverso</label>
         </div>
-        <button id="showAllBtn2">Ver Linhas Selecionadas</button>
-        <br>
-        <button id="optionsBtn2">Ver/Esconder Linhas de Kana</button>
+        <button id="showAllBtn2">Lista de Kana</button>
+        <button id="optionsBtn2">Opções</button>
         <div id="allWordsContainer2" class="word-list-container"></div>
         <div class="groups-container" id="options2" style="display: none">
             <div class="groups">
@@ -140,9 +141,8 @@
             <label><input type="radio" name="vocabScript" value="normal" checked> Normal</label>
             <label><input type="radio" name="vocabScript" value="alt"> Inverso</label>
         </div>
-        <button id="showAllBtn1">Ver Lista de Palavras</button>
-        <br>
-        <button id="optionsBtn1">Ver/Esconder Lições</button>
+        <button id="showAllBtn1">Lista de Palavras</button>
+        <button id="optionsBtn1">Opções</button>
         <div id="allWordsContainer1" class="word-list-container"></div>
         <div class="groups-container" id="options1" style="display: none">
             <div class="groups">
@@ -804,6 +804,8 @@ const katakanaWords = {
     const optionsBtn2 = document.getElementById("optionsBtn2");
     const optionsPanel1 = document.getElementById("options1");
     const optionsPanel2 = document.getElementById("options2");
+    const correctBtn = document.getElementById("correctBtn");
+    const incorrectBtn = document.getElementById("incorrectBtn");
     const checkAllHira = document.getElementById("checkAllHira");
     const groupCheckboxesHira = document.querySelectorAll(".group-checkbox-hira");
     const checkAllKata = document.getElementById("checkAllKata");
@@ -875,6 +877,15 @@ const katakanaWords = {
         }
         
         if (state.deck.length === 0) {
+
+
+        const idx = Math.floor(Math.random() * state.deck.length);
+        state.currentItem = state.deck.splice(idx, 1)[0];
+
+        updateRemaining();
+        resetUIState();
+
+
             showEndScreen(currentAppMode === 'vocab' ? 'Pressiona "Reiniciar" para começar de novo!' : 'Seleciona as linhas e pressiona "Reniciar" para começar!');
             return;
         }
@@ -894,17 +905,23 @@ const katakanaWords = {
     // MODIFIED: Now works with the state object.
     function checkAnswer() {
         const state = appState[currentAppMode];
+    const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
+
         if (checkBtn.disabled || !state.currentItem) return;
 
-        if (currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse') {
-            displayCurrentItem(true); // Reveal the answer
-            resultDisplay.textContent = 'Resposta Correta:';
-            resultDisplay.className = "neutral";
-            checkBtn.disabled = true;
-            nextBtn.disabled = false;
-            nextBtn.focus();
-            return;
-        }
+    // NEW LOGIC BLOCK for the "Reveal" button
+    if (isKanaReverse) {
+
+        displayCurrentItem(true); // Reveal the kana character
+        resultDisplay.textContent = 'Resposta Correta';
+        resultDisplay.className = "neutral";
+        
+        checkBtn.disabled = true; // Disable "Reveal" button
+        correctBtn.disabled = false; // Enable scoring buttons
+        incorrectBtn.disabled = false;
+        correctBtn.focus(); // Focus on the 'Correct' button
+        return; // Stop the function here for this mode
+    }
 
         const userAnswer = answerBox.value.trim().toLowerCase();
         const correctAnswer = state.currentItem.reading;
@@ -961,6 +978,14 @@ const katakanaWords = {
         currentAppMode = newMode;
         const state = appState[currentAppMode];
 
+        if (currentAppMode === 'random') {
+            resetGame();
+            updateUIVisibility();
+            displayCurrentItem();
+            updateStats();
+            resetUIState();
+        } else
+
         // If the deck for the new mode is empty (and it's not random mode), build it for the first time.
         if (state.deck.length === 0 && !state.currentItem && currentAppMode !== 'random') {
             resetGame();
@@ -968,14 +993,29 @@ const katakanaWords = {
             displayCurrentItem();
             updateStats();
             resetUIState();
-} else {
-    // Otherwise, just update the UI with the existing state of that mode
-    updateUIVisibility();
-    displayCurrentItem();
-    updateStats();
-    resetUIState();
-}
+        } else {
+            // Otherwise, just update the UI with the existing state of that mode
+            updateUIVisibility();
+            displayCurrentItem();
+            updateStats();
+            resetUIState();
+        }
     }
+
+function handleSelfScore(isCorrect) {
+    const state = appState.kana; // This mode only exists for Kana
+    if (isCorrect) {
+        state.correctCount++;
+    } else {
+        state.incorrectCount++;
+    }
+    // Update the score display immediately
+    correctDisplay.textContent = state.correctCount;
+    incorrectDisplay.textContent = state.incorrectCount;
+    
+    // Move to the next item
+    nextItem();
+}
     
     // NEW: A dedicated function to update the display based on the current item.
     // 'reveal' parameter is used for showing the answer after checking.
@@ -1031,52 +1071,83 @@ const katakanaWords = {
             answerBox.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
-            checkBtn.textContent = 'Verificar';
-        } else if (currentAppMode === 'kana') {
-            kanaControls.style.display = 'block';
-            const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
-            if (kanaMode === 'reverse') {
-                meaningDisplay.style.display = 'block';
-                answerBox.style.display = 'none';
-                answerCounters.style.display = 'none';
-            } else { // normal kana mode
-                meaningDisplay.style.display = 'none';
-                answerBox.style.display = 'inline-block';
-                answerCounters.style.display = 'inline-block';
-                answerBox.placeholder = "Romaji";
-                answerBox.maxLength = 4;
-            }
+            correctBtn.style.display = 'none';
+            incorrectBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+} else if (currentAppMode === 'kana') {
+    kanaControls.style.display = 'block';
+    const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
+
+    if (kanaMode === 'reverse') {
+        // --- Inverted Kana Mode UI ---
+        meaningDisplay.style.display = 'block';
+        answerCounters.style.display = 'inline-block'; // SHOW the counters
+        answerBox.style.display = 'none';              // HIDE the input box
+        nextBtn.style.display = 'none';                // HIDE the normal 'Next' button
+        
+        checkBtn.style.display = 'inline-block';
+
+        // SHOW our new self-scoring buttons
+        correctBtn.style.display = 'inline-block';
+        incorrectBtn.style.display = 'inline-block';
+
+    } else { 
+        // --- Normal Kana Mode UI ---
+        meaningDisplay.style.display = 'none';
+        answerCounters.style.display = 'inline-block';
+        answerBox.style.display = 'inline-block';
+        answerBox.placeholder = "Romaji";
+        answerBox.maxLength = 4;
+
+        // Restore default buttons
+        checkBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'inline-block';
+        correctBtn.style.display = 'none';
+        incorrectBtn.style.display = 'none';
+    }
         } else if (currentAppMode === 'random') {
             meaningDisplay.style.display = 'none';
             answerCounters.style.display = 'inline-block';
             answerBox.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
-            checkBtn.textContent = 'Verificar';
         }
     }
 
-    function resetUIState() {
-        answerBox.value = "";
-        resultDisplay.textContent = "Aguardando Resposta...";
-        resultDisplay.className = "neutral";
+function resetUIState() {
+    // --- Actions for ALL modes ---
+    answerBox.value = "";
+    resultDisplay.textContent = "Aguardando Resposta...";
+    resultDisplay.className = "neutral";
+    answerBox.disabled = false;
+
+    // --- Mode-specific logic ---
+    const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
+
+    if (isKanaReverse) {
+        // Logic for Kana Inverted Mode
+        checkBtn.disabled = false;
+        correctBtn.disabled = true;
+        incorrectBtn.disabled = true;
+        nextBtn.disabled = true; // Explicitly disable next button
+        checkBtn.focus();
+    } else {
+        // Logic for ALL OTHER modes
         checkBtn.disabled = false;
         nextBtn.disabled = true;
-        answerBox.disabled = false;
-
-        const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
-        if (isKanaReverse) {
-            checkBtn.focus();
-        } else {
-            answerBox.focus();
-        }
+        correctBtn.disabled = true; // Ensure score buttons are off
+        incorrectBtn.disabled = true;
+        answerBox.focus();
     }
+}
 
     function showEndScreen(message) {
         promptDisplay.textContent = "Acabou!";
         if (currentAppMode === 'vocab') meaningDisplay.textContent = "Parabéns!";
         checkBtn.disabled = true;
         nextBtn.disabled = true;
+        correctBtn.disabled = true;
+        incorrectBtn.disabled = true;
         answerBox.disabled = true;
         answerBox.value = "";
         resultDisplay.textContent = message;
@@ -1180,6 +1251,8 @@ const katakanaWords = {
     // --- Main Controls ---
     checkBtn.addEventListener("click", checkAnswer);
     nextBtn.addEventListener("click", nextItem);
+    correctBtn.addEventListener("click", () => handleSelfScore(true));
+    incorrectBtn.addEventListener("click", () => handleSelfScore(false));
     resetBtn.addEventListener("click", resetGame); // This now ONLY rebuilds the current deck
     answerBox.addEventListener("keydown", handleEnterKey);
 
@@ -1192,11 +1265,27 @@ const katakanaWords = {
     // MODIFIED: Sub-mode changes no longer reset the game. They just update the UI.
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
         updateUIVisibility();
+
+
+        displayCurrentItem();
+        updateStats();
+        resetUIState();
+        pendingScoreUpdate = null;
+
+
         displayCurrentItem(); // Redisplay the same card in the new format
     }));
 
     kanaScriptRadios.forEach(radio => radio.addEventListener('change', () => {
         updateUIVisibility();
+
+
+        displayCurrentItem();
+        updateStats();
+        resetUIState();
+        pendingScoreUpdate = null;
+
+
         displayCurrentItem(); // Redisplay the same card in the new format
     }));
 
