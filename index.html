@@ -989,7 +989,7 @@ const katakanaWords = {
         } else
 
         // If the deck for the new mode is empty (and it's not random mode), build it for the first time.
-        if (state.deck.length === 0 && !state.currentItem && currentAppMode !== 'random') {
+        if (currentAppMode === 'random') {
             resetGame();
             updateUIVisibility();
             displayCurrentItem();
