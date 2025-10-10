@@ -980,14 +980,6 @@ const katakanaWords = {
         currentAppMode = newMode;
         const state = appState[currentAppMode];
 
-        if (currentAppMode === 'random') {
-            resetGame();
-            updateUIVisibility();
-            displayCurrentItem();
-            updateStats();
-            resetUIState();
-        } else
-
         // If the deck for the new mode is empty (and it's not random mode), build it for the first time.
         if (currentAppMode === 'random') {
             resetGame();
@@ -1321,7 +1313,8 @@ function resetUIState() {
     groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked)));
 
     // --- Initial setup ---
-    boot(currentAppMode); // Initial setup using the new logic
+    boot('vocab');
+    boot('kana');
 </script>
 </body>
 </html>
