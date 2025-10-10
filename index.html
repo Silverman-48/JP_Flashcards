@@ -13,6 +13,8 @@
         input[type="text"] { font-size: 20px; padding: 10px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
         button { font-size: 16px; margin: 5px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; background-color: #5c67f2; color: white; transition: background-color 0.2s; }
         #resetBtn { background: #f25c5c; }
+        #correctBtn { background: #28a745; }
+        #incorrectBtn { background: #dc3545; }
         button:disabled { background: #ccc; cursor: not-allowed; }
         button:hover { background: #5c67f2; border: none; color: white; }
         #resetBtn:hover { background: #f25c5c; border: none; color: white; }
@@ -73,8 +75,8 @@
     
     <button id="checkBtn">Verificar</button>
     <button id="nextBtn">Seguinte</button>
-    <button id="correctBtn" style="display: none; background-color: #28a745;">Correto</button>
-    <button id="incorrectBtn" style="display: none; background-color: #dc3545;">Incorreto</button>
+    <button id="correctBtn" style="display: none;">Correto</button>
+    <button id="incorrectBtn" style="display: none;">Incorreto</button>
     <button id="resetBtn">Reiniciar</button>
     
     <div class="stats">
