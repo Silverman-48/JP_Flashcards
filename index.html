@@ -23,10 +23,7 @@
         .correct { color: green; }
         .incorrect { color: red; }
 
-
-
         /* --- Mode Selection --- */
-        /* .mode-choice-main { margin-bottom: 20px; font-size: 1.2em; padding-bottom: 15px; border-bottom: 0px solid #ddd; } */
         .mode-choice { font-size: 1.2em; padding-bottom: 15px; }
         .mode-choice label { margin: 0 15px; cursor: pointer; }
         .sub-options { margin-top: 20px; }
@@ -61,12 +58,11 @@
     </style>
 </head>
 <body>
-    <!--<h1>Flashcards de Japonês</h1>-->
     
     <div class="mode-choice">
-        <!--<h3>Escolha o Modo de Prática:</h3>-->
         <label><input type="radio" name="appMode" value="kana" checked> Kana</label>
         <label><input type="radio" name="appMode" value="vocab"> Vocabulário</label>
+        <br><br>
         <label><input type="radio" name="appMode" value="random"> Aleatório</label>
     </div>
 
@@ -199,6 +195,7 @@
                 <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL20_2_kata" checked> Lição 20.2 - Nacionalidades</label>
                 <label><input type="checkbox" class="group-checkbox-words-kata" id="wrdL20_3_kata" checked> Lição 20.3 - Línguas</label>
             </div>
+        </div>
     </div>
 
 <script>
@@ -750,12 +747,31 @@ const katakanaWords = {
 //,'kka':{hira:'っか',kata:'ッカ'},'kki':{hira:'っき',kata:'ッキ'},'kku':{hira:'っく',kata:'ック'},'kke':{hira:'っけ',kata:'ッケ'},'kko':{hira:'っこ',kata:'ッコ'},'ssa':{hira:'ッサ',kata:'ッサ'},'sshi':{hira:'っし',kata:'ッシ'},'ssu':{hira:'っす',kata:'ッス'},'sse':{hira:'っせ',kata:'ッセ'},'sso':{hira:'っそ',kata:'ッソ'},'tta':{hira:'った',kata:'ッタ'},'tchi':{hira:'っち',kata:'ッチ'},'ttsu':{hira:'っつ',kata:'ッツ'},'tte':{hira:'って',kata:'ッテ'},'tto':{hira:'っと',kata:'ット'},'ppa':{hira:'っぱ',kata:'ッパ'},'ppi':{hira:'っぴ',kata:'ッピ'},'ppu':{hira:'っぷ',kata:'ップ'},'ppe':{hira:'っぺ',kata:'ッペ'},'ppo':{hira:'っぽ',kata:'ッポ'},'kkya':{hira:'っきゃ',kata:'っきゃ'},'kkyu':{hira:'っきゅ',kata:'っきゅ'},'kkyo':{hira:'っきょ',kata:'っきょ'},'ssha':{hira:'っしゃ',kata:'っしゃ'},'sshu':{hira:'っしゅ',kata:'っしゅ'},'ssho':{hira:'っしょ',kata:'っしょ'},'tcha':{hira:'っちゃ',kata:'っちゃ'},'tchu':{hira:'っちゅ',kata:'っちゅ'},'tcho':{hira:'っちょ',kata:'っちょ'},'ppya':{hira:'っぴゃ',kata:'っぴゃ'},'ppyu':{hira:'っぴゅ',kata:'っぴゅ'},'ppyo':{hira:'っぴょ',kata:'っぴょ'}
 };
 
-    // ===== GLOBAL VARIABLES =====
-    let currentAppMode = 'kana'; // 'vocab' or 'kana'
-    let deck = [];
-    let currentItem = null;
-    let correctCount = 0;
-    let incorrectCount = 0;
+    // ===== GLOBAL & STATE MANAGEMENT =====
+    let currentAppMode = 'kana'; // Default mode
+    let pendingScoreUpdate = null;
+
+    // NEW: State object to hold separate decks and progress for each mode
+    let appState = {
+        kana: {
+            deck: [],
+            currentItem: null,
+            correctCount: 0,
+            incorrectCount: 0,
+        },
+        vocab: {
+            deck: [],
+            currentItem: null,
+            correctCount: 0,
+            incorrectCount: 0,
+        },
+        random: {
+            deck: [], // Not really used but good for consistency
+            currentItem: null,
+            correctCount: 0,
+            incorrectCount: 0,
+        }
+    };
 
     // ===== DOM ELEMENTS =====
     // Shared
@@ -799,93 +815,89 @@ const katakanaWords = {
 
     // ===== CORE MERGED FUNCTIONS =====
 
-function buildDeck() {
-    deck = [];
-    if (currentAppMode === 'vocab') {
+    // MODIFIED: Builds a deck for a specific mode and returns it, instead of modifying a global variable.
+    function buildDeck(mode) {
+        let newDeck = [];
+        if (mode === 'vocab') {
             for (const key in hiraganaWords) {
                 if (document.getElementById('wrd' + key)?.checked) {
-                    deck.push(...hiraganaWords[key]);
+                    newDeck.push(...hiraganaWords[key]);
                 }
             }
             for (const key in katakanaWords) {
                 if (document.getElementById('wrd' + key + '_kata')?.checked) {
-                    deck.push(...katakanaWords[key]);
+                    newDeck.push(...katakanaWords[key]);
                 }
             }
-    } else if (currentAppMode === 'kana') {
+        } else if (mode === 'kana') {
             for (const key in hiraganaGroups) {
                 if (document.getElementById('grp' + key)?.checked) {
                     const items = hiraganaGroups[key].map(item => ({ ...item, type: 'Hiragana' }));
-                    deck.push(...items);
+                    newDeck.push(...items);
                 }
             }
             for (const key in katakanaGroups) {
                 if (document.getElementById('grp' + key + '_kata')?.checked) {
                     const items = katakanaGroups[key].map(item => ({ ...item, type: 'Katakana' }));
-                    deck.push(...items);
+                    newDeck.push(...items);
                 }
             }
+        }
+        return newDeck;
     }
-    updateRemaining();
-}
 
+    // MODIFIED: Now works with the state object for the current mode.
     function nextItem() {
-        // --- Vocabulary Mode ---
-        if (currentAppMode === 'vocab') {
-            const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-            
-            if (deck.length === 0) {
-                showEndScreen('Pressiona "Reiniciar" para começar de novo!');
-                return;
-            }
-            const idx = Math.floor(Math.random() * deck.length);
-            currentItem = deck.splice(idx, 1)[0];
-            
-            if (vocabMode === 'normal') {
-            promptDisplay.textContent = currentItem.word;
-            meaningDisplay.textContent = "...";
+        // NEW: Apply any pending score update first
+        if (pendingScoreUpdate) {
+            const stateToUpdate = appState[pendingScoreUpdate.mode];
+            if (pendingScoreUpdate.result === 'correct') {
+                stateToUpdate.correctCount++;
             } else {
-            promptDisplay.textContent = "...";
-            meaningDisplay.textContent = currentItem.meaning;
+                stateToUpdate.incorrectCount++;
             }
+            // Update the display now that the score is committed
+            correctDisplay.textContent = stateToUpdate.correctCount;
+            incorrectDisplay.textContent = stateToUpdate.incorrectCount;
 
-        // --- Kana Mode ---
-        } else if (currentAppMode === 'kana') {
-            if (deck.length === 0) {
-                showEndScreen('Seleciona as linhas e pressiona "Reniciar" para começar!');
-                return;
-            }
-            const idx = Math.floor(Math.random() * deck.length);
-            currentItem = deck.splice(idx, 1)[0];
-            currentItem.word = currentItem.char;
+            // Clear the pending update
+            pendingScoreUpdate = null;
+        }
 
-            const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
-            if (kanaMode === 'reverse') {
-                promptDisplay.textContent = currentItem.reading;
-                meaningDisplay.textContent = `(${currentItem.type})`; // Display the hint
-            } else {
-                promptDisplay.textContent = currentItem.word;
-            }
-        } else if (currentAppMode === 'random') {
-            currentItem = generateRandomSyllableWord(4);
-            promptDisplay.textContent = currentItem.word;
-            meaningDisplay.textContent = currentItem.meaning;
-            remainingCount.textContent = "∞";
+        const state = appState[currentAppMode]; // Get current mode's state
+
+        if (currentAppMode === 'random') {
+            state.currentItem = generateRandomSyllableWord(4);
+            displayCurrentItem();
+            updateRemaining();
             resetUIState();
             return;
         }
+        
+        if (state.deck.length === 0) {
+            showEndScreen(currentAppMode === 'vocab' ? 'Pressiona "Reiniciar" para começar de novo!' : 'Seleciona as linhas e pressiona "Reniciar" para começar!');
+            return;
+        }
 
-        resetUIState();
+        const idx = Math.floor(Math.random() * state.deck.length);
+        state.currentItem = state.deck.splice(idx, 1)[0];
+        
+        if(currentAppMode === 'kana') {
+            state.currentItem.word = state.currentItem.char;
+        }
+
+        displayCurrentItem();
         updateRemaining();
+        resetUIState();
     }
-
+    
+    // MODIFIED: Now works with the state object.
     function checkAnswer() {
-        if (checkBtn.disabled || !currentItem) return;
+        const state = appState[currentAppMode];
+        if (checkBtn.disabled || !state.currentItem) return;
 
-        // --- Logic for Kana Reverse Mode ---
         if (currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse') {
-            promptDisplay.textContent = currentItem.word; // Reveal the kana
-            meaningDisplay.textContent = currentItem.reading; // Show the reading underneath
+            displayCurrentItem(true); // Reveal the answer
             resultDisplay.textContent = 'Resposta Correta:';
             resultDisplay.className = "neutral";
             checkBtn.disabled = true;
@@ -895,90 +907,152 @@ function buildDeck() {
         }
 
         const userAnswer = answerBox.value.trim().toLowerCase();
-        const correctAnswer = currentItem.reading;
+        const correctAnswer = state.currentItem.reading;
         
         if (userAnswer === correctAnswer) {
-            correctCount++;
             resultDisplay.textContent = "✅ Correto!";
             resultDisplay.className = "correct";
+            // Set the pending update instead of changing the score
+            pendingScoreUpdate = { mode: currentAppMode, result: 'correct' };
         } else {
-            incorrectCount++;
             resultDisplay.textContent = `❌ Incorreto! A resposta era: ${correctAnswer}`;
             resultDisplay.className = "incorrect";
+            // Set the pending update instead of changing the score
+            pendingScoreUpdate = { mode: currentAppMode, result: 'incorrect' };
         }
 
-        if (currentAppMode === 'vocab') {
-            const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-            if (vocabMode === 'normal') {
-            meaningDisplay.textContent = currentItem.meaning;
-            } else {
-            promptDisplay.textContent = currentItem.word;
-            }
-        }
-
-        correctDisplay.textContent = correctCount;
-        incorrectDisplay.textContent = incorrectCount;
+        displayCurrentItem(true); // Reveal answer after checking
         checkBtn.disabled = true;
         nextBtn.disabled = false;
         answerBox.focus();
     }
 
+    // MODIFIED: This now resets ONLY the current mode's deck and stats.
     function resetGame() {
-        correctCount = 0;
-        incorrectCount = 0;
+        pendingScoreUpdate = null; // Discard any unconfirmed answer
+        const state = appState[currentAppMode];
+        state.correctCount = 0;
+        state.incorrectCount = 0;
+        state.currentItem = null;
+        
         correctDisplay.textContent = 0;
         incorrectDisplay.textContent = 0;
-        currentItem = null;
+        
         allWordsContainer1.style.display = 'none';
         allWordsContainer2.style.display = 'none';
-        options1.style.display = 'none';
-        options2.style.display = 'none';
+        optionsPanel1.style.display = 'none';
+        optionsPanel2.style.display = 'none';
         
-        updateUIVisibility(); // Adjust UI based on mode
-        buildDeck();
-        toggleAllWords1();
-        toggleAllWords2();
+        if (currentAppMode !== 'random') {
+            state.deck = buildDeck(currentAppMode);
+            // Update the word list display if it needs to be shown
+            if(currentAppMode === 'vocab') toggleAllWords1();
+            if(currentAppMode === 'kana') toggleAllWords2();
+        }
+        
         nextItem();
     }
-    
+
     // ===== HELPER & UI FUNCTIONS =====
     
+    // NEW: Function to handle switching between main modes
+    function switchMode(newMode) {
+        pendingScoreUpdate = null; // Discard any unconfirmed answer
+        currentAppMode = newMode;
+        const state = appState[currentAppMode];
+
+        // If the deck for the new mode is empty (and it's not random mode), build it for the first time.
+        if (state.deck.length === 0 && !state.currentItem && currentAppMode !== 'random') {
+            resetGame();
+            updateUIVisibility();
+            displayCurrentItem();
+            updateStats();
+            resetUIState();
+} else {
+    // Otherwise, just update the UI with the existing state of that mode
+    updateUIVisibility();
+    displayCurrentItem();
+    updateStats();
+    resetUIState();
+}
+    }
+    
+    // NEW: A dedicated function to update the display based on the current item.
+    // 'reveal' parameter is used for showing the answer after checking.
+    function displayCurrentItem(reveal = false) {
+        const state = appState[currentAppMode];
+        if (!state.currentItem) {
+            promptDisplay.textContent = '?';
+            meaningDisplay.textContent = '...';
+            return;
+        }
+        
+        if (currentAppMode === 'vocab') {
+            const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
+            if (vocabMode === 'normal') {
+                promptDisplay.textContent = state.currentItem.word;
+                meaningDisplay.textContent = reveal ? state.currentItem.meaning : "...";
+            } else { // alt mode
+                promptDisplay.textContent = reveal ? state.currentItem.word : "...";
+                meaningDisplay.textContent = state.currentItem.meaning;
+            }
+        } else if (currentAppMode === 'kana') {
+            const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
+            if (kanaMode === 'reverse') {
+                promptDisplay.textContent = reveal ? state.currentItem.word : state.currentItem.reading;
+                meaningDisplay.textContent = `(${state.currentItem.type})`;
+            } else { // normal mode
+                promptDisplay.textContent = state.currentItem.word;
+                meaningDisplay.textContent = "";
+            }
+        } else if (currentAppMode === 'random') {
+            promptDisplay.textContent = state.currentItem.word;
+            meaningDisplay.textContent = "";
+        }
+    }
+    
+    // NEW: Updates the score display from the current mode's state.
+    function updateStats() {
+        const state = appState[currentAppMode];
+        correctDisplay.textContent = state.correctCount;
+        incorrectDisplay.textContent = state.incorrectCount;
+        updateRemaining();
+    }
+    
+    // MODIFIED: This logic is now cleaner and separated by mode.
     function updateUIVisibility() {
+        vocabControls.style.display = 'none';
+        kanaControls.style.display = 'none';
+        
         if (currentAppMode === 'vocab') {
             vocabControls.style.display = 'block';
-            kanaControls.style.display = 'none';
             meaningDisplay.style.display = 'block';
             answerCounters.style.display = 'inline-block';
             answerBox.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
+            checkBtn.textContent = 'Verificar';
         } else if (currentAppMode === 'kana') {
-            vocabControls.style.display = 'none';
             kanaControls.style.display = 'block';
-
             const kanaMode = document.querySelector('input[name="kanaScript"]:checked').value;
             if (kanaMode === 'reverse') {
-                meaningDisplay.style.display = 'block'; // Make hint area visible
+                meaningDisplay.style.display = 'block';
                 answerBox.style.display = 'none';
                 answerCounters.style.display = 'none';
-                resultDisplay.textContent = 'Pressiona "Mostrar" ou Enter';
-                checkBtn.textContent = 'Mostrar';
             } else { // normal kana mode
-                meaningDisplay.style.display = 'none'; // Hide hint area
+                meaningDisplay.style.display = 'none';
                 answerBox.style.display = 'inline-block';
                 answerCounters.style.display = 'inline-block';
                 answerBox.placeholder = "Romaji";
                 answerBox.maxLength = 4;
-                checkBtn.textContent = 'Verificar';
             }
         } else if (currentAppMode === 'random') {
-            vocabControls.style.display = 'none';
-            kanaControls.style.display = 'none';
             meaningDisplay.style.display = 'none';
             answerCounters.style.display = 'inline-block';
             answerBox.style.display = 'inline-block';
             answerBox.placeholder = "Romaji";
             answerBox.maxLength = 30;
+            checkBtn.textContent = 'Verificar';
         }
     }
 
@@ -991,12 +1065,9 @@ function buildDeck() {
         answerBox.disabled = false;
 
         const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
-
         if (isKanaReverse) {
-            // In reverse mode, focus the 'Show' button so Enter will trigger it.
             checkBtn.focus();
         } else {
-            // In all other modes, focus the text input box.
             answerBox.focus();
         }
     }
@@ -1012,18 +1083,14 @@ function buildDeck() {
         resultDisplay.className = "";
     }
 
+    // MODIFIED: Works with the state object.
     function updateRemaining() {
-        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-
-        // If in vocabulary mode and the sub-mode is 'random', display infinity
         if (currentAppMode === 'random') {
             remainingCount.textContent = "∞";
-            return; // Exit the function here for random mode
+            return;
         }
-
-        // For all other modes (Kana, normal/alt vocab), calculate the count normally
-        // The count is the number of items left in the deck plus the one currently being shown
-        remainingCount.textContent = deck.length + (currentItem ? 1 : 0);
+        const state = appState[currentAppMode];
+        remainingCount.textContent = state.deck.length + (state.currentItem ? 1 : 0);
     }
 
     function handleEnterKey(e) {
@@ -1056,7 +1123,7 @@ function buildDeck() {
     }
 
     function showAllWords1() {
-            options1.style.display = "none";
+        optionsPanel1.style.display = "none";
         if (allWordsContainer1.style.display === "block") {
             allWordsContainer1.style.display = "none";
             return;
@@ -1065,7 +1132,7 @@ function buildDeck() {
     }
 
     function showAllWords2() {
-            options2.style.display = "none";
+        optionsPanel2.style.display = "none";
         if (allWordsContainer2.style.display === "block") {
             allWordsContainer2.style.display = "none";
             return;
@@ -1075,16 +1142,10 @@ function buildDeck() {
     
     function toggleAllWords1() {
         allWordsContainer1.innerHTML = '';
-        
-        const vocabMode = document.querySelector('input[name="vocabScript"]:checked').value;
-        const isNormal = vocabMode === 'normal';
-        const sourceList = deck;
-        const listTitle = "Lista de Palavras";
-        
+        const sourceList = buildDeck('vocab'); // Build a temporary list to show all possible words
         const titleElement = document.createElement('h3');
-        titleElement.textContent = listTitle;
+        titleElement.textContent = "Lista de Palavras";
         allWordsContainer1.appendChild(titleElement);
-        
         sourceList.forEach(item => {
             const p = document.createElement('p');
             p.innerHTML = `<strong>${item.word}</strong> (${item.reading}) - ${item.meaning}`;
@@ -1094,14 +1155,10 @@ function buildDeck() {
 
     function toggleAllWords2() {
         allWordsContainer2.innerHTML = '';
-        
-        const sourceList = deck;
-        const listTitle = "Lista de Kana";
-        
+        const sourceList = buildDeck('kana'); // Build a temporary list
         const titleElement = document.createElement('h3');
-        titleElement.textContent = listTitle;
+        titleElement.textContent = "Lista de Kana";
         allWordsContainer2.appendChild(titleElement);
-        
         sourceList.forEach(item => {
             const p = document.createElement('p');
             p.innerHTML = `<strong>${item.char}</strong> - ${item.reading}`;
@@ -1109,14 +1166,13 @@ function buildDeck() {
         });
     }
 
-    // ===== KANA SPECIFIC FUNCTIONS =====
     function toggleOptionsPanel1() {
-            allWordsContainer1.style.display = "none";
+        allWordsContainer1.style.display = "none";
         optionsPanel1.style.display = (optionsPanel1.style.display === "none") ? "flex" : "none";
     }
 
     function toggleOptionsPanel2() {
-            allWordsContainer2.style.display = "none";
+        allWordsContainer2.style.display = "none";
         optionsPanel2.style.display = (optionsPanel2.style.display === "none") ? "flex" : "none";
     }
 
@@ -1124,62 +1180,43 @@ function buildDeck() {
     // --- Main Controls ---
     checkBtn.addEventListener("click", checkAnswer);
     nextBtn.addEventListener("click", nextItem);
-    resetBtn.addEventListener("click", resetGame);
+    resetBtn.addEventListener("click", resetGame); // This now ONLY rebuilds the current deck
     answerBox.addEventListener("keydown", handleEnterKey);
 
     // --- Mode Switching ---
+    // MODIFIED: Now calls the new switchMode function instead of resetGame.
     appModeRadios.forEach(radio => radio.addEventListener('change', (e) => {
-        currentAppMode = e.target.value;
-        resetGame();
+        switchMode(e.target.value);
     }));
 
-    // --- Vocabulary Controls ---
+    // MODIFIED: Sub-mode changes no longer reset the game. They just update the UI.
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
-        allWordsContainer1.style.display = 'none';
-        options1.style.display = 'none';
-        resetGame();
+        updateUIVisibility();
+        displayCurrentItem(); // Redisplay the same card in the new format
     }));
+
+    kanaScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        updateUIVisibility();
+        displayCurrentItem(); // Redisplay the same card in the new format
+    }));
+
     showAllBtn1.addEventListener("click", showAllWords1);
     showAllBtn2.addEventListener("click", showAllWords2);
-
-    // --- Kana Controls ---
     optionsBtn1.addEventListener("click", toggleOptionsPanel1);
     optionsBtn2.addEventListener("click", toggleOptionsPanel2);
-
-    kanaScriptRadios.forEach(radio => radio.addEventListener('change', resetGame));
     
-    // Check-all logic for Hiragana
-    checkAllHira.addEventListener('change', () => {
-        groupCheckboxesHira.forEach(checkbox => checkbox.checked = checkAllHira.checked);
-    });
-    groupCheckboxesHira.forEach(checkbox => checkbox.addEventListener('change', () => {
-        checkAllHira.checked = Array.from(groupCheckboxesHira).every(cb => cb.checked);
-    }));
-
-    // Check-all logic for Katakana
-    checkAllKata.addEventListener('change', () => {
-        groupCheckboxesKata.forEach(checkbox => checkbox.checked = checkAllKata.checked);
-    });
-    groupCheckboxesKata.forEach(checkbox => checkbox.addEventListener('change', () => {
-        checkAllKata.checked = Array.from(groupCheckboxesKata).every(cb => cb.checked);
-    }));
-
-    checkAllWordsHira.addEventListener('change', () => {
-        groupCheckboxesWordsHira.forEach(checkbox => checkbox.checked = checkAllWordsHira.checked);
-    });
-    groupCheckboxesWordsHira.forEach(checkbox => checkbox.addEventListener('change', () => {
-        checkAllWordsHira.checked = Array.from(groupCheckboxesWordsHira).every(cb => cb.checked);
-    }));
-
-    checkAllWordsKata.addEventListener('change', () => {
-        groupCheckboxesWordsKata.forEach(checkbox => checkbox.checked = checkAllWordsKata.checked);
-    });
-    groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => {
-        checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked);
-    }));
+    // --- Checkbox Logic (Unchanged) ---
+    checkAllHira.addEventListener('change', () => groupCheckboxesHira.forEach(checkbox => checkbox.checked = checkAllHira.checked));
+    groupCheckboxesHira.forEach(checkbox => checkbox.addEventListener('change', () => checkAllHira.checked = Array.from(groupCheckboxesHira).every(cb => cb.checked)));
+    checkAllKata.addEventListener('change', () => groupCheckboxesKata.forEach(checkbox => checkbox.checked = checkAllKata.checked));
+    groupCheckboxesKata.forEach(checkbox => checkbox.addEventListener('change', () => checkAllKata.checked = Array.from(groupCheckboxesKata).every(cb => cb.checked)));
+    checkAllWordsHira.addEventListener('change', () => groupCheckboxesWordsHira.forEach(checkbox => checkbox.checked = checkAllWordsHira.checked));
+    groupCheckboxesWordsHira.forEach(checkbox => checkbox.addEventListener('change', () => checkAllWordsHira.checked = Array.from(groupCheckboxesWordsHira).every(cb => cb.checked)));
+    checkAllWordsKata.addEventListener('change', () => groupCheckboxesWordsKata.forEach(checkbox => checkbox.checked = checkAllWordsKata.checked));
+    groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked)));
 
     // --- Initial setup ---
-    resetGame();
+    switchMode(currentAppMode); // Initial setup using the new logic
 </script>
 </body>
 </html>
