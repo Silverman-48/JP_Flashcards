@@ -1259,6 +1259,13 @@ const romajiToKana={
         displayCurrentItem();
         updateRemaining();
         resetUIState();
+        const isKanaReverse = currentAppMode === 'kana' && document.querySelector('input[name="kanaScript"]:checked').value === 'reverse';
+
+    if (isKanaReverse) {
+        checkBtn.focus();
+    } else {
+        answerBox.focus();
+    }
     }
     
     // MODIFIED: Now works with the state object.
@@ -1489,14 +1496,12 @@ function resetUIState() {
         correctBtn.disabled = true;
         incorrectBtn.disabled = true;
         nextBtn.disabled = true; // Explicitly disable next button
-        checkBtn.focus();
     } else {
         // Logic for ALL OTHER modes
         checkBtn.disabled = false;
         nextBtn.disabled = true;
         correctBtn.disabled = true; // Ensure score buttons are off
         incorrectBtn.disabled = true;
-        answerBox.focus();
     }
 }
 
@@ -1632,7 +1637,6 @@ function resetUIState() {
         return;
         }
 
-        displayCurrentItem();
         updateStats();
         resetUIState();
         pendingScoreUpdate = null;
@@ -1649,8 +1653,7 @@ function resetUIState() {
         showEndScreen(currentAppMode === 'vocab' ? 'Seleciona as lições e pressiona "Reiniciar" para começar!' : 'Seleciona as linhas e pressiona "Reiniciar" para começar!');
         return;
         }
-
-        displayCurrentItem();
+        
         updateStats();
         resetUIState();
         pendingScoreUpdate = null;
