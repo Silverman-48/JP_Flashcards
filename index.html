@@ -1545,6 +1545,7 @@ function resetUIState() {
         const wordLength = Math.floor(Math.random() * (maxLength - 1)) + 2;
         let generatedKana = '';
         let generatedReading = '';
+        answerBox.focus();
         for (let i = 0; i < wordLength; i++) {
             const randomSyllable = syllables[Math.floor(Math.random() * syllables.length)];
             const kanaPair = romajiToKana[randomSyllable];
