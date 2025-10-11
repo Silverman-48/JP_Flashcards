@@ -8,25 +8,25 @@
         body { font-family: Arial, sans-serif; text-align: center; margin: 30px; background-color: #f4f4f9; }
         
         /* --- Shared Elements --- */
-        #promptDisplay { font-size: 60px; margin: 20px; color: #333; font-family: "MS PGothic", sans-serif; min-height: 70px; }
-        #meaningDisplay { font-size: 22px; margin-bottom: 20px; color: #555; font-weight: bold; min-height: 25px; }
-        input[type="text"] { font-size: 20px; padding: 10px; width: 250px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
-        button { font-size: 16px; margin: 5px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; background-color: #5c67f2; color: white; transition: background-color 0.2s; }
-        #resetBtn { background-color: #f25c5c; }
+        #promptDisplay { font-size: 50px; margin: 20px; color: #333; font-family: "MS PGothic", sans-serif; min-height: 50px; }
+        #meaningDisplay { font-size: 22px; margin-bottom: 20px; color: #555; font-weight: bold; min-height: 22px; }
+        input[type="text"] { font-size: 20px; padding: 10px; width: 230px; text-align: center; border: 2px solid #ccc; border-radius: 5px; }
+        button { font-size: 16px; margin: 5px; padding: 8px 15px; border-radius: 5px; border: none; cursor: pointer; background: #5c67f2; color: white; transition: background-color 0.2s; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        button:hover { background: #5c67f2; border: none; color: white; }
+
+        #correctBtn { background: #28a745; }
+        #incorrectBtn { background: #dc3545; }
+        #correctBtn:disabled { background: #ccc; cursor: not-allowed; }
+        #incorrectBtn:disabled { background: #ccc; cursor: not-allowed; }
+        #correctBtn:hover { background: #28a745; border: none; color: white; }
+        #incorrectBtn:hover { background: #dc3545; border: none; color: white; }
         
-        #correctBtn { background-color: #28a745; }
-        #incorrectBtn { background-color: #dc3545; }
-        #correctBtn:disabled { background-color: #ccc; cursor: not-allowed; }
-        #incorrectBtn:disabled { background-color: #ccc; cursor: not-allowed; }
-        #correctBtn:hover { background-color: #28a745; border: none; color: white; }
-        #incorrectBtn:hover { background-color: #dc3545; border: none; color: white; }
-        
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-        button:hover { background-color: #5c67f2; border: none; color: white; }
-        #resetBtn:hover { background-color: #f25c5c; border: none; color: white; }
+        #resetBtn { background: #f25c5c; }
+        #resetBtn:hover { background: #f25c5c; border: none; color: white; }
         
         .stats { margin-top: 15px; margin-bottom: 15px; font-size: 18px; color: #555; }
-        #resultDisplay { margin-top: 15px; font-size: 20px; font-weight: bold; height: 25px; }
+        #resultDisplay { margin-top: 15px; font-size: 20px; font-weight: bold; height: 20px; }
         .neutral { color: black; }
         .correct { color: green; }
         .incorrect { color: red; }
@@ -67,10 +67,10 @@
 </head>
 <body>
     
-    <div class="mode-choice">
+    <div class="mode-choice" style="line-height: 1.5">
         <label><input type="radio" name="appMode" value="kana" checked> Kana</label>
         <label><input type="radio" name="appMode" value="vocab"> Vocabulário</label>
-        <br><br>
+        <br>
         <label><input type="radio" name="appMode" value="random"> Aleatório</label>
     </div>
 
@@ -140,6 +140,8 @@
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpBA_kata" checked> Som Sonoro BA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpPA_kata" checked> Som Semissonoro PA</label>
                 <label><input type="checkbox" class="group-checkbox-kata" id="grpYOON_kata" checked> Ditongos</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpSPE_1_kata" checked> Sons Especiais 1</label>
+                <label><input type="checkbox" class="group-checkbox-kata" id="grpSPE_2_kata" checked> Sons Especiais 2</label>
             </div>
         </div>
     </div>
@@ -749,11 +751,360 @@ const katakanaWords = {
     ]
 };
 
-    const hiraganaGroups={A:[{char:"あ",reading:"a"},{char:"い",reading:"i"},{char:"う",reading:"u"},{char:"え",reading:"e"},{char:"お",reading:"o"}],KA:[{char:"か",reading:"ka"},{char:"き",reading:"ki"},{char:"く",reading:"ku"},{char:"け",reading:"ke"},{char:"こ",reading:"ko"}],GA:[{char:"が",reading:"ga"},{char:"ぎ",reading:"gi"},{char:"ぐ",reading:"gu"},{char:"げ",reading:"ge"},{char:"ご",reading:"go"}],SA:[{char:"さ",reading:"sa"},{char:"し",reading:"shi"},{char:"す",reading:"su"},{char:"せ",reading:"se"},{char:"そ",reading:"so"}],ZA:[{char:"ざ",reading:"za"},{char:"じ",reading:"ji"},{char:"ず",reading:"zu"},{char:"ぜ",reading:"ze"},{char:"ぞ",reading:"zo"}],TA:[{char:"た",reading:"ta"},{char:"ち",reading:"chi"},{char:"つ",reading:"tsu"},{char:"て",reading:"te"},{char:"と",reading:"to"}],DA:[{char:"だ",reading:"da"},{char:"ぢ",reading:"ji"},{char:"づ",reading:"zu"},{char:"で",reading:"de"},{char:"ど",reading:"do"}],NA:[{char:"な",reading:"na"},{char:"に",reading:"ni"},{char:"ぬ",reading:"nu"},{char:"ね",reading:"ne"},{char:"の",reading:"no"}],HA:[{char:"は",reading:"ha"},{char:"ひ",reading:"hi"},{char:"ふ",reading:"fu"},{char:"へ",reading:"he"},{char:"ほ",reading:"ho"}],BA:[{char:"ば",reading:"ba"},{char:"び",reading:"bi"},{char:"ぶ",reading:"bu"},{char:"べ",reading:"be"},{char:"ぼ",reading:"bo"}],PA:[{char:"ぱ",reading:"pa"},{char:"ぴ",reading:"pi"},{char:"ぷ",reading:"pu"},{char:"ぺ",reading:"pe"},{char:"ぽ",reading:"po"}],MA:[{char:"ま",reading:"ma"},{char:"み",reading:"mi"},{char:"む",reading:"mu"},{char:"め",reading:"me"},{char:"も",reading:"mo"}],YA:[{char:"や",reading:"ya"},{char:"ゆ",reading:"yu"},{char:"よ",reading:"yo"}],RA:[{char:"ら",reading:"ra"},{char:"り",reading:"ri"},{char:"る",reading:"ru"},{char:"れ",reading:"re"},{char:"ろ",reading:"ro"}],WA:[{char:"わ",reading:"wa"},{char:"を",reading:"wo"},{char:"ん",reading:"n"}],YOON:[{char:"きゃ",reading:"kya"},{char:"きゅ",reading:"kyu"},{char:"きょ",reading:"kyo"},{char:"ぎゃ",reading:"gya"},{char:"ぎゅ",reading:"gyu"},{char:"ぎょ",reading:"gyo"},{char:"しゃ",reading:"sha"},{char:"しゅ",reading:"shu"},{char:"しょ",reading:"sho"},{char:"じゃ",reading:"ja"},{char:"じゅ",reading:"ju"},{char:"じょ",reading:"jo"},{char:"ちゃ",reading:"cha"},{char:"ちゅ",reading:"chu"},{char:"ちょ",reading:"cho"},{char:"にゃ",reading:"nya"},{char:"にゅ",reading:"nyu"},{char:"にょ",reading:"nyo"},{char:"ひゃ",reading:"hya"},{char:"ひゅ",reading:"hyu"},{char:"ひょ",reading:"hyo"},{char:"びゃ",reading:"bya"},{char:"びゅ",reading:"byu"},{char:"びょ",reading:"byo"},{char:"ぴゃ",reading:"pya"},{char:"ぴゅ",reading:"pyu"},{char:"ぴょ",reading:"pyo"},{char:"みゃ",reading:"mya"},{char:"みゅ",reading:"myu"},{char:"みょ",reading:"myo"},{char:"りゃ",reading:"rya"},{char:"りゅ",reading:"ryu"},{char:"りょ",reading:"ryo"}]};
-    const katakanaGroups={A:[{char:"ア",reading:"a"},{char:"イ",reading:"i"},{char:"ウ",reading:"u"},{char:"エ",reading:"e"},{char:"オ",reading:"o"}],KA:[{char:"カ",reading:"ka"},{char:"キ",reading:"ki"},{char:"ク",reading:"ku"},{char:"ケ",reading:"ke"},{char:"コ",reading:"ko"}],GA:[{char:"ガ",reading:"ga"},{char:"ギ",reading:"gi"},{char:"グ",reading:"gu"},{char:"ゲ",reading:"ge"},{char:"ゴ",reading:"go"}],SA:[{char:"サ",reading:"sa"},{char:"シ",reading:"shi"},{char:"ス",reading:"su"},{char:"セ",reading:"se"},{char:"ソ",reading:"so"}],ZA:[{char:"ザ",reading:"za"},{char:"ジ",reading:"ji"},{char:"ズ",reading:"zu"},{char:"ゼ",reading:"ze"},{char:"ゾ",reading:"zo"}],TA:[{char:"タ",reading:"ta"},{char:"チ",reading:"chi"},{char:"ツ",reading:"tsu"},{char:"テ",reading:"te"},{char:"ト",reading:"to"}],DA:[{char:"ダ",reading:"da"},{char:"ヂ",reading:"ji"},{char:"ヅ",reading:"zu"},{char:"デ",reading:"de"},{char:"ド",reading:"do"}],NA:[{char:"ナ",reading:"na"},{char:"ニ",reading:"ni"},{char:"ヌ",reading:"nu"},{char:"ネ",reading:"ne"},{char:"ノ",reading:"no"}],HA:[{char:"ハ",reading:"ha"},{char:"ヒ",reading:"hi"},{char:"フ",reading:"fu"},{char:"ヘ",reading:"he"},{char:"ホ",reading:"ho"}],BA:[{char:"バ",reading:"ba"},{char:"ビ",reading:"bi"},{char:"ブ",reading:"bu"},{char:"ベ",reading:"be"},{char:"ボ",reading:"bo"}],PA:[{char:"パ",reading:"pa"},{char:"ピ",reading:"pi"},{char:"プ",reading:"pu"},{char:"ペ",reading:"pe"},{char:"ポ",reading:"po"}],MA:[{char:"マ",reading:"ma"},{char:"ミ",reading:"mi"},{char:"ム",reading:"mu"},{char:"メ",reading:"me"},{char:"モ",reading:"mo"}],YA:[{char:"ヤ",reading:"ya"},{char:"ユ",reading:"yu"},{char:"ヨ",reading:"yo"}],RA:[{char:"ラ",reading:"ra"},{char:"リ",reading:"ri"},{char:"ル",reading:"ru"},{char:"レ",reading:"re"},{char:"ロ",reading:"ro"}],WA:[{char:"ワ",reading:"wa"},{char:"ヲ",reading:"wo"},{char:"ン",reading:"n"}],YOON:[{char:"キャ",reading:"kya"},{char:"キュ",reading:"kyu"},{char:"キョ",reading:"kyo"},{char:"ギャ",reading:"gya"},{char:"ギュ",reading:"gyu"},{char:"ギョ",reading:"gyo"},{char:"シャ",reading:"sha"},{char:"シュ",reading:"shu"},{char:"ショ",reading:"sho"},{char:"ジャ",reading:"ja"},{char:"ジュ",reading:"ju"},{char:"ジョ",reading:"jo"},{char:"チャ",reading:"cha"},{char:"チュ",reading:"chu"},{char:"チョ",reading:"cho"},{char:"ニャ",reading:"nya"},{char:"ニュ",reading:"nyu"},{char:"ニョ",reading:"nyo"},{char:"ヒャ",reading:"hya"},{char:"ヒュ",reading:"hyu"},{char:"ヒョ",reading:"hyo"},{char:"ビャ",reading:"bya"},{char:"ビュ",reading:"byu"},{char:"ビョ",reading:"byo"},{char:"ピャ",reading:"pya"},{char:"ピュ",reading:"pyu"},{char:"ピョ",reading:"pyo"},{char:"ミャ",reading:"mya"},{char:"ミュ",reading:"myu"},{char:"ミョ",reading:"myo"},{char:"リャ",reading:"rya"},{char:"リュ",reading:"ryu"},{char:"リョ",reading:"ryo"}]};
-    const romajiToKana={'a':{hira:'あ',kata:'ア'},'i':{hira:'い',kata:'イ'},'u':{hira:'う',kata:'ウ'},'e':{hira:'え',kata:'エ'},'o':{hira:'お',kata:'オ'},'ka':{hira:'か',kata:'カ'},'ki':{hira:'き',kata:'キ'},'ku':{hira:'く',kata:'ク'},'ke':{hira:'け',kata:'ケ'},'ko':{hira:'こ',kata:'コ'},'sa':{hira:'さ',kata:'サ'},'shi':{hira:'し',kata:'シ'},'su':{hira:'す',kata:'ス'},'se':{hira:'せ',kata:'セ'},'so':{hira:'そ',kata:'ソ'},'ta':{hira:'た',kata:'タ'},'chi':{hira:'ち',kata:'チ'},'tsu':{hira:'つ',kata:'ツ'},'te':{hira:'て',kata:'テ'},'to':{hira:'と',kata:'ト'},'na':{hira:'な',kata:'ナ'},'ni':{hira:'に',kata:'ニ'},'nu':{hira:'ぬ',kata:'ヌ'},'ne':{hira:'ね',kata:'ネ'},'no':{hira:'の',kata:'ノ'},'ha':{hira:'は',kata:'ハ'},'hi':{hira:'ひ',kata:'ヒ'},'fu':{hira:'ふ',kata:'フ'},'he':{hira:'へ',kata:'ヘ'},'ho':{hira:'ほ',kata:'ホ'},'ma':{hira:'ま',kata:'マ'},'mi':{hira:'み',kata:'ミ'},'mu':{hira:'む',kata:'ム'},'me':{hira:'め',kata:'メ'},'mo':{hira:'も',kata:'モ'},'ya':{hira:'や',kata:'ヤ'},'yu':{hira:'ゆ',kata:'ユ'},'yo':{hira:'よ',kata:'ヨ'},'ra':{hira:'ら',kata:'ラ'},'ri':{hira:'り',kata:'リ'},'ru':{hira:'る',kata:'ル'},'re':{hira:'れ',kata:'レ'},'ro':{hira:'ろ',kata:'ロ'},'wa':{hira:'わ',kata:'ワ'},'wo':{hira:'を',kata:'ヲ'},'n':{hira:'ん',kata:'ン'},'ga':{hira:'が',kata:'ガ'},'gi':{hira:'ぎ',kata:'ギ'},'gu':{hira:'ぐ',kata:'グ'},'ge':{hira:'げ',kata:'ゲ'},'go':{hira:'ご',kata:'ゴ'},'za':{hira:'ざ',kata:'ザ'},'ji':{hira:'じ',kata:'ジ'},'zu':{hira:'ず',kata:'ズ'},'ze':{hira:'ぜ',kata:'ゼ'},'zo':{hira:'ぞ',kata:'ゾ'},'da':{hira:'だ',kata:'ダ'},'dji':{hira:'ぢ',kata:'ヂ'},'dzu':{hira:'づ',kata:'ヅ'},'de':{hira:'で',kata:'デ'},'do':{hira:'ど',kata:'ド'},'ba':{hira:'ば',kata:'バ'},'bi':{hira:'び',kata:'ビ'},'bu':{hira:'ぶ',kata:'ブ'},'be':{hira:'べ',kata:'ベ'},'bo':{hira:'ぼ',kata:'ボ'},'pa':{hira:'ぱ',kata:'パ'},'pi':{hira:'ぴ',kata:'ピ'},'pu':{hira:'ぷ',kata:'プ'},'pe':{hira:'ぺ',kata:'ペ'},'po':{hira:'ぽ',kata:'ポ'},'kya':{hira:'きゃ',kata:'キャ'},'kyu':{hira:'きゅ',kata:'キュ'},'kyo':{hira:'きょ',kata:'キョ'},'gya':{hira:'ぎゃ',kata:'ギャ'},'gyu':{hira:'ぎゅ',kata:'ギュ'},'gyo':{hira:'ぎょ',kata:'ギョ'},'sha':{hira:'しゃ',kata:'シャ'},'shu':{hira:'しゅ',kata:'シュ'},'sho':{hira:'しょ',kata:'ショ'},'ja':{hira:'じゃ',kata:'ジャ'},'ju':{hira:'じゅ',kata:'ジュ'},'jo':{hira:'じょ',kata:'ジョ'},'cha':{hira:'ちゃ',kata:'チャ'},'chu':{hira:'ちゅ',kata:'チュ'},'cho':{hira:'ちょ',kata:'チョ'},'dja':{hira:'ぢゃ',kata:'ヂャ'},'dju':{hira:'ぢゅ',kata:'ヂュ'},'djo':{hira:'ぢょ',kata:'ヂョ'},'nya':{hira:'にゃ',kata:'ニャ'},'nyu':{hira:'にゅ',kata:'ニュ'},'nyo':{hira:'にょ',kata:'ニョ'},'hya':{hira:'ひゃ',kata:'ヒャ'},'hyu':{hira:'ひゅ',kata:'ヒュ'},'hyo':{hira:'ひょ',kata:'ヒョ'},'bya':{hira:'びゃ',kata:'ビャ'},'byu':{hira:'びゅ',kata:'ビュ'},'byo':{hira:'びょ',kata:'ビョ'},'pya':{hira:'ぴゃ',kata:'ピャ'},'pyu':{hira:'ぴゅ',kata:'ピュ'},'pyo':{hira:'ぴょ',kata:'ピョ'},'mya':{hira:'みゃ',kata:'ミャ'},'myu':{hira:'みゅ',kata:'ミュ'},'myo':{hira:'みょ',kata:'ミョ'},'rya':{hira:'りゃ',kata:'リャ'},'ryu':{hira:'りゅ',kata:'リュ'},'ryo':{hira:'りょ',kata:'リョ'}
+const hiraganaGroups={
+A:[
+{char:"あ",reading:"a"},
+{char:"い",reading:"i"},
+{char:"う",reading:"u"},
+{char:"え",reading:"e"},
+{char:"お",reading:"o"}],
+
+KA:[
+{char:"か",reading:"ka"},
+{char:"き",reading:"ki"},
+{char:"く",reading:"ku"},
+{char:"け",reading:"ke"},
+{char:"こ",reading:"ko"}],
+
+SA:[
+{char:"さ",reading:"sa"},
+{char:"し",reading:"shi"},
+{char:"す",reading:"su"},
+{char:"せ",reading:"se"},
+{char:"そ",reading:"so"}],
+
+TA:[
+{char:"た",reading:"ta"},
+{char:"ち",reading:"chi"},
+{char:"つ",reading:"tsu"},
+{char:"て",reading:"te"},
+{char:"と",reading:"to"}],
+
+NA:[
+{char:"な",reading:"na"},
+{char:"に",reading:"ni"},
+{char:"ぬ",reading:"nu"},
+{char:"ね",reading:"ne"},
+{char:"の",reading:"no"}],
+
+HA:[
+{char:"は",reading:"ha"},
+{char:"ひ",reading:"hi"},
+{char:"ふ",reading:"fu"},
+{char:"へ",reading:"he"},
+{char:"ほ",reading:"ho"}],
+
+MA:[
+{char:"ま",reading:"ma"},
+{char:"み",reading:"mi"},
+{char:"む",reading:"mu"},
+{char:"め",reading:"me"},
+{char:"も",reading:"mo"}],
+
+YA:[
+{char:"や",reading:"ya"},
+{char:"ゆ",reading:"yu"},
+{char:"よ",reading:"yo"}],
+
+RA:[
+{char:"ら",reading:"ra"},
+{char:"り",reading:"ri"},
+{char:"る",reading:"ru"},
+{char:"れ",reading:"re"},
+{char:"ろ",reading:"ro"}],
+
+WA:[
+{char:"わ",reading:"wa"},
+{char:"を",reading:"wo"},
+{char:"ん",reading:"n"}],
+
+GA:[
+{char:"が",reading:"ga"},
+{char:"ぎ",reading:"gi"},
+{char:"ぐ",reading:"gu"},
+{char:"げ",reading:"ge"},
+{char:"ご",reading:"go"}],
+
+ZA:[
+{char:"ざ",reading:"za"},
+{char:"じ",reading:"ji"},
+{char:"ず",reading:"zu"},
+{char:"ぜ",reading:"ze"},
+{char:"ぞ",reading:"zo"}],
+
+DA:[
+{char:"だ",reading:"da"},
+{char:"ぢ",reading:"dji"},
+{char:"づ",reading:"dzu"},
+{char:"で",reading:"de"},
+{char:"ど",reading:"do"}],
+
+BA:[
+{char:"ば",reading:"ba"},
+{char:"び",reading:"bi"},
+{char:"ぶ",reading:"bu"},
+{char:"べ",reading:"be"},
+{char:"ぼ",reading:"bo"}],
+
+PA:[
+{char:"ぱ",reading:"pa"},
+{char:"ぴ",reading:"pi"},
+{char:"ぷ",reading:"pu"},
+{char:"ぺ",reading:"pe"},
+{char:"ぽ",reading:"po"}],
+
+YOON:[
+{char:"きゃ",reading:"kya"},
+{char:"きゅ",reading:"kyu"},
+{char:"きょ",reading:"kyo"},
+{char:"ぎゃ",reading:"gya"},
+{char:"ぎゅ",reading:"gyu"},
+{char:"ぎょ",reading:"gyo"},
+{char:"しゃ",reading:"sha"},
+{char:"しゅ",reading:"shu"},
+{char:"しょ",reading:"sho"},
+{char:"じゃ",reading:"ja"},
+{char:"じゅ",reading:"ju"},
+{char:"じょ",reading:"jo"},
+{char:"ちゃ",reading:"cha"},
+{char:"ちゅ",reading:"chu"},
+{char:"ちょ",reading:"cho"},
+{char:"にゃ",reading:"nya"},
+{char:"にゅ",reading:"nyu"},
+{char:"にょ",reading:"nyo"},
+{char:"ひゃ",reading:"hya"},
+{char:"ひゅ",reading:"hyu"},
+{char:"ひょ",reading:"hyo"},
+{char:"びゃ",reading:"bya"},
+{char:"びゅ",reading:"byu"},
+{char:"びょ",reading:"byo"},
+{char:"ぴゃ",reading:"pya"},
+{char:"ぴゅ",reading:"pyu"},
+{char:"ぴょ",reading:"pyo"},
+{char:"みゃ",reading:"mya"},
+{char:"みゅ",reading:"myu"},
+{char:"みょ",reading:"myo"},
+{char:"りゃ",reading:"rya"},
+{char:"りゅ",reading:"ryu"},
+{char:"りょ",reading:"ryo"}]
+};
+
+const katakanaGroups={
+A:[
+{char:"ア",reading:"a"},
+{char:"イ",reading:"i"},
+{char:"ウ",reading:"u"},
+{char:"エ",reading:"e"},
+{char:"オ",reading:"o"}],
+
+KA:[
+{char:"カ",reading:"ka"},
+{char:"キ",reading:"ki"},
+{char:"ク",reading:"ku"},
+{char:"ケ",reading:"ke"},
+{char:"コ",reading:"ko"}],
+
+SA:[
+{char:"サ",reading:"sa"},
+{char:"シ",reading:"shi"},
+{char:"ス",reading:"su"},
+{char:"セ",reading:"se"},
+{char:"ソ",reading:"so"}],
+
+TA:[
+{char:"タ",reading:"ta"},
+{char:"チ",reading:"chi"},
+{char:"ツ",reading:"tsu"},
+{char:"テ",reading:"te"},
+{char:"ト",reading:"to"}],
+
+NA:[
+{char:"ナ",reading:"na"},
+{char:"ニ",reading:"ni"},
+{char:"ヌ",reading:"nu"},
+{char:"ネ",reading:"ne"},
+{char:"ノ",reading:"no"}],
+
+HA:[
+{char:"ハ",reading:"ha"},
+{char:"ヒ",reading:"hi"},
+{char:"フ",reading:"fu"},
+{char:"ヘ",reading:"he"},
+{char:"ホ",reading:"ho"}],
+
+MA:[
+{char:"マ",reading:"ma"},
+{char:"ミ",reading:"mi"},
+{char:"ム",reading:"mu"},
+{char:"メ",reading:"me"},
+{char:"モ",reading:"mo"}],
+
+YA:[
+{char:"ヤ",reading:"ya"},
+{char:"ユ",reading:"yu"},
+{char:"ヨ",reading:"yo"}],
+
+RA:[
+{char:"ラ",reading:"ra"},
+{char:"リ",reading:"ri"},
+{char:"ル",reading:"ru"},
+{char:"レ",reading:"re"},
+{char:"ロ",reading:"ro"}],
+
+WA:[
+{char:"ワ",reading:"wa"},
+{char:"ヲ",reading:"wo"},
+{char:"ン",reading:"n"}],
+
+GA:[
+{char:"ガ",reading:"ga"},
+{char:"ギ",reading:"gi"},
+{char:"グ",reading:"gu"},
+{char:"ゲ",reading:"ge"},
+{char:"ゴ",reading:"go"}],
+
+ZA:[
+{char:"ザ",reading:"za"},
+{char:"ジ",reading:"ji"},
+{char:"ズ",reading:"zu"},
+{char:"ゼ",reading:"ze"},
+{char:"ゾ",reading:"zo"}],
+
+DA:[
+{char:"ダ",reading:"da"},
+{char:"ヂ",reading:"dji"},
+{char:"ヅ",reading:"dzu"},
+{char:"デ",reading:"de"},
+{char:"ド",reading:"do"}],
+
+BA:[
+{char:"バ",reading:"ba"},
+{char:"ビ",reading:"bi"},
+{char:"ブ",reading:"bu"},
+{char:"ベ",reading:"be"},
+{char:"ボ",reading:"bo"}],
+
+PA:[
+{char:"パ",reading:"pa"},
+{char:"ピ",reading:"pi"},
+{char:"プ",reading:"pu"},
+{char:"ペ",reading:"pe"},
+{char:"ポ",reading:"po"}],
+
+YOON:[
+{char:"キャ",reading:"kya"},
+{char:"キュ",reading:"kyu"},
+{char:"キョ",reading:"kyo"},
+{char:"ギャ",reading:"gya"},
+{char:"ギュ",reading:"gyu"},
+{char:"ギョ",reading:"gyo"},
+{char:"シャ",reading:"sha"},
+{char:"シュ",reading:"shu"},
+{char:"ショ",reading:"sho"},
+{char:"ジャ",reading:"ja"},
+{char:"ジュ",reading:"ju"},
+{char:"ジョ",reading:"jo"},
+{char:"チャ",reading:"cha"},
+{char:"チュ",reading:"chu"},
+{char:"チョ",reading:"cho"},
+{char:"ニャ",reading:"nya"},
+{char:"ニュ",reading:"nyu"},
+{char:"ニョ",reading:"nyo"},
+{char:"ヒャ",reading:"hya"},
+{char:"ヒュ",reading:"hyu"},
+{char:"ヒョ",reading:"hyo"},
+{char:"ビャ",reading:"bya"},
+{char:"ビュ",reading:"byu"},
+{char:"ビョ",reading:"byo"},
+{char:"ピャ",reading:"pya"},
+{char:"ピュ",reading:"pyu"},
+{char:"ピョ",reading:"pyo"},
+{char:"ミャ",reading:"mya"},
+{char:"ミュ",reading:"myu"},
+{char:"ミョ",reading:"myo"},
+{char:"リャ",reading:"rya"},
+{char:"リュ",reading:"ryu"},
+{char:"リョ",reading:"ryo"}],
+
+SPE_1:[
+{char:"ウィ",reading:"wi"},{char:"ウェ",reading:"we"},{char:"ウォ",reading:"wo"},
+{char:"ヴァ",reading:"va"},{char:"ヴィ",reading:"vi"},{char:"ヴ",reading:"vu"},{char:"ヴェ",reading:"ve"},{char:"ヴォ",reading:"vo"},
+{char:"シェ",reading:"she"},
+{char:"ジェ",reading:"je"},
+{char:"チェ",reading:"che"},
+{char:"ティ",reading:"ti"},{char:"トゥ",reading:"tu"},
+{char:"ディ",reading:"di"},{char:"ドゥ",reading:"du"},
+{char:"ファ",reading:"fa"},{char:"フィ",reading:"fi"},{char:"フェ",reading:"fe"},{char:"フォ",reading:"fo"}],
+
+SPE_2:[
+{char:"クァ",reading:"kwa"},{char:"クィ",reading:"kwi"},{char:"クェ",reading:"kwe"},{char:"クォ",reading:"kwo"},
+{char:"グァ",reading:"gwa"},{char:"グィ",reading:"gwi"},{char:"グェ",reading:"gwe"},{char:"グォ",reading:"gwo"},
+{char:"スィ",reading:"si"},
+{char:"ズィ",reading:"zi"},
+{char:"ツァ",reading:"tsa"},{char:"ツィ",reading:"tsi"},{char:"ツェ",reading:"tse"},{char:"ツォ",reading:"tso"},
+{char:"ヴュ",reading:"vyu"},
+{char:"テュ",reading:"tyu"},
+{char:"デュ",reading:"dyu"},
+{char:"フュ",reading:"fyu"},{char:"フョ",reading:"fyo"}]
+};
+
+const romajiToKana={
+
+'a':{hira:'あ',kata:'ア'},'i':{hira:'い',kata:'イ'},'u':{hira:'う',kata:'ウ'},'e':{hira:'え',kata:'エ'},'o':{hira:'お',kata:'オ'},
+
+'ka':{hira:'か',kata:'カ'},'ki':{hira:'き',kata:'キ'},'ku':{hira:'く',kata:'ク'},'ke':{hira:'け',kata:'ケ'},'ko':{hira:'こ',kata:'コ'},
+
+'sa':{hira:'さ',kata:'サ'},'shi':{hira:'し',kata:'シ'},'su':{hira:'す',kata:'ス'},'se':{hira:'せ',kata:'セ'},'so':{hira:'そ',kata:'ソ'},
+
+'ta':{hira:'た',kata:'タ'},'chi':{hira:'ち',kata:'チ'},'tsu':{hira:'つ',kata:'ツ'},'te':{hira:'て',kata:'テ'},'to':{hira:'と',kata:'ト'},
+
+'na':{hira:'な',kata:'ナ'},'ni':{hira:'に',kata:'ニ'},'nu':{hira:'ぬ',kata:'ヌ'},'ne':{hira:'ね',kata:'ネ'},'no':{hira:'の',kata:'ノ'},
+
+'ha':{hira:'は',kata:'ハ'},'hi':{hira:'ひ',kata:'ヒ'},'fu':{hira:'ふ',kata:'フ'},'he':{hira:'へ',kata:'ヘ'},'ho':{hira:'ほ',kata:'ホ'},
+
+'ma':{hira:'ま',kata:'マ'},'mi':{hira:'み',kata:'ミ'},'mu':{hira:'む',kata:'ム'},'me':{hira:'め',kata:'メ'},'mo':{hira:'も',kata:'モ'},
+
+'ya':{hira:'や',kata:'ヤ'},'yu':{hira:'ゆ',kata:'ユ'},'yo':{hira:'よ',kata:'ヨ'},
+
+'ra':{hira:'ら',kata:'ラ'},'ri':{hira:'り',kata:'リ'},'ru':{hira:'る',kata:'ル'},'re':{hira:'れ',kata:'レ'},'ro':{hira:'ろ',kata:'ロ'},
+
+'wa':{hira:'わ',kata:'ワ'},'wo':{hira:'を',kata:'ヲ'},'n':{hira:'ん',kata:'ン'},
+
+'ga':{hira:'が',kata:'ガ'},'gi':{hira:'ぎ',kata:'ギ'},'gu':{hira:'ぐ',kata:'グ'},'ge':{hira:'げ',kata:'ゲ'},'go':{hira:'ご',kata:'ゴ'},
+
+'za':{hira:'ざ',kata:'ザ'},'ji':{hira:'じ',kata:'ジ'},'zu':{hira:'ず',kata:'ズ'},'ze':{hira:'ぜ',kata:'ゼ'},'zo':{hira:'ぞ',kata:'ゾ'},
+
+'da':{hira:'だ',kata:'ダ'},'dji':{hira:'ぢ',kata:'ヂ'},'dzu':{hira:'づ',kata:'ヅ'},'de':{hira:'で',kata:'デ'},'do':{hira:'ど',kata:'ド'},
+
+'ba':{hira:'ば',kata:'バ'},'bi':{hira:'び',kata:'ビ'},'bu':{hira:'ぶ',kata:'ブ'},'be':{hira:'べ',kata:'ベ'},'bo':{hira:'ぼ',kata:'ボ'},
+
+'pa':{hira:'ぱ',kata:'パ'},'pi':{hira:'ぴ',kata:'ピ'},'pu':{hira:'ぷ',kata:'プ'},'pe':{hira:'ぺ',kata:'ペ'},'po':{hira:'ぽ',kata:'ポ'},
+
+'kya':{hira:'きゃ',kata:'キャ'},'kyu':{hira:'きゅ',kata:'キュ'},'kyo':{hira:'きょ',kata:'キョ'},
+
+'gya':{hira:'ぎゃ',kata:'ギャ'},'gyu':{hira:'ぎゅ',kata:'ギュ'},'gyo':{hira:'ぎょ',kata:'ギョ'},
+
+'sha':{hira:'しゃ',kata:'シャ'},'shu':{hira:'しゅ',kata:'シュ'},'sho':{hira:'しょ',kata:'ショ'},
+
+'ja':{hira:'じゃ',kata:'ジャ'},'ju':{hira:'じゅ',kata:'ジュ'},'jo':{hira:'じょ',kata:'ジョ'},
+
+'cha':{hira:'ちゃ',kata:'チャ'},'chu':{hira:'ちゅ',kata:'チュ'},'cho':{hira:'ちょ',kata:'チョ'},
+
+'nya':{hira:'にゃ',kata:'ニャ'},'nyu':{hira:'にゅ',kata:'ニュ'},'nyo':{hira:'にょ',kata:'ニョ'},
+
+'hya':{hira:'ひゃ',kata:'ヒャ'},'hyu':{hira:'ひゅ',kata:'ヒュ'},'hyo':{hira:'ひょ',kata:'ヒョ'},
+
+'bya':{hira:'びゃ',kata:'ビャ'},'byu':{hira:'びゅ',kata:'ビュ'},'byo':{hira:'びょ',kata:'ビョ'},
+
+'pya':{hira:'ぴゃ',kata:'ピャ'},'pyu':{hira:'ぴゅ',kata:'ピュ'},'pyo':{hira:'ぴょ',kata:'ピョ'},
+
+'mya':{hira:'みゃ',kata:'ミャ'},'myu':{hira:'みゅ',kata:'ミュ'},'myo':{hira:'みょ',kata:'ミョ'},
+
+'rya':{hira:'りゃ',kata:'リャ'},'ryu':{hira:'りゅ',kata:'リュ'},'ryo':{hira:'りょ',kata:'リョ'}
+
 //,'kka':{hira:'っか',kata:'ッカ'},'kki':{hira:'っき',kata:'ッキ'},'kku':{hira:'っく',kata:'ック'},'kke':{hira:'っけ',kata:'ッケ'},'kko':{hira:'っこ',kata:'ッコ'},'ssa':{hira:'ッサ',kata:'ッサ'},'sshi':{hira:'っし',kata:'ッシ'},'ssu':{hira:'っす',kata:'ッス'},'sse':{hira:'っせ',kata:'ッセ'},'sso':{hira:'っそ',kata:'ッソ'},'tta':{hira:'った',kata:'ッタ'},'tchi':{hira:'っち',kata:'ッチ'},'ttsu':{hira:'っつ',kata:'ッツ'},'tte':{hira:'って',kata:'ッテ'},'tto':{hira:'っと',kata:'ット'},'ppa':{hira:'っぱ',kata:'ッパ'},'ppi':{hira:'っぴ',kata:'ッピ'},'ppu':{hira:'っぷ',kata:'ップ'},'ppe':{hira:'っぺ',kata:'ッペ'},'ppo':{hira:'っぽ',kata:'ッポ'},'kkya':{hira:'っきゃ',kata:'っきゃ'},'kkyu':{hira:'っきゅ',kata:'っきゅ'},'kkyo':{hira:'っきょ',kata:'っきょ'},'ssha':{hira:'っしゃ',kata:'っしゃ'},'sshu':{hira:'っしゅ',kata:'っしゅ'},'ssho':{hira:'っしょ',kata:'っしょ'},'tcha':{hira:'っちゃ',kata:'っちゃ'},'tchu':{hira:'っちゅ',kata:'っちゅ'},'tcho':{hira:'っちょ',kata:'っちょ'},'ppya':{hira:'っぴゃ',kata:'っぴゃ'},'ppyu':{hira:'っぴゅ',kata:'っぴゅ'},'ppyo':{hira:'っぴょ',kata:'っぴょ'}
 };
+
 
     // ===== GLOBAL & STATE MANAGEMENT =====
     let currentAppMode = 'kana'; // Default mode
@@ -894,7 +1245,7 @@ const katakanaWords = {
         resetUIState();
 
 
-            showEndScreen(currentAppMode === 'vocab' ? 'Pressiona "Reiniciar" para começar de novo!' : 'Seleciona as linhas e pressiona "Reniciar" para começar!');
+            showEndScreen(currentAppMode === 'vocab' ? 'Seleciona as lições e pressiona "Reiniciar" para começar!' : 'Seleciona as linhas e pressiona "Reiniciar" para começar!');
             return;
         }
 
@@ -985,11 +1336,17 @@ const katakanaWords = {
         pendingScoreUpdate = null; // Discard any unconfirmed answer
         currentAppMode = newMode;
         const state = appState[currentAppMode];
-        
+
             updateUIVisibility();
+
             displayCurrentItem();
             updateStats();
             resetUIState();
+
+        if (state.deck.length === 0 && currentAppMode !== 'random') {
+        showEndScreen(currentAppMode === 'vocab' ? 'Seleciona as lições e pressiona "Reiniciar" para começar!' : 'Seleciona as linhas e pressiona "Reiniciar" para começar!');
+        return;
+        }
     }
 
     function boot(newMode) {
@@ -1145,7 +1502,7 @@ function resetUIState() {
 
     function showEndScreen(message) {
         promptDisplay.textContent = "Acabou!";
-        if (currentAppMode === 'vocab') meaningDisplay.textContent = "Parabéns!";
+        if (currentAppMode === 'vocab' || currentAppMode === 'kana') meaningDisplay.textContent = "Parabéns!";
         checkBtn.disabled = true;
         nextBtn.disabled = true;
         correctBtn.disabled = true;
@@ -1266,27 +1623,37 @@ function resetUIState() {
 
     // MODIFIED: Sub-mode changes no longer reset the game. They just update the UI.
     vocabScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        const state = appState[currentAppMode];
+
         updateUIVisibility();
 
+        if (state.deck.length === 0 && currentAppMode !== 'random') {
+        showEndScreen(currentAppMode === 'vocab' ? 'Seleciona as lições e pressiona "Reiniciar" para começar!' : 'Seleciona as linhas e pressiona "Reiniciar" para começar!');
+        return;
+        }
 
         displayCurrentItem();
         updateStats();
         resetUIState();
         pendingScoreUpdate = null;
-
 
         displayCurrentItem(); // Redisplay the same card in the new format
     }));
 
     kanaScriptRadios.forEach(radio => radio.addEventListener('change', () => {
+        const state = appState[currentAppMode];
+
         updateUIVisibility();
 
+        if (state.deck.length === 0 && currentAppMode !== 'random') {
+        showEndScreen(currentAppMode === 'vocab' ? 'Seleciona as lições e pressiona "Reiniciar" para começar!' : 'Seleciona as linhas e pressiona "Reiniciar" para começar!');
+        return;
+        }
 
         displayCurrentItem();
         updateStats();
         resetUIState();
         pendingScoreUpdate = null;
-
 
         displayCurrentItem(); // Redisplay the same card in the new format
     }));
