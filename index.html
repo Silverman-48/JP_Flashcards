@@ -1357,15 +1357,6 @@ const romajiToKana={
         }
     }
 
-    function boot(newMode) {
-        currentAppMode = newMode;
-            resetGame();
-            updateUIVisibility();
-            displayCurrentItem();
-            updateStats();
-            resetUIState();
-    }
-
 function handleSelfScore(isCorrect) {
     const state = appState.kana; // This mode only exists for Kana
     if (isCorrect) {
@@ -1679,9 +1670,18 @@ function resetUIState() {
     groupCheckboxesWordsKata.forEach(checkbox => checkbox.addEventListener('change', () => checkAllWordsKata.checked = Array.from(groupCheckboxesWordsKata).every(cb => cb.checked)));
 
     // --- Initial setup ---
-    boot('random');
-    boot('vocab');
-    boot('kana');
+const modes = ['random', 'vocab', 'kana'];
+
+function boot(newMode) {
+  currentAppMode = newMode;
+  resetGame();
+  updateUIVisibility();
+  displayCurrentItem();
+  updateStats();
+  resetUIState();
+}
+
+modes.forEach(boot);
 </script>
 </body>
 </html>
